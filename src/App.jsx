@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { BookOpen, FileText, Mail, Github, Linkedin, TrendingUp, Anchor, ChevronDown, ExternalLink, Download } from 'lucide-react';
 
 // --- Components ---
@@ -140,7 +140,7 @@ const HeroGraph = () => {
         const next = current + (targetSpread - current) * 0.08;
         spreadsRef.current[i] = next;
         
-        // Base Shape Calculation
+        // Base Shape Calculation - REVERTED TO TIGHTER CURVE
         const normX = (x - 500) / 500; 
         const mainY = 480 - 300 * Math.pow(Math.abs(normX), 2.2);
 
@@ -279,25 +279,41 @@ export default function App() {
       {/* --- HERO SECTION --- */}
       <Section id="home" className="min-h-screen flex flex-col justify-center items-center text-center">
         <FadeIn>
-          <h1 className="font-serif text-5xl md:text-8xl mb-6 text-stone-900 tracking-tight leading-none">
-            <span className="font-normal">Sam</span> <span className="italic text-stone-700">Blundell.</span>
-          </h1>
-        </FadeIn>
-        
-        <FadeIn delay={200}>
-          <div className="max-w-lg mx-auto border-t border-stone-300 pt-6">
-            <p className="font-sans text-lg text-stone-700 leading-relaxed mb-6">
-              I am an MPhil in Economics at the <span className="font-semibold text-stone-900">University of Oxford</span> (Linacre College), supervised by <a href="https://www.sbs.ox.ac.uk/about-us/people/dimitrios-tsomocos" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Dimitrios Tsomocos</a> and <a href="https://fatih.ai/" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Fatih Kansoy</a>. 
-              My research focuses on sovereign default, financial frictions, and emerging market macroeconomics.
-            </p>
-            <div className="flex justify-center gap-4">
-              <a href="#contact" className="px-6 py-2 border border-stone-800 text-stone-800 text-sm font-medium hover:bg-stone-800 hover:text-[#F2F0E9] transition-all">
-                Get in Touch
-              </a>
-              <a href="#research" className="px-6 py-2 text-stone-600 text-sm font-medium hover:text-stone-900 transition-colors flex items-center gap-2">
-                View Research <TrendingUp size={16} />
-              </a>
+          {/* Reverted layout container to remove relative z-20 */}
+          <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 max-w-6xl mx-auto">
+            
+            {/* Profile Image */}
+            <div className="shrink-0 relative group">
+              <div className="absolute -inset-1 bg-gradient-to-tr from-stone-300 to-stone-100 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
+              <img 
+                src="blundell_sam_1674614.jpg" 
+                alt="Sam Blundell" 
+                className="relative w-48 h-48 md:w-64 md:h-64 object-cover rounded-2xl shadow-xl grayscale-[10%] hover:grayscale-0 transition-all duration-500"
+              />
             </div>
+
+            {/* Text Content */}
+            <div className="text-center md:text-left">
+              <h1 className="font-serif text-4xl md:text-6xl mb-6 text-stone-900 tracking-tight leading-none">
+                <span className="font-normal">Sam</span> <span className="italic text-stone-700">Blundell.</span>
+              </h1>
+              
+              <div className="max-w-lg border-t border-stone-300 pt-6">
+                <p className="font-sans text-base md:text-lg text-stone-700 leading-relaxed mb-6">
+                  I am an MPhil in Economics at the <span className="font-semibold text-stone-900">University of Oxford</span> (Linacre College), supervised by <a href="https://www.sbs.ox.ac.uk/about-us/people/dimitrios-tsomocos" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Dimitrios Tsomocos</a> and <a href="https://fatih.ai/" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Fatih Kansoy</a>. 
+                  My research focuses on sovereign default, financial frictions, and emerging market macroeconomics.
+                </p>
+                <div className="flex justify-center md:justify-start gap-4">
+                  <a href="#contact" className="px-6 py-2 border border-stone-800 text-stone-800 text-sm font-medium hover:bg-stone-800 hover:text-[#F2F0E9] transition-all">
+                    Get in Touch
+                  </a>
+                  <a href="#research" className="px-6 py-2 text-stone-600 text-sm font-medium hover:text-stone-900 transition-colors flex items-center gap-2">
+                    View Research <TrendingUp size={16} />
+                  </a>
+                </div>
+              </div>
+            </div>
+            
           </div>
         </FadeIn>
       </Section>
