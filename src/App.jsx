@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BookOpen, FileText, Mail, Github, Linkedin, TrendingUp, Anchor, ChevronDown, ExternalLink, Download } from 'lucide-react';
 
 // --- Components ---
@@ -42,12 +42,23 @@ const FadeIn = ({ children, delay = 0 }) => {
 };
 
 // --- Fixed Background (Noise & Grid) ---
-// This remains fixed to the viewport to provide the global atmosphere
+// OPTIMIZED: Uses Refs for parallax to avoid re-rendering on every scroll event
 const SystemBackground = () => {
-  const [scrollY, setScrollY] = useState(0);
+  const gridRef = useRef(null);
+  const nodeRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
+    const handleScroll = () => {
+      const y = window.scrollY;
+      // Update DOM directly for performance
+      if (gridRef.current) {
+        gridRef.current.style.transform = `translateY(${y * 0.05}px)`;
+      }
+      if (nodeRef.current) {
+        nodeRef.current.style.transform = `translateY(${-y * 0.1}px)`;
+      }
+    };
+    
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -63,28 +74,37 @@ const SystemBackground = () => {
       
       {/* Base Grid - Moves slowly for parallax */}
       <div 
+        ref={gridRef}
         className="absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage: 'linear-gradient(#4a4a4a 1px, transparent 1px), linear-gradient(90deg, #4a4a4a 1px, transparent 1px)',
           backgroundSize: '40px 40px',
-          transform: `translateY(${scrollY * 0.05}px)`
+          willChange: 'transform', // Hardware acceleration hint
         }}
       ></div>
 
       {/* Floating Abstract Nodes */}
       <div className="absolute top-1/4 left-10 w-64 h-64 bg-stone-300 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse"></div>
-      <div className="absolute bottom-1/3 right-10 w-96 h-96 bg-stone-400 rounded-full mix-blend-multiply filter blur-3xl opacity-10" style={{ transform: `translateY(${-scrollY * 0.1}px)` }}></div>
+      <div 
+        ref={nodeRef}
+        className="absolute bottom-1/3 right-10 w-96 h-96 bg-stone-400 rounded-full mix-blend-multiply filter blur-3xl opacity-10" 
+        style={{ willChange: 'transform' }}
+      ></div>
     </div>
   );
 };
 
 // --- Hero Graph (Absolute Positioned) ---
-// This sits at the top of the document and scrolls WITH the page (anchored to hero)
+// OPTIMIZED: Uses Refs + Animation Loop without State
 const HeroGraph = () => {
-  // Use refs for animation values to avoid React render batching issues during high-freq updates
   const mousePosRef = useRef({ x: 0, y: 0 });
-  const spreadsRef = useRef(new Array(51).fill(20)); // Store current spread for each segment
-  const [tick, setTick] = useState(0); // State to force re-render on animation frame
+  const spreadsRef = useRef(new Array(51).fill(20));
+  
+  // Refs to access SVG paths directly
+  const mainPathRef = useRef(null);
+  const topPathRef = useRef(null);
+  const bottomPathRef = useRef(null);
+  const modelPathRef = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -94,7 +114,7 @@ const HeroGraph = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Animation Loop
+  // Optimized Animation Loop
   useEffect(() => {
     let animationFrameId;
     
@@ -102,72 +122,57 @@ const HeroGraph = () => {
       const width = 1000;
       const segments = 50;
       const svgMouseX = (mousePosRef.current.x / (window.innerWidth || 1)) * 1000;
-      const now = Date.now() / 1000; // Time in seconds
+      const now = Date.now() / 1000;
 
-      // Update physics for each point
+      const points = [];
+
+      // 1. Calculate Physics
       for (let i = 0; i <= segments; i++) {
         const x = (width / segments) * i;
         
-        // Calculate Target Spread (Interactive)
+        // Target Spread Calculation
         const dist = Math.abs(x - svgMouseX);
         const interactiveInfluence = Math.exp(-(dist * dist) / (150 * 150)); 
         const targetSpread = 20 + (interactiveInfluence * 60);
 
-        // Calculate Current Spread (Interpolated for smooth wave flow)
-        // We use linear interpolation (lerp) to gently move current towards target
-        // Factor 0.08 controls the "sluggishness" or wave-like delay
+        // Smooth Interpolation
         const current = spreadsRef.current[i];
         const next = current + (targetSpread - current) * 0.08;
-        
-        // Add a tiny sine wave to keep it alive/breathing
-        const breathing = Math.sin(x * 0.02 + now * 2) * 2;
-        
         spreadsRef.current[i] = next;
+        
+        // Base Shape Calculation
+        const normX = (x - 500) / 500; 
+        const mainY = 480 - 300 * Math.pow(Math.abs(normX), 2.2);
+
+        points.push({ x, y: mainY, spread: next });
       }
 
-      setTick(t => t + 1); // Trigger render
+      // 2. Generate Path Strings
+      const createPath = (offsetFn) => {
+        let d = `M ${points[0].x},${offsetFn(points[0])}`;
+        for (let i = 1; i < points.length; i++) {
+          d += ` L ${points[i].x},${offsetFn(points[i])}`;
+        }
+        return d;
+      };
+
+      const topD = createPath(p => p.y - p.spread);
+      const bottomD = createPath(p => p.y + p.spread);
+      const modelD = createPath(p => p.y - p.spread * 0.3 - 10);
+      const mainD = createPath(p => p.y);
+
+      // 3. Update DOM Directly (Bypasses React Render Cycle)
+      if (topPathRef.current) topPathRef.current.setAttribute('d', topD);
+      if (bottomPathRef.current) bottomPathRef.current.setAttribute('d', bottomD);
+      if (modelPathRef.current) modelPathRef.current.setAttribute('d', modelD);
+      if (mainPathRef.current) mainPathRef.current.setAttribute('d', mainD);
+
       animationFrameId = requestAnimationFrame(loop);
     };
 
     loop();
     return () => cancelAnimationFrame(animationFrameId);
   }, []);
-
-  // Render Logic
-  const graphPaths = useMemo(() => {
-    const points = [];
-    const width = 1000;
-    const segments = 50; 
-    
-    for (let i = 0; i <= segments; i++) {
-      const x = (width / segments) * i;
-      
-      // 1. Base Shape: A "Cradle" / Valley
-      const normX = (x - 500) / 500; 
-      // Parabolic shape
-      const mainY = 480 - 300 * Math.pow(Math.abs(normX), 2.2);
-
-      // Use the interpolated spread from our ref
-      const spread = spreadsRef.current[i] || 20;
-
-      points.push({ x, y: mainY, spread });
-    }
-    
-    const createPath = (offsetFn) => {
-        let d = `M ${points[0].x},${offsetFn(points[0])}`;
-        for (let i = 1; i < points.length; i++) {
-            d += ` L ${points[i].x},${offsetFn(points[i])}`;
-        }
-        return d;
-    };
-
-    return {
-        main: createPath(p => p.y),
-        top: createPath(p => p.y - p.spread),
-        bottom: createPath(p => p.y + p.spread),
-        model: createPath(p => p.y - p.spread * 0.3 - 10),
-    };
-  }, [tick]); // Re-calculate when tick changes
 
   return (
     <div className="absolute top-0 left-0 w-full h-screen pointer-events-none z-0 overflow-hidden">
@@ -182,16 +187,16 @@ const HeroGraph = () => {
 
       <svg viewBox="0 0 1000 600" className="w-full h-full" preserveAspectRatio="none">
           {/* Top Confidence Band */}
-          <path d={graphPaths.top} fill="none" stroke="#5F6F7E" strokeWidth="2" strokeDasharray="4,6" className="opacity-30 scrolling-dash" />
+          <path ref={topPathRef} fill="none" stroke="#5F6F7E" strokeWidth="2" strokeDasharray="4,6" className="opacity-30 scrolling-dash" />
           
           {/* Bottom Confidence Band */}
-          <path d={graphPaths.bottom} fill="none" stroke="#5F6F7E" strokeWidth="2" strokeDasharray="4,6" className="opacity-30 scrolling-dash" />
+          <path ref={bottomPathRef} fill="none" stroke="#5F6F7E" strokeWidth="2" strokeDasharray="4,6" className="opacity-30 scrolling-dash" />
 
           {/* Secondary Model */}
-          <path d={graphPaths.model} fill="none" stroke="#5F6F7E" strokeWidth="1.5" strokeDasharray="8,8" className="opacity-20" />
+          <path ref={modelPathRef} fill="none" stroke="#5F6F7E" strokeWidth="1.5" strokeDasharray="8,8" className="opacity-20" />
 
           {/* Main Trend Line */}
-          <path d={graphPaths.main} fill="none" stroke="#4a4a4a" strokeWidth="3" strokeLinecap="round" className="opacity-70 drop-shadow-md" />
+          <path ref={mainPathRef} fill="none" stroke="#4a4a4a" strokeWidth="3" strokeLinecap="round" className="opacity-70 drop-shadow-md" />
       </svg>
     </div>
   );
@@ -241,7 +246,7 @@ const PaperCard = ({ title, year, abstract, link, status }) => {
       
       <div className="flex items-center gap-3 text-xs font-sans uppercase tracking-widest text-stone-500 mb-3">
         <span>{status}</span>
-        {link && (
+        {link && link !== '#' && (
           <a href={link} className="flex items-center gap-1 hover:text-stone-800 transition-colors">
             PDF <ExternalLink size={10} />
           </a>
@@ -282,7 +287,7 @@ export default function App() {
         <FadeIn delay={200}>
           <div className="max-w-lg mx-auto border-t border-stone-300 pt-6">
             <p className="font-sans text-lg text-stone-700 leading-relaxed mb-6">
-              I am an MPhil in Economics at the <span className="font-semibold text-stone-900">University of Oxford</span> (Linacre College), supervised by <a href="https://www.sbs.ox.ac.uk/about-us/people/dimitrios-tsomocos" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Dimitrios Tsomocos</a>. 
+              I am an MPhil in Economics at the <span className="font-semibold text-stone-900">University of Oxford</span> (Linacre College), supervised by <a href="https://www.sbs.ox.ac.uk/about-us/people/dimitrios-tsomocos" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Dimitrios Tsomocos</a> and <a href="https://fatih.ai/" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Fatih Kansoy</a>. 
               My research focuses on sovereign default, financial frictions, and emerging market macroeconomics.
             </p>
             <div className="flex justify-center gap-4">
@@ -431,7 +436,7 @@ export default function App() {
           <div className="bg-stone-200/50 p-12 rounded-sm border border-stone-300">
             <h2 className="font-serif text-3xl text-stone-900 mb-6">Connect</h2>
             <p className="text-stone-700 mb-8 max-w-xl">
-              I am currently available for research collaborations regarding sovereign debt, macro-prudential policy, and financial systems.
+              Please feel free to reach out to me for research collaborations, chats about economics, or if you have Japanese restaurant recommendations.
             </p>
             
             <div className="grid md:grid-cols-2 gap-6">
@@ -453,7 +458,7 @@ export default function App() {
 
       <footer className="py-8 text-center text-stone-400 text-xs font-mono">
         <p>&copy; {new Date().getFullYear()} Sam Blundell. Typeset in Serif & Sans.</p>
-        <p className="mt-1 opacity-50">Built with React & Tailwind.</p>
+        <p className="mt-1 opacity-50">Built with React & Tailwind, in collaboration with Gemini.</p>
       </footer>
     </div>
   );
