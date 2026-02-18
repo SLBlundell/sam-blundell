@@ -42,7 +42,6 @@ const FadeIn = ({ children, delay = 0 }) => {
 };
 
 // --- Fixed Background (Noise & Grid) ---
-// OPTIMIZED: Uses Refs for parallax to avoid re-rendering on every scroll event
 const SystemBackground = () => {
   const gridRef = useRef(null);
   const nodeRef = useRef(null);
@@ -95,7 +94,6 @@ const SystemBackground = () => {
 };
 
 // --- Hero Graph (Absolute Positioned) ---
-// OPTIMIZED: Uses Refs + Animation Loop without State
 const HeroGraph = () => {
   const mousePosRef = useRef({ x: 0, y: 0 });
   const spreadsRef = useRef(new Array(51).fill(20));
@@ -114,7 +112,7 @@ const HeroGraph = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Optimized Animation Loop
+  // Animation Loop
   useEffect(() => {
     let animationFrameId;
     
@@ -300,7 +298,7 @@ export default function App() {
               
               <div className="max-w-lg border-t border-stone-300 pt-6">
                 <p className="font-sans text-base md:text-lg text-stone-700 leading-relaxed mb-6">
-                  I am an MPhil in Economics at the <span className="font-semibold text-stone-900">University of Oxford</span> (Linacre College), supervised by <a href="https://www.sbs.ox.ac.uk/about-us/people/dimitrios-tsomocos" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Dimitrios Tsomocos</a> and <a href="https://fatih.ai/" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Fatih Kansoy</a>. 
+                  I am an MPhil in Economics candidate at the <span className="font-semibold text-stone-900">University of Oxford</span> (Linacre College), supervised by <a href="https://www.sbs.ox.ac.uk/about-us/people/dimitrios-tsomocos" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Dimitrios Tsomocos</a> and <a href="https://fatih.ai/" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Fatih Kansoy</a>. 
                   My research focuses on sovereign default, financial frictions, and emerging market macroeconomics.
                 </p>
                 <div className="flex justify-center md:justify-start gap-4">
