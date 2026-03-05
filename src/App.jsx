@@ -351,7 +351,7 @@ export default function App() {
             <PaperCard 
               title="Systematic Bias in IMF Sovereign Debt Sustainability Assessments"
               year="2025"
-              status="Research Assistance - Forthcoming Paper"
+              status="Research Assistance - Saïd Business School and LSE CETEx"
               link="#"
               abstract="Constructed a novel database of IMF Debt Sustainability Analysis and macro-financial data covering 191 countries. Decomposed forecast errors to identify systematic bias in sovereign risk assessments, contributing to research on debt sustainability and policy effectiveness."
             />
