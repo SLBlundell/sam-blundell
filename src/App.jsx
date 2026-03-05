@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { BookOpen, FileText, Mail, Github, Linkedin, TrendingUp, Anchor, ChevronDown, ExternalLink, Download } from 'lucide-react';
 
 // --- Components ---
@@ -14,18 +14,19 @@ const FadeIn = ({ children, delay = 0 }) => {
   const ref = useRef(null);
 
   useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
+          observer.unobserve(el);
         }
       },
       { threshold: 0.1 }
     );
-    if (ref.current) observer.observe(ref.current);
-    return () => {
-      if (ref.current) observer.unobserve(ref.current);
-    };
+    observer.observe(el);
+    return () => observer.unobserve(el);
   }, []);
 
   return (
@@ -42,24 +43,27 @@ const FadeIn = ({ children, delay = 0 }) => {
 };
 
 // --- Fixed Background (Noise & Grid) ---
+const NOISE_BG = `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`;
+
 const SystemBackground = () => {
   const gridRef = useRef(null);
   const nodeRef = useRef(null);
 
   useEffect(() => {
+    let rafId;
     const handleScroll = () => {
-      const y = window.scrollY;
-      // Update DOM directly for performance
-      if (gridRef.current) {
-        gridRef.current.style.transform = `translateY(${y * 0.05}px)`;
-      }
-      if (nodeRef.current) {
-        nodeRef.current.style.transform = `translateY(${-y * 0.1}px)`;
-      }
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const y = window.scrollY;
+        if (gridRef.current) gridRef.current.style.transform = `translateY(${y * 0.05}px)`;
+        if (nodeRef.current) nodeRef.current.style.transform = `translateY(${-y * 0.1}px)`;
+      });
     };
-    
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
@@ -67,9 +71,7 @@ const SystemBackground = () => {
       <div className="absolute inset-0 bg-[#F2F0E9]"></div>
       
       {/* Noise Texture */}
-      <div className="absolute inset-0 opacity-[0.03]" 
-           style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}>
-      </div>
+      <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: NOISE_BG }}></div>
       
       {/* Base Grid - Moves slowly for parallax */}
       <div 
@@ -204,9 +206,16 @@ const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    let rafId;
+    const handleScroll = () => {
+      cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => setIsScrolled(window.scrollY > 50));
+    };
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      cancelAnimationFrame(rafId);
+    };
   }, []);
 
   const scrollTo = (id) => {
@@ -283,9 +292,11 @@ export default function App() {
             {/* Profile Image */}
             <div className="shrink-0 relative group">
               <div className="absolute -inset-1 bg-gradient-to-tr from-stone-300 to-stone-100 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
-              <img 
-                src="blundell_sam_1674614.jpg" 
-                alt="Sam Blundell" 
+              <img
+                src="blundell_sam_1674614.jpg"
+                alt="Sam Blundell"
+                fetchPriority="high"
+                loading="eager"
                 className="relative w-48 h-48 md:w-64 md:h-64 object-cover rounded-2xl shadow-xl grayscale-[10%] hover:grayscale-0 transition-all duration-500"
               />
             </div>
