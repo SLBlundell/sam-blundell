@@ -202,6 +202,52 @@ const HeroGraph = () => {
   );
 };
 
+const projects = [
+  { label: 'Bayes Optimality', href: '/bayes_optimality.html', desc: 'Interactive risk space' },
+];
+
+const ProjectsDropdown = () => {
+  const [open, setOpen] = useState(false);
+  const timeoutRef = useRef(null);
+
+  const show = () => {
+    clearTimeout(timeoutRef.current);
+    setOpen(true);
+  };
+  const hide = () => {
+    timeoutRef.current = setTimeout(() => setOpen(false), 120);
+  };
+
+  return (
+    <div className="relative" onMouseEnter={show} onMouseLeave={hide}>
+      <button className="flex items-center gap-1 hover:text-stone-900 transition-colors">
+        Projects
+        <ChevronDown
+          size={12}
+          className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+        />
+      </button>
+
+      <div
+        className={`absolute right-0 top-full mt-2 w-52 bg-[#F2F0E9]/95 backdrop-blur-sm border border-stone-200 shadow-lg transition-all duration-200 origin-top ${
+          open ? 'opacity-100 scale-y-100 translate-y-0' : 'opacity-0 scale-y-95 -translate-y-1 pointer-events-none'
+        }`}
+      >
+        {projects.map(({ label, href, desc }) => (
+          <a
+            key={href}
+            href={href}
+            className="block px-4 py-3 group hover:bg-stone-200/60 transition-colors"
+          >
+            <div className="text-sm text-stone-800 font-medium group-hover:text-stone-900">{label}</div>
+            <div className="text-xs text-stone-500 mt-0.5">{desc}</div>
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -233,6 +279,7 @@ const NavBar = () => {
           <button onClick={() => scrollTo('research')} className="hover:text-stone-900 transition-colors">Research</button>
           <button onClick={() => scrollTo('cv')} className="hover:text-stone-900 transition-colors">CV</button>
           <button onClick={() => scrollTo('contact')} className="hover:text-stone-900 transition-colors">Contact</button>
+          <ProjectsDropdown />
         </div>
       </div>
     </nav>
