@@ -449,7 +449,7 @@ export default function App() {
 
               <div className="mb-8">
                 <div className="font-bold text-stone-800">University of Bristol</div>
-                <div className="text-stone-600 italic mb-1">BSc Economics</div>
+                <div className="text-stone-600 italic mb-1">BSc Economics with Study Abroad</div>
                 <div className="text-xs font-mono text-stone-500">2019 — 2023</div>
                 <ul className="text-sm text-stone-600 mt-2 list-disc list-inside">
                   <li>First Class Honours</li>
@@ -466,7 +466,7 @@ export default function App() {
               <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2">Experience</h3>
 
               <div className="mb-8 pl-4 border-l border-stone-300">
-                <div className="font-bold text-stone-800">Saïd Business School</div>
+                <div className="font-bold text-stone-800">Saïd Business School, LSE</div>
                 <div className="text-stone-600 italic mb-1">Research Assistant</div>
                 <div className="text-xs font-mono text-stone-500">May — Oct 2025</div>
                 <p className="text-sm text-stone-600 mt-2 leading-relaxed">
@@ -494,8 +494,15 @@ export default function App() {
 
                <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2 pt-4">Technical & Awards</h3>
                <div className="text-sm text-stone-600 space-y-2">
-                 <p><span className="font-semibold text-stone-800">Languages:</span> R, Python (Pandas, NumPy, Scikit-learn), MATLAB, Dynare, Stata.</p>
-                 <p><span className="font-semibold text-stone-800">Awards:</span> World Econometrics Games Competitor (2026), Linacre College Scholarship (2025).</p>
+                 <p><span className="font-semibold text-stone-800">Proficient:</span> R (econometrics, data cleaning/visualisation), Python (Pandas, NumPy, Scikit-learn), Excel.</p>
+                 <p><span className="font-semibold text-stone-800">Intermediate:</span> MATLAB, Dynare, Stata, LaTeX.</p>
+                 <p><span className="font-semibold text-stone-800">Basic:</span> Bloomberg (Bloomberg Market Concepts certified), Julia, Git.</p>
+                 <p><span className="font-semibold text-stone-800">Awards:</span> World Econometrics Games Competitor (2026), Linacre College Scholarship for Japanese Fast-Track Language Course (2025–26).</p>
+               </div>
+
+               <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2 pt-8">Leadership & Activities</h3>
+               <div className="text-sm text-stone-600 space-y-4">
+                 <p><span className="font-semibold text-stone-800">Mentor, Zero Gravity</span> <span className="font-mono text-xs text-stone-500 ml-2">2022–23</span><br />Mentored prospective undergraduates; supported successful applications to top-tier programs (LSE, Warwick).</p>
                </div>
             </div>
           </FadeIn>
