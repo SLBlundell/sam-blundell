@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bayes Optimality – Interactive Risk Space</title>
+<script>
+MathJax = {
+    tex: { inlineMath: [['\\(','\\)']], displayMath: [['\\[','\\]']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea'] }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+    background: #F2F0E9;
+    padding: 40px 24px 64px;
+    color: #292524;
+}
+.page {
+    max-width: 960px;
+    margin: 0 auto;
+}
+h1 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.5em;
+    font-weight: normal;
+    color: #292524;
+    margin-bottom: 6px;
+}
+.subtitle {
+    color: #78716c;
+    font-size: 0.875em;
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+.layout {
+    display: flex;
+    gap: 20px;
+    align-items: stretch;
+}
+.plot-wrap {
+    background: #faf9f7;
+    border: 1px solid #d6d3d1;
+    border-radius: 2px;
+    padding: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+.sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.card {
+    background: #faf9f7;
+    border: 1px solid #d6d3d1;
+    border-radius: 2px;
+    padding: 16px;
+}
+.card h3 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: normal;
+    color: #292524;
+    font-size: 0.95em;
+    margin-bottom: 12px;
+    border-bottom: 1px solid #d6d3d1;
+    padding-bottom: 8px;
+}
+.slider-group { margin: 10px 0; }
+.slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 4px;
+}
+.slider-name { font-size: 0.82em; font-weight: 600; color: #44403c; }
+.slider-val {
+    font-size: 0.9em;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    color: #292524;
+    min-width: 38px;
+    text-align: right;
+}
+input[type="range"] {
+    width: 100%;
+    accent-color: #44403c;
+    height: 4px;
+    cursor: pointer;
+}
+.divider { border: none; border-top: 1px solid #e7e5e4; margin: 10px 0; }
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    font-size: 0.82em;
+    margin: 5px 0;
+}
+.info-label { color: #78716c; }
+.info-val {
+    font-weight: 600;
+    font-family: 'Courier New', monospace;
+    color: #292524;
+}
+.info-val.red { color: #9f3f35; }
+.info-val.green { color: #3d6b4f; }
+.section-title {
+    font-size: 0.68em;
+    font-weight: 700;
+    color: #a8a29e;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 8px 0 4px;
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8em;
+    margin: 5px 0;
+    color: #57534e;
+}
+.leg-line {
+    width: 28px; height: 3px; border-radius: 1px; flex-shrink: 0;
+}
+.leg-dash {
+    width: 28px; height: 0;
+    border-top: 2px dashed; flex-shrink: 0;
+}
+.leg-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%; flex-shrink: 0;
+}
+.model-note {
+    font-size: 0.75em;
+    color: #a8a29e;
+    line-height: 1.6;
+    margin-top: 4px;
+    font-family: 'Courier New', monospace;
+}
+.prose {
+    margin-top: 48px;
+    padding-top: 32px;
+    border-top: 1px solid #d6d3d1;
+}
+.equation {
+    margin: 20px 0;
+    text-align: center;
+    font-size: 1.05em;
+    color: #292524;
+    overflow-x: auto;
+}
+.prose h2 {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-weight: normal;
+    font-size: 1.25em;
+    color: #292524;
+    margin-bottom: 20px;
+}
+.prose p {
+    font-size: 0.9em;
+    color: #57534e;
+    line-height: 1.8;
+    margin-bottom: 16px;
+}
+.prose strong {
+    font-weight: 600;
+    color: #292524;
+}
+.prose-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.prose-list li {
+    font-size: 0.9em;
+    color: #57534e;
+    line-height: 1.8;
+    padding-left: 20px;
+    border-left: 2px solid #d6d3d1;
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+
+<a href="/" style="font-family:-apple-system,Helvetica Neue,Arial,sans-serif;font-size:0.75em;color:#78716c;text-decoration:none;letter-spacing:0.04em;display:inline-block;margin-bottom:20px;">← Sam Blundell</a>
+<h1>Bayes Optimality in Statistical Decision Theory</h1>
+<p class="subtitle">
+    Risk space for two states of the world θ₀ and θ₁. The Bayes-optimal decision function
+    minimises integrated risk R(δ,π) = π₀·R(δ,θ₀) + π₁·R(δ,θ₁). Adjust the prior weights below.
+</p>
+
+<div class="layout">
+    <div class="plot-wrap">
+        <svg id="chart" viewBox="0 0 520 490" style="width:100%;flex:1;min-height:0;display:block;"></svg>
+    </div>
+
+    <div class="sidebar">
+        <!-- Prior slider -->
+        <div class="card">
+            <h3>Prior Weights π(θ)</h3>
+            <div class="slider-group">
+                <div class="slider-header">
+                    <span class="slider-name">π(θ₁) weight</span>
+                </div>
+                <div style="display:flex;justify-content:space-between;font-size:0.78em;color:#888;margin-bottom:2px">
+                    <span>θ₀ only</span><span>θ₁ only</span>
+                </div>
+                <input type="range" id="sl" min="1" max="99" value="50" step="1">
+            </div>
+
+            <hr class="divider">
+            <div class="info-row">
+                <span class="info-label">π(θ₀)</span>
+                <span class="info-val" id="pi0-v">0.500</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">π(θ₁)</span>
+                <span class="info-val" id="pi1-v">0.500</span>
+            </div>
+        </div>
+
+        <!-- Bayes-optimal results -->
+        <div class="card">
+            <h3>Bayes-Optimal δ*</h3>
+            <p class="section-title">Risk at each θ</p>
+            <div class="info-row">
+                <span class="info-label">R(δ*, θ₀)</span>
+                <span class="info-val red" id="r0-v">—</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">R(δ*, θ₁)</span>
+                <span class="info-val red" id="r1-v">—</span>
+            </div>
+            <hr class="divider">
+            <p class="section-title">Integrated risk</p>
+            <div class="info-row">
+                <span class="info-label">R(δ*, π)</span>
+                <span class="info-val green" id="br-v">—</span>
+            </div>
+            <hr class="divider">
+            <p class="section-title">Optimal estimator δ*(X) = α + βX</p>
+            <div class="info-row">
+                <span class="info-label">β (slope)</span>
+                <span class="info-val" id="beta-v">—</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">α (intercept)</span>
+                <span class="info-val" id="alpha-v">—</span>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="card">
+            <h3>Legend</h3>
+            <div class="legend-item">
+                <div style="width:28px;height:14px;background:rgba(168,162,158,0.25);border:1px solid #d6d3d1;border-radius:1px;flex-shrink:0"></div>
+                <span>Feasible risk set</span>
+            </div>
+            <div class="legend-item">
+                <div class="leg-line" style="background:#292524;height:2.5px"></div>
+                <span>Admissible frontier</span>
+            </div>
+            <div class="legend-item">
+                <div class="leg-line" style="background:#a8a29e;height:1.5px"></div>
+                <span>Iso-Bayes-risk lines</span>
+            </div>
+            <div class="legend-item">
+                <div class="leg-line" style="background:#9f3f35;height:2px"></div>
+                <span>Tangent (optimal) line</span>
+            </div>
+            <div class="legend-item">
+                <div class="leg-dash" style="border-color:#78716c"></div>
+                <span>Prior direction π(θ)</span>
+            </div>
+            <div class="legend-item">
+                <div class="leg-dot" style="background:#9f3f35;border:2px solid #faf9f7;box-shadow:0 0 0 1px #9f3f35"></div>
+                <span>R(δ*, ·) – Bayes-optimal</span>
+            </div>
+            <hr class="divider">
+            <p class="model-note">
+                Model: X ~ N(θ,1), squared-error loss,<br>
+                θ ∈ {θ₀=0, θ₁=2}, δ(X)=α+βX.
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="prose">
+    <h2>Decision Theory</h2>
+
+    <p>
+        Suppose you have decided you want to start investing — what portfolio should you choose, right now, to maximise your returns? This has the makings of a classic decision problem in statistics, characterised by a situation where we observe some data \(X\) under a state of the world \(\theta\), and must choose an action \(a\). In our example, \(X\) would correspond to the set of past asset prices, \(\theta\) a parameter indexing the (joint) distribution of past and, importantly, future asset prices, and we must choose a proportion \(a\) for each asset to hold in the overall portfolio.
+    </p>
+
+    <p>
+        How do we quantify the success, or failure, of our decision \(a\)? By minimising our loss — in this example, the negative of our income generated by the portfolio. Notice how this loss depends not only on our action, but on the realisation of future states, i.e. future asset prices. We would imagine, then, that the optimal decision would take into account the probabilities of each asset price appreciating and depreciating by varying amounts. More generally, we wish to minimise a loss function \(L(a, \theta)\) that depends both on the action \(a\), chosen via a decision rule \(a = \delta(X)\) applied to observed data, and on the state of the world \(\theta\).
+    </p>
+
+    <p>
+        What decision function \(\delta\) best minimises loss, or results in the best portfolio returns? Well, say we pick the rule "invest 100% into Apple stock". That might seem sub-optimal, but if the future state of the world is one in which Apple stock is the only asset that appreciates, then we actually managed to pick the optimal decision function. In all other states, however, this rule is sub-optimal.
+    </p>
+
+    <p>
+        Therefore we need some way of quantifying the trade-off of varying decision-induced loss over states of the world. This is what the <strong>risk function</strong> captures:
+    </p>
+
+    <div class="equation">
+        \[ R(\delta,\, \theta) \;=\; \mathbb{E}_{\theta}\!\left[\, L\!\left(\delta(X),\, \theta\right)\right]. \]
+    </div>
+
+    <p>
+        In words, risk captures the expected loss from a given decision function, where the expectation is taken over the distribution of data \(X\) under state \(\theta\). It tells us how well — or how poorly — a rule \(\delta\) performs in a given world state, on average.
+    </p>
+
+    <h2>Bayesian Optimality</h2>
+
+    <p>
+        It should be obvious that a small risk is a desirable property of a good decision function - we don't wish to make portfolio allocation decisions that lose a lot of money a lot of the time. But it is not the case, necessarily, that the decision function that minimises risk is optimal. How do we rank preferences for risk vs. returns, for example?
+    </p>
+
+    <p>
+        One criterion favoured by many economists is the Bayesian optimality approach - one simply assigns a prior probability \(\pi\), or weight, to each state of the world. If you believe a particular state to be more likely than another, you care more about that state relative to others. This idea is captured within <strong>integrated risk</strong>:
+    </p>
+
+    <div class="equation">
+        \[ R(\delta,\, \pi) \;=\; \int R(\delta,\, \theta)\, \pi(\theta)\, \mathrm{d}\theta. \]
+    </div>
+
+    <p>
+        The optimal decision in this Bayesian setting is simply the decision that minimises this integrated risk. We have now created a complete ranking system that is able to obtain any admissible decision (I've cheated a little here by implicitly assuming the regularity conditions required by Wald's Complete Class Theorem).
+    </p>
+
+    <h2>Admissibility</h2>
+
+    <p>
+        What is an admissible decision? If you have studied any economics at an undergraduate level, you are already familiar with the concept, just under a different name - Pareto dominance. This is why the above graph may have looked familiar to you.
+    </p>
+
+    <p>
+        A decision is admissible if there are no decisions that dominate it. A strategy is said to dominate another if its associated risk is at least as low as another strategy for all states of the world, and results in <strong>strictly</strong> lower risk for at least one state of the world. The most powerful result, arguably, for the Bayes optimality approach is that every admissible decision function can be recovered simply by altering the prior weights for each state. If you can make good prior assessment of the probability of future asset price returns, then the Bayesian optimality criteria will lead you to optimal asset allocation. I have set up an interactive graphical representation of a decision problem with two states (\(\theta_0, \theta_1\)) to illustrate this idea.
+    </p>
+</div>
+
+</div><!-- /.page -->
+
+<script>
+// ─── Constants & coordinate transform ─────────────────────────────────────────
+const SVG_W = 520, SVG_H = 490;
+const M = { top: 30, right: 28, bottom: 58, left: 58 };
+const PW = SVG_W - M.left - M.right;
+const PH = SVG_H - M.top - M.bottom;
+const RMAX = 5.5;   // axis range [0, RMAX]
+const ROFFSET = 0.5; // visual shift: move frontier up and to the right
+
+const NS = 'http://www.w3.org/2000/svg';
+
+function sx(r0) { return M.left + (r0 / RMAX) * PW; }
+function sy(r1) { return M.top  + (1 - r1 / RMAX) * PH; }
+function toXY(r0, r1) { return [sx(r0), sy(r1)]; }
+
+// ─── Model ────────────────────────────────────────────────────────────────────
+// X ~ N(θ,1), θ ∈ {0, 2}, estimator δ(X) = α + βX, squared-error loss.
+// Minimising π₀·r₀ + π₁·r₁ gives:
+//   β* = 4π₀π₁ / (1 + 4π₀π₁)
+//   α* = 2π₁(1 − β*)
+//   r₀ = β*² + 4π₁²(1−β*)²
+//   r₁ = β*² + 4π₀²(1−β*)²
+
+function bayesEstimator(pi0, pi1) {
+    const p0 = Math.max(1e-7, pi0), p1 = Math.max(1e-7, pi1);
+    const beta = 4 * p0 * p1 / (1 + 4 * p0 * p1);
+    const alpha = 2 * p1 * (1 - beta);
+    const mb = 1 - beta;
+    const r0 = beta * beta + 4 * p1 * p1 * mb * mb;
+    const r1 = beta * beta + 4 * p0 * p0 * mb * mb;
+    return { beta, alpha, r0, r1 };
+}
+
+// Trace the full admissible frontier (varying π₁ from 0 to 1)
+const FRONTIER = [];
+for (let i = 0; i <= 300; i++) {
+    const p1 = i / 300;
+    const { r0, r1 } = bayesEstimator(1 - p1, p1);
+    FRONTIER.push({ r0, r1 });
+}
+
+// ─── SVG helpers ──────────────────────────────────────────────────────────────
+const svgEl = document.getElementById('chart');
+
+function el(tag, attrs = {}, parent = null) {
+    const e = document.createElementNS(NS, tag);
+    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
+    if (parent) parent.appendChild(e);
+    return e;
+}
+
+function pathD(pts, close = false) {
+    return pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ')
+        + (close ? ' Z' : '');
+}
+
+// ─── Build static SVG structure ───────────────────────────────────────────────
+
+// Defs: clip path
+const defs = el('defs', {}, svgEl);
+const cp = el('clipPath', { id: 'pc' }, defs);
+el('rect', { x: M.left, y: M.top, width: PW, height: PH }, cp);
+
+// Background
+el('rect', { x: 0, y: 0, width: SVG_W, height: SVG_H, fill: '#faf9f7' }, svgEl);
+
+// Plot area
+el('rect', {
+    x: M.left, y: M.top, width: PW, height: PH,
+    fill: '#f5f4f1', stroke: '#d6d3d1', 'stroke-width': 1
+}, svgEl);
+
+// ── Feasible region fill ──
+const feasPath = el('path', {
+    fill: 'rgba(168,162,158,0.18)',
+    stroke: 'none',
+    'clip-path': 'url(#pc)'
+}, svgEl);
+
+// Build feasible region: shifted frontier + corners aligned to shifted endpoints
+function buildFeasiblePath() {
+    const fpts = FRONTIER.map(({ r0, r1 }) => toXY(r0 + ROFFSET, r1 + ROFFSET));
+    const [x3, y3] = toXY(RMAX, ROFFSET);
+    const [x4, y4] = toXY(RMAX, RMAX);
+    const [x5, y5] = toXY(ROFFSET, RMAX);
+    return pathD(fpts) + ` L${x3} ${y3} L${x4} ${y4} L${x5} ${y5} Z`;
+}
+feasPath.setAttribute('d', buildFeasiblePath());
+
+// ── Grid ──
+const gridG = el('g', {
+    stroke: '#d6d3d1', 'stroke-width': '0.7',
+    'stroke-dasharray': '3 3', 'clip-path': 'url(#pc)'
+}, svgEl);
+for (let v = 0; v <= 4; v++) {
+    el('line', { x1: sx(0), y1: sy(v), x2: sx(RMAX), y2: sy(v) }, gridG);
+    el('line', { x1: sx(v), y1: sy(0), x2: sx(v), y2: sy(RMAX) }, gridG);
+}
+
+// ── Dynamic group (updated every frame) ──
+const dynG = el('g', { 'clip-path': 'url(#pc)' }, svgEl);
+
+// ── Admissible frontier + full feasible-set boundary ──
+{
+    const fpts = FRONTIER.map(({ r0, r1 }) => toXY(r0 + ROFFSET, r1 + ROFFSET));
+    const [x3, y3] = toXY(RMAX, ROFFSET);
+    const [x4, y4] = toXY(RMAX, RMAX);
+    const [x5, y5] = toXY(ROFFSET, RMAX);
+    const [x0, y0] = fpts[0];
+    const d = pathD(fpts) + ` L${x3} ${y3} L${x4} ${y4} L${x5} ${y5} L${x0} ${y0}`;
+    el('path', {
+        d,
+        fill: 'none',
+        stroke: '#292524',
+        'stroke-width': '2',
+        'stroke-linejoin': 'round',
+        'stroke-linecap': 'round',
+        'clip-path': 'url(#pc)'
+    }, svgEl);
+}
+
+// ── Axes ──
+const axG = el('g', { stroke: '#57534e', 'stroke-width': '1.5', fill: 'none' }, svgEl);
+el('line', { x1: M.left, y1: M.top + PH, x2: M.left + PW + 12, y2: M.top + PH }, axG);
+el('line', { x1: M.left, y1: M.top + PH + 5, x2: M.left, y2: M.top - 12 }, axG);
+el('polygon', { fill: '#57534e', stroke: 'none',
+    points: `${M.left+PW+12},${M.top+PH-5} ${M.left+PW+20},${M.top+PH} ${M.left+PW+12},${M.top+PH+5}` }, axG);
+el('polygon', { fill: '#57534e', stroke: 'none',
+    points: `${M.left-5},${M.top-12} ${M.left},${M.top-20} ${M.left+5},${M.top-12}` }, axG);
+
+// Tick marks & labels
+const tkG = el('g', { fill: '#78716c', 'font-size': '11', 'text-anchor': 'middle', 'font-family': 'Courier New, monospace' }, svgEl);
+for (let v = 0; v <= 4; v++) {
+    // x-axis ticks
+    el('line', { x1: sx(v), y1: sy(0), x2: sx(v), y2: sy(0)+5, stroke:'#a8a29e','stroke-width':1 }, tkG);
+    const tx = el('text', { x: sx(v), y: sy(0)+17 }, tkG); tx.textContent = v;
+    // y-axis ticks
+    el('line', { x1: sx(0)-5, y1: sy(v), x2: sx(0), y2: sy(v), stroke:'#a8a29e','stroke-width':1 }, tkG);
+    const ty = el('text', { x: sx(0)-10, y: sy(v)+4, 'text-anchor':'end' }, tkG); ty.textContent = v;
+}
+
+// Axis titles
+const xTit = el('text', {
+    x: M.left + PW/2, y: SVG_H - 10,
+    fill: '#44403c', 'font-size': '13', 'text-anchor': 'middle', 'font-style': 'italic',
+    'font-family': 'Georgia, Times New Roman, serif'
+}, svgEl);
+xTit.textContent = 'R(δ, θ₀)';
+
+const yTit = el('text', {
+    x: 13, y: M.top + PH/2,
+    fill: '#44403c', 'font-size': '13', 'text-anchor': 'middle', 'font-style': 'italic',
+    'font-family': 'Georgia, Times New Roman, serif',
+    transform: `rotate(-90,13,${M.top + PH/2})`
+}, svgEl);
+yTit.textContent = 'R(δ, θ₁)';
+
+// Static text labels on plot
+const lblG = el('g', { fill: '#a8a29e', 'font-size': '11', 'font-family': '-apple-system, Helvetica Neue, Arial, sans-serif' }, svgEl);
+const fLbl = el('text', { x: sx(3.5), y: sy(3.0), 'text-anchor': 'middle' }, lblG);
+fLbl.textContent = 'feasible';
+
+// ─── Line-segment clipping: intersect line ax+by=c with rect [x0,x1]×[y0,y1] ─
+function lineRectIntersect(a, b, c, xmin, xmax, ymin, ymax) {
+    // Line in (r0,r1): pi0·r0 + pi1·r1 = C
+    // a=pi0, b=pi1, c=C; axis is r0 horiz, r1 vert
+    const EPS = 1e-9;
+    const pts = [];
+    const add = (r0, r1) => {
+        if (r0 >= xmin - EPS && r0 <= xmax + EPS &&
+            r1 >= ymin - EPS && r1 <= ymax + EPS)
+            pts.push([Math.max(xmin, Math.min(xmax, r0)),
+                      Math.max(ymin, Math.min(ymax, r1))]);
+    };
+    if (Math.abs(b) > EPS) {
+        add(xmin, (c - a * xmin) / b);
+        add(xmax, (c - a * xmax) / b);
+    }
+    if (Math.abs(a) > EPS) {
+        add((c - b * ymin) / a, ymin);
+        add((c - b * ymax) / a, ymax);
+    }
+    // Deduplicate
+    const uniq = pts.filter((p, i) =>
+        !pts.slice(0, i).some(q => Math.abs(p[0]-q[0]) < 1e-6 && Math.abs(p[1]-q[1]) < 1e-6));
+    return uniq.length >= 2 ? [uniq[0], uniq[1]] : null;
+}
+
+// ─── Update ───────────────────────────────────────────────────────────────────
+function update() {
+    const w1 = +document.getElementById('sl').value;
+    const pi1 = w1 / 100;
+    const pi0 = 1 - pi1;
+
+    // UI text
+    document.getElementById('pi0-v').textContent = pi0.toFixed(3);
+    document.getElementById('pi1-v').textContent = pi1.toFixed(3);
+
+    const { beta, alpha, r0, r1 } = bayesEstimator(pi0, pi1);
+    const br = pi0 * r0 + pi1 * r1;
+
+    document.getElementById('r0-v').textContent = r0.toFixed(3);
+    document.getElementById('r1-v').textContent = r1.toFixed(3);
+    document.getElementById('br-v').textContent = br.toFixed(3);
+    document.getElementById('beta-v').textContent = beta.toFixed(3);
+    document.getElementById('alpha-v').textContent = alpha.toFixed(3);
+
+    // Clear dynamic group
+    while (dynG.firstChild) dynG.removeChild(dynG.firstChild);
+
+    // C_opt in display space (shifted coordinates)
+    const C_opt = pi0 * (r0 + ROFFSET) + pi1 * (r1 + ROFFSET);
+    const step = 0.35;
+
+    // ── Iso-Bayes-risk lines ──
+    for (let k = -1; k <= 7; k++) {
+        const C = C_opt + k * step;
+        if (C < 0) continue;
+        const seg = lineRectIntersect(pi0, pi1, C, 0, RMAX, 0, RMAX);
+        if (!seg) continue;
+        const [p1, p2] = seg;
+        const isOpt = (k === 0);
+        el('line', {
+            x1: sx(p1[0]), y1: sy(p1[1]),
+            x2: sx(p2[0]), y2: sy(p2[1]),
+            stroke: isOpt ? '#9f3f35' : '#a8a29e',
+            'stroke-width': isOpt ? 1.8 : 0.9,
+            'stroke-opacity': isOpt ? 1 : (k < 0 ? 0.3 : 0.5),
+            'stroke-dasharray': k < 0 ? '3 3' : 'none'
+        }, dynG);
+    }
+
+    // ── Prior direction arrow (from origin, direction (pi0, pi1)) ──
+    const arrowLen = 2.2;  // length in risk units
+    const ar0 = pi0 * arrowLen, ar1 = pi1 * arrowLen;
+    const [ax0, ay0] = toXY(0, 0);
+    const [ax1, ay1] = toXY(ar0, ar1);
+
+    el('line', {
+        x1: ax0, y1: ay0, x2: ax1, y2: ay1,
+        stroke: '#78716c', 'stroke-width': '1.5', 'stroke-dasharray': '5 4'
+    }, dynG);
+    // Arrowhead
+    const dx = ax1 - ax0, dy = ay1 - ay0;
+    const L = Math.hypot(dx, dy);
+    const ux = dx/L, uy = dy/L;
+    const aw = 5, al = 10;
+    const tip = [ax1, ay1];
+    const b1 = [ax1 - al*ux - aw*uy, ay1 - al*uy + aw*ux];
+    const b2 = [ax1 - al*ux + aw*uy, ay1 - al*uy - aw*ux];
+    el('polygon', {
+        points: `${tip[0]},${tip[1]} ${b1[0]},${b1[1]} ${b2[0]},${b2[1]}`,
+        fill: '#78716c', stroke: 'none'
+    }, dynG);
+
+    // π(θ) label near arrow tip
+    const lblOff = 12;
+    const piLbl = el('text', {
+        x: ax1 + ux * lblOff + (pi1 > 0.7 ? -5 : 5),
+        y: ay1 + uy * lblOff + 4,
+        fill: '#57534e', 'font-size': '13', 'font-style': 'italic',
+        'font-family': 'Georgia, Times New Roman, serif',
+        'text-anchor': pi1 > 0.7 ? 'end' : 'start'
+    }, dynG);
+    piLbl.textContent = 'π(θ)';
+
+    // ── Dashed crosshairs to Bayes-optimal point ──
+    const [bx, by] = toXY(r0 + ROFFSET, r1 + ROFFSET);
+    el('line', { x1: sx(0), y1: by, x2: bx, y2: by,
+        stroke: '#9f3f35', 'stroke-width': '1', 'stroke-dasharray': '3 2', opacity: '0.5' }, dynG);
+    el('line', { x1: bx, y1: sy(0), x2: bx, y2: by,
+        stroke: '#9f3f35', 'stroke-width': '1', 'stroke-dasharray': '3 2', opacity: '0.5' }, dynG);
+
+    // ── Bayes-optimal point ──
+    // Glow
+    el('circle', { cx: bx, cy: by, r: 9, fill: 'rgba(159,63,53,0.12)' }, dynG);
+    // Ring
+    el('circle', { cx: bx, cy: by, r: 6, fill: '#faf9f7', stroke: '#9f3f35', 'stroke-width': '2' }, dynG);
+    // Core
+    el('circle', { cx: bx, cy: by, r: 3.5, fill: '#9f3f35' }, dynG);
+
+    // Label: position adaptively
+    const lblX = r0 < 3.0 ? bx + 10 : bx - 10;
+    const lblAnchor = r0 < 3.0 ? 'start' : 'end';
+    const lblY = r1 > 0.5 ? by - 9 : by + 18;
+
+    const ptLbl = el('text', {
+        x: lblX, y: lblY,
+        fill: '#9f3f35', 'font-size': '12', 'font-style': 'italic',
+        'font-family': 'Georgia, Times New Roman, serif',
+        'text-anchor': lblAnchor
+    }, dynG);
+    ptLbl.textContent = 'R(δ*, ·)';
+}
+
+// Wire up slider
+document.getElementById('sl').addEventListener('input', update);
+
+// Initial render
+update();
+</script>
+</body>
+</html>
