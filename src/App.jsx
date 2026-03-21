@@ -203,7 +203,7 @@ const HeroGraph = () => {
 };
 
 const projects = [
-  { label: 'Bayes Optimality', href: '/bayes_optimality.html', desc: 'Interactive risk space' },
+  { label: 'Bayes Optimality', href: '/sam-blundell/bayes_optimality.html', desc: 'Interactive risk space' },
 ];
 
 const ProjectsDropdown = () => {
