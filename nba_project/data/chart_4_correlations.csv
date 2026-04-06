@@ -1,0 +1,145 @@
+,index,Variable,Correlation,Definition
+0,MP,MP,1.0,Minutes Played
+1,MP,FG,0.879087979109852,Minutes Played
+2,MP,FGA,0.8835689782344268,Minutes Played
+3,MP,2P,0.782497759201617,Minutes Played
+4,MP,2PA,0.8001462569874984,Minutes Played
+5,MP,FT,0.7095452804462564,Minutes Played
+6,MP,FTA,0.7085195224831894,Minutes Played
+7,MP,TOV,0.7875369131069734,Minutes Played
+8,MP,PTS,0.8741570459727875,Minutes Played
+9,MP,WS,0.7250502339391763,Minutes Played
+10,MP,VORP,0.5994149330954692,Minutes Played
+11,MP,Pay,0.6402824222275976,Minutes Played
+12,FG,MP,0.879087979109852,Field Goals
+13,FG,FG,1.0,Field Goals
+14,FG,FGA,0.977291773402572,Field Goals
+15,FG,2P,0.9432826887187538,Field Goals
+16,FG,2PA,0.9498628306362558,Field Goals
+17,FG,FT,0.8623233891230293,Field Goals
+18,FG,FTA,0.8635799718576287,Field Goals
+19,FG,TOV,0.8507597761532371,Field Goals
+20,FG,PTS,0.9917279033775657,Field Goals
+21,FG,WS,0.7420457642706202,Field Goals
+22,FG,VORP,0.7377441062771211,Field Goals
+23,FG,Pay,0.7293693430470181,Field Goals
+24,FGA,MP,0.8835689782344268,Field Goal Attempts
+25,FGA,FG,0.977291773402572,Field Goal Attempts
+26,FGA,FGA,1.0,Field Goal Attempts
+27,FGA,2P,0.8771738855805811,Field Goal Attempts
+28,FGA,2PA,0.915275987637159,Field Goal Attempts
+29,FGA,FT,0.841973694735471,Field Goal Attempts
+30,FGA,FTA,0.8317643530460636,Field Goal Attempts
+31,FGA,TOV,0.8492121403566052,Field Goal Attempts
+32,FGA,PTS,0.982001850519923,Field Goal Attempts
+33,FGA,WS,0.6591391433453293,Field Goal Attempts
+34,FGA,VORP,0.6658655554389328,Field Goal Attempts
+35,FGA,Pay,0.7134773715905339,Field Goal Attempts
+36,2P,MP,0.782497759201617,2-Point Field Goals
+37,2P,FG,0.9432826887187538,2-Point Field Goals
+38,2P,FGA,0.8771738855805811,2-Point Field Goals
+39,2P,2P,1.0,2-Point Field Goals
+40,2P,2PA,0.9846875868216955,2-Point Field Goals
+41,2P,FT,0.857954916578998,2-Point Field Goals
+42,2P,FTA,0.880529513853734,2-Point Field Goals
+43,2P,TOV,0.8145586662517282,2-Point Field Goals
+44,2P,PTS,0.914006499828231,2-Point Field Goals
+45,2P,WS,0.745769235126086,2-Point Field Goals
+46,2P,VORP,0.733579957542811,2-Point Field Goals
+47,2P,Pay,0.6793805929169894,2-Point Field Goals
+48,2PA,MP,0.8001462569874984,2-Point Field Goal Attempts
+49,2PA,FG,0.9498628306362558,2-Point Field Goal Attempts
+50,2PA,FGA,0.915275987637159,2-Point Field Goal Attempts
+51,2PA,2P,0.9846875868216955,2-Point Field Goal Attempts
+52,2PA,2PA,1.0,2-Point Field Goal Attempts
+53,2PA,FT,0.8703612944249289,2-Point Field Goal Attempts
+54,2PA,FTA,0.885127606298324,2-Point Field Goal Attempts
+55,2PA,TOV,0.8414482785544712,2-Point Field Goal Attempts
+56,2PA,PTS,0.9282162057155376,2-Point Field Goal Attempts
+57,2PA,WS,0.6985800870143326,2-Point Field Goal Attempts
+58,2PA,VORP,0.6957344619728162,2-Point Field Goal Attempts
+59,2PA,Pay,0.6838272472956609,2-Point Field Goal Attempts
+60,FT,MP,0.7095452804462564,Free Throws
+61,FT,FG,0.8623233891230293,Free Throws
+62,FT,FGA,0.841973694735471,Free Throws
+63,FT,2P,0.857954916578998,Free Throws
+64,FT,2PA,0.8703612944249289,Free Throws
+65,FT,FT,1.0,Free Throws
+66,FT,FTA,0.987737821229015,Free Throws
+67,FT,TOV,0.7875619383762124,Free Throws
+68,FT,PTS,0.9002455897475029,Free Throws
+69,FT,WS,0.7162206023292884,Free Throws
+70,FT,VORP,0.7508724446390044,Free Throws
+71,FT,Pay,0.6802086782721174,Free Throws
+72,FTA,MP,0.7085195224831894,Free Throw Attempts
+73,FTA,FG,0.8635799718576287,Free Throw Attempts
+74,FTA,FGA,0.8317643530460636,Free Throw Attempts
+75,FTA,2P,0.880529513853734,Free Throw Attempts
+76,FTA,2PA,0.885127606298324,Free Throw Attempts
+77,FTA,FT,0.987737821229015,Free Throw Attempts
+78,FTA,FTA,1.0,Free Throw Attempts
+79,FTA,TOV,0.7946548400527683,Free Throw Attempts
+80,FTA,PTS,0.8925050932092324,Free Throw Attempts
+81,FTA,WS,0.7181537750182512,Free Throw Attempts
+82,FTA,VORP,0.7460930401075924,Free Throw Attempts
+83,FTA,Pay,0.6726719894469866,Free Throw Attempts
+84,TOV,MP,0.7875369131069734,Turnovers
+85,TOV,FG,0.8507597761532371,Turnovers
+86,TOV,FGA,0.8492121403566052,Turnovers
+87,TOV,2P,0.8145586662517282,Turnovers
+88,TOV,2PA,0.8414482785544712,Turnovers
+89,TOV,FT,0.7875619383762124,Turnovers
+90,TOV,FTA,0.7946548400527683,Turnovers
+91,TOV,TOV,1.0,Turnovers
+92,TOV,PTS,0.8524302709240541,Turnovers
+93,TOV,WS,0.5648080344479463,Turnovers
+94,TOV,VORP,0.6123450722415369,Turnovers
+95,TOV,Pay,0.6401339479945168,Turnovers
+96,PTS,MP,0.8741570459727875,Points
+97,PTS,FG,0.9917279033775657,Points
+98,PTS,FGA,0.982001850519923,Points
+99,PTS,2P,0.914006499828231,Points
+100,PTS,2PA,0.9282162057155376,Points
+101,PTS,FT,0.9002455897475029,Points
+102,PTS,FTA,0.8925050932092324,Points
+103,PTS,TOV,0.8524302709240541,Points
+104,PTS,PTS,1.0,Points
+105,PTS,WS,0.739779715962785,Points
+106,PTS,VORP,0.7464031833331958,Points
+107,PTS,Pay,0.7372893576517985,Points
+108,WS,MP,0.7250502339391763,An estimate of the number of wins contributed by a player.
+109,WS,FG,0.7420457642706202,An estimate of the number of wins contributed by a player.
+110,WS,FGA,0.6591391433453293,An estimate of the number of wins contributed by a player.
+111,WS,2P,0.745769235126086,An estimate of the number of wins contributed by a player.
+112,WS,2PA,0.6985800870143326,An estimate of the number of wins contributed by a player.
+113,WS,FT,0.7162206023292884,An estimate of the number of wins contributed by a player.
+114,WS,FTA,0.7181537750182512,An estimate of the number of wins contributed by a player.
+115,WS,TOV,0.5648080344479463,An estimate of the number of wins contributed by a player.
+116,WS,PTS,0.739779715962785,An estimate of the number of wins contributed by a player.
+117,WS,WS,1.0,An estimate of the number of wins contributed by a player.
+118,WS,VORP,0.8947425711620999,An estimate of the number of wins contributed by a player.
+119,WS,Pay,0.6313791087103313,An estimate of the number of wins contributed by a player.
+120,VORP,MP,0.5994149330954692,"Value Over Replacement: A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season."
+121,VORP,FG,0.7377441062771211,"Value Over Replacement: A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season."
+122,VORP,FGA,0.6658655554389328,"Value Over Replacement: A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season."
+123,VORP,2P,0.733579957542811,"Value Over Replacement: A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season."
+124,VORP,2PA,0.6957344619728162,"Value Over Replacement: A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season."
+125,VORP,FT,0.7508724446390044,"Value Over Replacement: A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season."
+126,VORP,FTA,0.7460930401075924,"Value Over Replacement: A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season."
+127,VORP,TOV,0.6123450722415369,"Value Over Replacement: A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season."
+128,VORP,PTS,0.7464031833331958,"Value Over Replacement: A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season."
+129,VORP,WS,0.8947425711620999,"Value Over Replacement: A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season."
+130,VORP,VORP,1.0,"Value Over Replacement: A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season."
+131,VORP,Pay,0.6770326093003188,"Value Over Replacement: A box score estimate of the points per 100 TEAM possessions that a player contributed above a replacement-level (-2.0) player, translated to an average team and prorated to an 82-game season."
+132,Pay,MP,0.6402824222275976,Player salary
+133,Pay,FG,0.7293693430470181,Player salary
+134,Pay,FGA,0.7134773715905339,Player salary
+135,Pay,2P,0.6793805929169894,Player salary
+136,Pay,2PA,0.6838272472956609,Player salary
+137,Pay,FT,0.6802086782721174,Player salary
+138,Pay,FTA,0.6726719894469866,Player salary
+139,Pay,TOV,0.6401339479945168,Player salary
+140,Pay,PTS,0.7372893576517985,Player salary
+141,Pay,WS,0.6313791087103313,Player salary
+142,Pay,VORP,0.6770326093003188,Player salary
+143,Pay,Pay,1.0,Player salary
