@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { BookOpen, FileText, Mail, Github, Linkedin, TrendingUp, Anchor, ChevronDown, ExternalLink, Download } from 'lucide-react';
+
+import DebtSimulator from './DebtSimulator'; 
 
 // --- Components ---
 
@@ -80,7 +83,7 @@ const SystemBackground = () => {
         style={{
           backgroundImage: 'linear-gradient(#4a4a4a 1px, transparent 1px), linear-gradient(90deg, #4a4a4a 1px, transparent 1px)',
           backgroundSize: '40px 40px',
-          willChange: 'transform', // Hardware acceleration hint
+          willChange: 'transform', 
         }}
       ></div>
 
@@ -100,7 +103,6 @@ const HeroGraph = () => {
   const mousePosRef = useRef({ x: 0, y: 0 });
   const spreadsRef = useRef(new Array(51).fill(20));
   
-  // Refs to access SVG paths directly
   const mainPathRef = useRef(null);
   const topPathRef = useRef(null);
   const bottomPathRef = useRef(null);
@@ -114,7 +116,6 @@ const HeroGraph = () => {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
-  // Animation Loop
   useEffect(() => {
     let animationFrameId;
     
@@ -122,32 +123,26 @@ const HeroGraph = () => {
       const width = 1000;
       const segments = 50;
       const svgMouseX = (mousePosRef.current.x / (window.innerWidth || 1)) * 1000;
-      const now = Date.now() / 1000;
-
+      
       const points = [];
 
-      // 1. Calculate Physics
       for (let i = 0; i <= segments; i++) {
         const x = (width / segments) * i;
         
-        // Target Spread Calculation
         const dist = Math.abs(x - svgMouseX);
         const interactiveInfluence = Math.exp(-(dist * dist) / (150 * 150)); 
         const targetSpread = 20 + (interactiveInfluence * 60);
 
-        // Smooth Interpolation
         const current = spreadsRef.current[i];
         const next = current + (targetSpread - current) * 0.08;
         spreadsRef.current[i] = next;
         
-        // Base Shape Calculation - REVERTED TO TIGHTER CURVE
         const normX = (x - 500) / 500; 
         const mainY = 480 - 300 * Math.pow(Math.abs(normX), 2.2);
 
         points.push({ x, y: mainY, spread: next });
       }
 
-      // 2. Generate Path Strings
       const createPath = (offsetFn) => {
         let d = `M ${points[0].x},${offsetFn(points[0])}`;
         for (let i = 1; i < points.length; i++) {
@@ -161,7 +156,6 @@ const HeroGraph = () => {
       const modelD = createPath(p => p.y - p.spread * 0.3 - 10);
       const mainD = createPath(p => p.y);
 
-      // 3. Update DOM Directly (Bypasses React Render Cycle)
       if (topPathRef.current) topPathRef.current.setAttribute('d', topD);
       if (bottomPathRef.current) bottomPathRef.current.setAttribute('d', bottomD);
       if (modelPathRef.current) modelPathRef.current.setAttribute('d', modelD);
@@ -186,24 +180,20 @@ const HeroGraph = () => {
       `}</style>
 
       <svg viewBox="0 0 1000 600" className="w-full h-full" preserveAspectRatio="none">
-          {/* Top Confidence Band */}
           <path ref={topPathRef} fill="none" stroke="#5F6F7E" strokeWidth="2" strokeDasharray="4,6" className="opacity-30 scrolling-dash" />
-          
-          {/* Bottom Confidence Band */}
           <path ref={bottomPathRef} fill="none" stroke="#5F6F7E" strokeWidth="2" strokeDasharray="4,6" className="opacity-30 scrolling-dash" />
-
-          {/* Secondary Model */}
           <path ref={modelPathRef} fill="none" stroke="#5F6F7E" strokeWidth="1.5" strokeDasharray="8,8" className="opacity-20" />
-
-          {/* Main Trend Line */}
           <path ref={mainPathRef} fill="none" stroke="#4a4a4a" strokeWidth="3" strokeLinecap="round" className="opacity-70 drop-shadow-md" />
       </svg>
     </div>
   );
 };
 
+// --- Updated Projects Array with Simulator Route ---
 const projects = [
+  { label: 'Debt Dynamics Simulator', href: '/sam-blundell/debt-simulator', desc: 'Macroeconomic policy space tool for Oxfords UNIQ programme' },
   { label: 'Bayes Optimality', href: '/sam-blundell/bayes_optimality.html', desc: 'Interactive risk space' },
+  { label: 'NBA Salary Efficiency', href: '/sam-blundell/datascience_project.html', desc: 'Bristol Data Science project' },
 ];
 
 const ProjectsDropdown = () => {
@@ -323,7 +313,8 @@ const PaperCard = ({ title, year, abstract, link, status }) => {
   );
 };
 
-export default function App() {
+// --- Main Portfolio Layout Component ---
+const Portfolio = () => {
   return (
     <div className="relative min-h-screen text-stone-800 font-sans selection:bg-stone-300 selection:text-stone-900">
       <SystemBackground />
@@ -333,7 +324,6 @@ export default function App() {
       {/* --- HERO SECTION --- */}
       <Section id="home" className="min-h-screen flex flex-col justify-center items-center text-center">
         <FadeIn>
-          {/* Reverted layout container to remove relative z-20 */}
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 max-w-6xl mx-auto">
             
             {/* Profile Image */}
@@ -537,8 +527,24 @@ export default function App() {
 
       <footer className="py-8 text-center text-stone-400 text-xs font-mono">
         <p>&copy; {new Date().getFullYear()} Sam Blundell. Typeset in Serif & Sans.</p>
-        <p className="mt-1 opacity-50">Built with React & Tailwind, in collaboration with Gemini.</p>
+        <p className="mt-1 opacity-50">Built with React & Tailwind.</p>
       </footer>
     </div>
+  );
+};
+
+// --- App Component with Routing Setup ---
+export default function App() {
+  return (
+    // Tell the Router that all paths start with /sam-blundell
+    <Router basename="/sam-blundell"> 
+      <Routes>
+        {/* Main Portfolio Page */}
+        <Route path="/" element={<Portfolio />} />
+        
+        {/* Debt Simulator Page */}
+        <Route path="/debt-simulator" element={<DebtSimulator />} />
+      </Routes>
+    </Router>
   );
 }

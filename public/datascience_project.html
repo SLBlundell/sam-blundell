@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NBA Salary Efficiency – Sam Blundell</title>
+    <script>
+        let width = screen.width;
+        if (width > 450) {
+            var myChart1 = "nba_project/charts/chart_1/count_contracts.json";
+            var myChart2 = "nba_project/charts/chart_2/payrolls_adj_cpi_bri.json";
+            var myChart3 = "nba_project/charts/chart_3/correlation_heatmap.json";
+            var myChart4 = "nba_project/charts/chart_3/predicted_playoff_payroll_2022_23.json";
+            var myChart5 = "nba_project/charts/chart_4/salary_vorp_regression.json";
+            var myChart6 = "nba_project/charts/chart_4/correlation_heatmap.json";
+            var myChart7 = "nba_project/charts/chart_1/salary_distribution.json";
+        } else {
+            var myChart1 = "nba_project/charts/chart_1/count_contracts_narrow.json";
+            var myChart2 = "nba_project/charts/chart_2/payrolls_adj_cpi_bri_narrow.json";
+            var myChart3 = "nba_project/charts/chart_3/correlation_heatmap_narrow.json";
+            var myChart4 = "nba_project/charts/chart_3/predicted_playoff_payroll_2022_23_narrow.json";
+            var myChart5 = "nba_project/charts/chart_4/salary_vorp_regression_narrow.json";
+            var myChart6 = "nba_project/charts/chart_4/correlation_heatmap_narrow.json";
+            var myChart7 = "nba_project/charts/chart_1/salary_distribution_narrow.json";
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vega@5.22.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6.12.2"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+            background: #F2F0E9;
+            padding: 40px 24px 64px;
+            color: #292524;
+        }
+        .page { max-width: 800px; margin: 0 auto; }
+        .back-link {
+            display: inline-block;
+            font-size: 0.75em;
+            font-family: 'Courier New', monospace;
+            color: #78716c;
+            text-decoration: none;
+            letter-spacing: 0.05em;
+            margin-bottom: 32px;
+        }
+        .back-link:hover { color: #292524; }
+        h1 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 1.6em;
+            font-weight: normal;
+            color: #292524;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+        .meta {
+            font-size: 0.75em;
+            font-family: 'Courier New', monospace;
+            color: #78716c;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 32px;
+            border-bottom: 1px solid #d6d3d1;
+            padding-bottom: 16px;
+        }
+        h2 {
+            font-family: Georgia, 'Times New Roman', serif;
+            font-size: 1.1em;
+            font-weight: normal;
+            color: #292524;
+            margin: 32px 0 10px;
+            border-bottom: 1px solid #d6d3d1;
+            padding-bottom: 6px;
+        }
+        p {
+            font-size: 0.9em;
+            line-height: 1.75;
+            color: #44403c;
+            margin-bottom: 20px;
+        }
+        .chart-wrap {
+            background: #faf9f7;
+            border: 1px solid #d6d3d1;
+            border-radius: 2px;
+            padding: 16px;
+            margin: 20px 0;
+        }
+        .chart { width: 100%; }
+        .links {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            font-size: 0.7em;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #78716c;
+            border: 1px solid #d6d3d1;
+            padding: 4px 10px;
+            text-decoration: none;
+            background: #F2F0E9;
+        }
+        .btn:hover { border-color: #78716c; color: #292524; }
+        .word-count {
+            font-size: 0.75em;
+            font-family: 'Courier New', monospace;
+            color: #a8a29e;
+            margin-top: 32px;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <a href="/sam-blundell/" class="back-link">← Sam Blundell</a>
+
+    <h1>The Midas Touch: What is the on-court impact of salary within the NBA?</h1>
+    <div class="meta">BSc Data Science Project &nbsp;·&nbsp; University of Bristol &nbsp;·&nbsp; 2023</div>
+
+    <p>This project aims to determine whether NBA franchises are allocating their salary caps effectively in order to achieve better playoff performance and win titles. The motivation of this question is illustrated by chart one, showing that basketball is an outlier in how many highly valuable stars the NBA contains compared to other sports.</p>
+
+    <div class="chart-wrap">
+        <div class="chart" id="Chart1"></div>
+        <div class="links">
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/charts/chart_1/sports_contracts.csv" class="btn" target="_blank">Data</a>
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/charts/chart_1/scraper.ipynb" class="btn" target="_blank">Scraper</a>
+        </div>
+    </div>
+
+    <p>Furthermore, chart two demonstrates that whilst many NBA players are amongst the world's highest paid athletes, the vast majority of players are paid far less. This begs the question: does this practice of significant spending on few stars lead to better playoff performance? The third chart seems to suggest so, showing that even when adjusting for inflation and increased league revenue, teams are spending more of their revenue on player salaries in recent years. The answer to these questions both sheds light on the efficiency of fiscal decision making within the NBA, and also provides answers on how salary rule composition influences on-court outcomes.</p>
+
+    <div class="chart-wrap">
+        <div class="chart" id="Chart7"></div>
+        <div class="links">
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/data/chart_4_player_data.csv" class="btn" target="_blank">Data</a>
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/charts/chart_3/2023_scraper.ipynb" class="btn" target="_blank">Scraper</a>
+        </div>
+    </div>
+
+    <div class="chart-wrap">
+        <div class="chart" id="Chart2"></div>
+        <div class="links">
+        </div>
+    </div>
+
+    <h2>Data Used</h2>
+    <p>For the primary data sources, two scraper scripts were constructed in Python: one for scraping data between 2013–2021 and another for current season data. In the case of the 2013–21 scraper, a for loop was utilised to maximise efficiency in gathering data across multiple years, combining basic and advanced statistics from Basketball-Reference with salary data from HoopsHype. This approach can be replicated to scrape data from additional years up to the earliest data is published. The 2023 scraper has been separated from the former scraper in order to allow data to be updated periodically in response to new games this season, which feeds through to the linear regression models and provides up-to-date playoff predictions.</p>
+
+    <h2>Challenges in Cleaning Data</h2>
+    <p>The most significant cleaning challenge was merging data from Basketball-Reference and HoopsHype. The two sites used differing team names, one shortened. In order to overcome this, I defined a list of full team names and replaced the shortened team names with the full team names, based on how similar the shortened team name strings were to string entries in the full team name list. For this, I used the SequenceMatcher method from the difflib package (I found through trial and error that a similarity of 53% ensured correct matching of names without causing incorrect matches). Secondly, player naming conventions differed between datasets, causing hundreds of rows to be dropped during merging of player and salary data. To combat this, I created two lists of player name strings not found in both datasets (player_diff_1 and player_diff_2). Through browsing this list, I found common naming conventions and corrected these using if statements. For remaining misnamed players, I was forced to correct names manually using the .replace() method — this approach ensures automation is maintained when data from new games is scraped. There was also an issue with accented characters in player names causing errors, which was corrected by applying a unidecode function to all rows in the player name column.</p>
+
+    <h2>Conclusions</h2>
+    <p>Considering chart four, we can see that out of all measurable game statistics, overall shooting efficiency ratings (such as TS% and eFG%) and margin of victory indicators (SRS, MOV) are the best indicators of a team's success in the playoffs (P_W). However, team payrolls (Pay) are only somewhat correlated with efficiency ratings, and extremely uncorrelated with both margin of victory indicators and playoff performance. In short, teams within the modern NBA that spend more do not win more.</p>
+
+    <div class="chart-wrap">
+        <div class="chart" id="Chart3"></div>
+        <div class="links">
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/data/correlations_playoff.csv" class="btn" target="_blank">Data</a>
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/charts/chart_3/2013_to_2021_scraper.ipynb" class="btn" target="_blank">Scraper</a>
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/charts/chart_3/model.ipynb" class="btn" target="_blank">Model</a>
+        </div>
+    </div>
+
+    <p>Utilising a linear regression model, we can see that this season there seems to be a much more correlated relationship between payroll and predicted playoff performance, with a correlation of .53 (compared to a correlation of .13 historically). I hypothesise this change is a result of teams with spare salary-cap space 'tanking' (i.e. losing on purpose) in order to achieve better odds in the draft lottery for generational prospect Victor Wembanyama – this type of opportunity has not occurred within our dataset before.</p>
+
+    <div class="chart-wrap">
+        <div class="chart" id="Chart4"></div>
+        <div class="links">
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/data/team_per_game_2023.csv" class="btn" target="_blank">Data</a>
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/charts/chart_3/2013_to_2021_scraper.ipynb" class="btn" target="_blank">Scraper</a>
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/charts/chart_3/model.ipynb" class="btn" target="_blank">Model</a>
+        </div>
+    </div>
+
+    <p>Chart six breaks down player-level relationships this season. Here we can see that player salary is far more correlated with highly observable characteristics – points and free-throws – rather than factors correlated with playoff performance in chart four. This infers that 'flashier' players out-earn those that actually generate winning potential.</p>
+
+    <div class="chart-wrap">
+        <div class="chart" id="Chart6"></div>
+        <div class="links">
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/data/chart_4_correlations.csv" class="btn" target="_blank">Data</a>
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/charts/chart_3/2023_scraper.ipynb" class="btn" target="_blank">Scraper</a>
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/charts/chart_4/model_players.ipynb" class="btn" target="_blank">Model</a>
+        </div>
+    </div>
+
+    <p>Chart seven shows that on a player level, higher paid salaries typically underperform relative to their salary compared to lower-paid peers.</p>
+
+    <div class="chart-wrap">
+        <div class="chart" id="Chart5"></div>
+        <div class="links">
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/data/player_per_game_salary_2023.csv" class="btn" target="_blank">Data</a>
+            <a href="https://github.com/SLBlundell/sam-blundell/blob/main/public/nba_project/charts/chart_3/2023_scraper.ipynb" class="btn" target="_blank">Scraper</a>
+        </div>
+    </div>
+
+    <p>In combination, the charts tell a story that franchises pay for highly observable characteristics in their stars over efficient players – leading to little relationship between spending and wins. The exception this season may be a result of teams losing on purpose with hopes of drafting a guaranteed future star. Such a hypothesis would need to be tested by examining past years of similar draft prospects, such as LeBron James.</p>
+
+    <p class="word-count">Word count: 799</p>
+</div>
+
+<script>
+    const baseURL = window.location.href.replace(/\/[^/]*$/, '/');
+    const embedOpts = { loader: { baseURL } };
+    vegaEmbed('#Chart1', myChart1, embedOpts);
+    vegaEmbed('#Chart2', myChart2, embedOpts);
+    vegaEmbed('#Chart3', myChart3, embedOpts);
+    vegaEmbed('#Chart4', myChart4, embedOpts);
+    vegaEmbed('#Chart5', myChart5, embedOpts);
+    vegaEmbed('#Chart6', myChart6, embedOpts);
+    vegaEmbed('#Chart7', myChart7, embedOpts);
+</script>
+</body>
+</html>

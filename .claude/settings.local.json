@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(for f:*)",
+      "Bash(do)",
+      "Bash(perl -i 's|raw\\\\.githubusercontent\\\\.com/SLBlundell/slblundell\\\\.github\\\\.io/main/nba_project/|raw.githubusercontent.com/SLBlundell/sam-blundell/main/public/nba_project/|g' \"$f\")",
+      "Bash(echo \"Updated: $f\")",
+      "Bash(done)"
+    ]
+  }
+}
