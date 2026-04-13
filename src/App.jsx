@@ -189,11 +189,9 @@ const HeroGraph = () => {
   );
 };
 
-// --- Updated Projects Array with Simulator Route ---
 const projects = [
-  { label: 'Debt Dynamics Simulator', href: '/sam-blundell/debt-simulator', desc: 'Macroeconomic policy space tool for Oxfords UNIQ programme' },
   { label: 'Bayes Optimality', href: '/sam-blundell/bayes_optimality.html', desc: 'Interactive risk space' },
-  { label: 'NBA Salary Efficiency', href: '/sam-blundell/datascience_project.html', desc: 'Bristol Data Science project' },
+  { label: 'NBA Salary Efficiency', href: '/sam-blundell/datascience_project.html', desc: 'Undergraduate Data Science project' },
 ];
 
 const ProjectsDropdown = () => {
@@ -334,7 +332,7 @@ const Portfolio = () => {
                 alt="Sam Blundell"
                 fetchPriority="high"
                 loading="eager"
-                className="relative w-48 h-48 md:w-64 md:h-64 object-cover rounded-2xl shadow-xl grayscale-[10%] hover:grayscale-0 transition-all duration-500"
+                className="relative w-48 h-56 md:w-64 md:h-80 object-cover rounded-2xl shadow-xl grayscale-[10%] hover:grayscale-0 transition-all duration-500"
               />
             </div>
 
@@ -345,9 +343,11 @@ const Portfolio = () => {
               </h1>
               
               <div className="max-w-lg border-t border-stone-300 pt-6">
+                <p className="font-sans text-base md:text-lg text-stone-700 leading-relaxed mb-4">
+                  I am an MPhil in Economics candidate at the <span className="font-semibold text-stone-900">University of Oxford</span> (Linacre College), supervised by <a href="https://www.sbs.ox.ac.uk/about-us/people/dimitrios-tsomocos" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Dimitrios Tsomocos</a> and <a href="https://fatih.ai/" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Fatih Kansoy</a>. My research focuses on quantitative modelling of financial frictions, price transmission mechanisms, and causal inference in complex macroeconomic settings.
+                </p>
                 <p className="font-sans text-base md:text-lg text-stone-700 leading-relaxed mb-6">
-                  I am an MPhil in Economics candidate at the <span className="font-semibold text-stone-900">University of Oxford</span> (Linacre College), supervised by <a href="https://www.sbs.ox.ac.uk/about-us/people/dimitrios-tsomocos" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Dimitrios Tsomocos</a> and <a href="https://fatih.ai/" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Fatih Kansoy</a>. 
-                  My research focuses on sovereign default, financial frictions, and emerging market macroeconomics.
+                  I was awarded the <a href="https://www.linkedin.com/posts/university-of-bristol-school-of-economics_a-massive-congratulations-to-our-four-award-winning-activity-7090717689429512193-e9NT" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Deaton Prize</a> for my undergraduate dissertation linking Chinese COVID-19 policy with herding behaviour in equity markets.
                 </p>
                 <div className="flex justify-center md:justify-start gap-4">
                   <a href="#contact" className="px-6 py-2 border border-stone-800 text-stone-800 text-sm font-medium hover:bg-stone-800 hover:text-[#F2F0E9] transition-all">
@@ -376,128 +376,145 @@ const Portfolio = () => {
         <div className="space-y-12">
           <FadeIn delay={100}>
             <PaperCard 
-              title="Partial Model of Sovereign Default with Endogenous Banking Frictions"
+              title="A Model of Partial Sovereign Default in General Equilibrium with a Banking Sector: The Case of Sri Lanka"
               year="2026"
               status="MPhil Thesis (In Progress)"
               link="#"
-              abstract="Developing a small open-economy reduced-form model of sovereign default with endogenous import-based banking frictions. The project aims to better capture empirical facts and moments in emerging markets using dynamic programming-based numerical simulations calibrated to EM data."
+              abstract="My MPhil thesis builds a general equilibrium model of partial sovereign default, in which a banking sector intermediates foreign import financing. I quantify how sovereign haircuts transmit to the real economy through a highly-convex external finance premium channel — eroding bank net worth, raising import prices, and compressing consumption. The model is calibrated to Sri Lanka's 2021–22 default episode using CDS-implied default probabilities."
             />
           </FadeIn>
 
           <FadeIn delay={200}>
             <PaperCard 
-              title="Systematic Bias in IMF Sovereign Debt Sustainability Assessments"
-              year="2025"
-              status="Research Assistance - Saïd Business School and LSE CETEx"
+              title="Debiased/Double Machine Learning for Exchange-Rate Pass-Through Estimation"
+              year="2026"
+              status="ML Research Project (In Progress)"
               link="#"
-              abstract="Constructed a novel database of IMF Debt Sustainability Analysis and macro-financial data covering 191 countries. Decomposed forecast errors to identify systematic bias in sovereign risk assessments, contributing to research on debt sustainability and policy effectiveness."
+              abstract="Applying Debiased Machine Learning (DML) to estimate exchange-rate pass-through in a high-dimensional panel setting. Using a partial linear model with cross-fitted nuisance functions, the framework accommodates the nonlinear, state-dependent relationships between macro confounders and prices that linear specifications mishandle — recovering a √N-consistent, asymptotically normal structural parameter estimate. I developed a hierarchy of first-stage learner specifications, utilizing boosted regression-trees and penalized regressions to handle non-linear nuisances consistent with regime-switching literature."
             />
           </FadeIn>
 
           <FadeIn delay={300}>
             <PaperCard 
+              title="Systematic Bias in IMF Sovereign Debt Sustainability Assessments"
+              year="2025"
+              status="Research Assistance - Saïd Business School and LSE CETEx"
+              link="#"
+              abstract="Constructed and maintained a novel database of Debt Sustainability Analysis and macro-financial data covering 191 countries over 25 years, utilising a reproducible OCR and LLM-assisted verification pipeline in Python to extract and validate data from unstructured IMF archival documents."
+            />
+          </FadeIn>
+
+          <FadeIn delay={400}>
+            <PaperCard 
               title="Herding in Chinese Equity Markets"
               year="2023"
               status="BSc Dissertation (Deaton Prize)"
               link="diss.pdf"
-              abstract="Applied Newey-West regressions to financial data and policy indices during the COVID-19 pandemic. Findings suggest that lockdown announcements paradoxically reduced herding behavior and stabilized markets."
+              abstract="Investigating investor herding behaviour in Chinese A-share markets in response to COVID-19 containment policies, using a cross-sectional return dispersion framework on daily CSI 300 data. The empirical pipeline was built in Python, with Newey-West HAC-corrected regressions and PCA robustness checks estimated in Stata."
             />
           </FadeIn>
         </div>
       </Section>
 
-      {/* --- EXPERIENCE / CV SECTION --- */}
-      <Section id="cv">
-        <FadeIn>
-          <div className="flex items-center justify-between mb-12">
-            <div className="flex items-center gap-4">
-              <FileText size={24} className="text-stone-400" />
-              <h2 className="font-sans text-xs font-bold uppercase tracking-widest text-stone-500">Curriculum Vitae</h2>
-            </div>
-            <a href="/cv.pdf" download className="flex items-center gap-2 text-xs font-mono text-stone-500 hover:text-stone-800 transition-colors">
-              <Download size={14} /> Download PDF
-            </a>
-          </div>
-        </FadeIn>
+{/* --- EXPERIENCE / CV SECTION --- */}
+<Section id="cv">
+  <FadeIn>
+    <div className="flex items-center justify-between mb-12">
+      <div className="flex items-center gap-4">
+        <FileText size={24} className="text-stone-400" />
+        <h2 className="font-sans text-xs font-bold uppercase tracking-widest text-stone-500">Curriculum Vitae</h2>
+      </div>
+      <a href="/cv.pdf" download className="flex items-center gap-2 text-xs font-mono text-stone-500 hover:text-stone-800 transition-colors">
+        <Download size={14} /> Download PDF
+      </a>
+    </div>
+  </FadeIn>
 
-        <div className="grid md:grid-cols-[1fr_2fr] gap-12">
-          {/* Education Column */}
-          <FadeIn delay={100}>
-            <div>
-              <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2">Education</h3>
-              
-              <div className="mb-8">
-                <div className="font-bold text-stone-800">University of Oxford</div>
-                <div className="text-stone-600 italic mb-1">MPhil in Economics</div>
-                <div className="text-xs font-mono text-stone-500">2024 — 2026</div>
-                <ul className="text-sm text-stone-600 mt-2 list-disc list-inside">
-                  <li>Linacre College</li>
-                  <li>Supervisor: Prof. Dimitrios Tsomocos</li>
-                  <li>Focus: International Macro & Finance</li>
-                </ul>
-              </div>
-
-              <div className="mb-8">
-                <div className="font-bold text-stone-800">University of Bristol</div>
-                <div className="text-stone-600 italic mb-1">BSc Economics with Study Abroad</div>
-                <div className="text-xs font-mono text-stone-500">2019 — 2023</div>
-                <ul className="text-sm text-stone-600 mt-2 list-disc list-inside">
-                  <li>First Class Honours</li>
-                  <li>Deaton Prize for Best Dissertation</li>
-                  <li>Study Year Abroad: CUHK</li>
-                </ul>
-              </div>
-            </div>
-          </FadeIn>
-
-          {/* Experience Column */}
-          <FadeIn delay={200}>
-            <div>
-              <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2">Experience</h3>
-
-              <div className="mb-8 pl-4 border-l border-stone-300">
-                <div className="font-bold text-stone-800">Saïd Business School, LSE</div>
-                <div className="text-stone-600 italic mb-1">Research Assistant</div>
-                <div className="text-xs font-mono text-stone-500">May — Oct 2025</div>
-                <p className="text-sm text-stone-600 mt-2 leading-relaxed">
-                  Research Assistant for Prof. Dimitrios Tsomocos. Constructed a database of IMF Debt Sustainability Analysis for 191 countries. Engineered a reproducible Python data pipeline using OCR and Pandas to structure unstructured PDF reports.
-                </p>
-              </div>
-
-              <div className="mb-8 pl-4 border-l border-stone-300">
-                <div className="font-bold text-stone-800">Parliamentary Office of Science and Technology</div>
-                <div className="text-stone-600 italic mb-1">Research Intern</div>
-                <div className="text-xs font-mono text-stone-500">May — Aug 2022</div>
-                <p className="text-sm text-stone-600 mt-2 leading-relaxed">
-                  Presented economic policy research for Parliamentary debate on Chinese development assistance. Analyzed the relationship between RMB internationalization and Belt-and-Road policy.
-                </p>
-              </div>
-
-              <div className="mb-8 pl-4 border-l border-stone-300">
-                <div className="font-bold text-stone-800">HSBC London</div>
-                <div className="text-stone-600 italic mb-1">Spring Intern</div>
-                <div className="text-xs font-mono text-stone-500">Apr 2021</div>
-                <p className="text-sm text-stone-600 mt-2 leading-relaxed">
-                  Built fundamental equity valuation models in Excel, gaining practical exposure to industry asset pricing.
-                </p>
-              </div>
-
-               <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2 pt-4">Technical & Awards</h3>
-               <div className="text-sm text-stone-600 space-y-2">
-                 <p><span className="font-semibold text-stone-800">Proficient:</span> R (econometrics, data cleaning/visualisation), Python (Pandas, NumPy, Scikit-learn), Excel.</p>
-                 <p><span className="font-semibold text-stone-800">Intermediate:</span> MATLAB, Dynare, Stata, LaTeX.</p>
-                 <p><span className="font-semibold text-stone-800">Basic:</span> Bloomberg (Bloomberg Market Concepts certified), Julia, Git.</p>
-                 <p><span className="font-semibold text-stone-800">Awards:</span> World Econometrics Games Competitor (2026), Linacre College Scholarship for Japanese Fast-Track Language Course (2025–26).</p>
-               </div>
-
-               <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2 pt-8">Leadership & Activities</h3>
-               <div className="text-sm text-stone-600 space-y-4">
-                 <p><span className="font-semibold text-stone-800">Mentor, Zero Gravity</span> <span className="font-mono text-xs text-stone-500 ml-2">2022–23</span><br />Mentored prospective undergraduates; supported successful applications to top-tier programs (LSE, Warwick).</p>
-               </div>
-            </div>
-          </FadeIn>
+  <div className="grid md:grid-cols-[1fr_2fr] gap-12">
+    {/* Education Column */}
+    <FadeIn delay={100}>
+      <div>
+        <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2">Education</h3>
+        
+        <div className="mb-8">
+          <div className="font-bold text-stone-800">University of Oxford</div>
+          <div className="text-stone-600 italic mb-1">MPhil in Economics</div>
+          <div className="text-xs font-mono text-stone-500">2024 — 2026</div>
+          <ul className="text-sm text-stone-600 mt-2 list-disc list-inside space-y-1">
+            <li>Linacre College</li>
+            <li>Supervisors: Prof. Dimitrios Tsomocos & Prof. Fatih Kansoy</li>
+            <li>Thesis: Sovereign default with banking sector intermediation — nonlinear amplification of import prices through a costly-state-verification friction</li>
+            <li>ML Project: Debiased Machine Learning for exchange-rate pass-through estimation</li>
+            <li>Coursework: International Macro & Finance, Financial Economics, Empirical Research Methods, Machine Learning</li>
+          </ul>
         </div>
-      </Section>
+
+        <div className="mb-8">
+          <div className="font-bold text-stone-800">University of Bristol</div>
+          <div className="text-stone-600 italic mb-1">BSc Economics with Study Abroad</div>
+          <div className="text-xs font-mono text-stone-500">2019 — 2023</div>
+          <ul className="text-sm text-stone-600 mt-2 list-disc list-inside space-y-1">
+            <li>First Class Honours</li>
+            <li>Deaton Prize for Best Dissertation in Economics</li>
+            <li>Year abroad: Chinese University of Hong Kong</li>
+            <li>Data Science Project: Python pipeline for NBA salary efficiency modelling with Vega-Lite visualisations</li>
+          </ul>
+        </div>
+      </div>
+    </FadeIn>
+
+    {/* Experience Column */}
+    <FadeIn delay={200}>
+      <div>
+        <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2">Experience</h3>
+
+        <div className="mb-8 pl-4 border-l border-stone-300">
+          <div className="font-bold text-stone-800">Saïd Business School & LSE CETEx</div>
+          <div className="text-stone-600 italic mb-1">Research Assistant — Prof. Dimitrios Tsomocos</div>
+          <div className="text-xs font-mono text-stone-500">May — Oct 2025</div>
+          <p className="text-sm text-stone-600 mt-2 leading-relaxed">
+            Constructed a novel database of IMF Debt Sustainability Analyses and macro-financial data covering 191 countries over 20 years. Designed a reproducible Python pipeline using OCR and LLM-assisted verification to extract and validate data from unstructured PDF reports. Catalogued climate risk assessments embedded within IMF DSAs to quantify systematic forecast errors in the Fund's climate projections.
+          </p>
+        </div>
+
+        <div className="mb-8 pl-4 border-l border-stone-300">
+          <div className="font-bold text-stone-800">Parliamentary Office of Science and Technology</div>
+          <div className="text-stone-600 italic mb-1">Research Intern</div>
+          <div className="text-xs font-mono text-stone-500">May — Aug 2022</div>
+          <p className="text-sm text-stone-600 mt-2 leading-relaxed">
+            Researched Chinese development assistance and capital-market policy; synthesised findings into a briefing contributing to Parliamentary debate on British foreign policy. Delivered a presentation on RMB internationalisation and the Belt-and-Road Initiative to department academics and external stakeholders.
+          </p>
+        </div>
+
+        <div className="mb-8 pl-4 border-l border-stone-300">
+          <div className="font-bold text-stone-800">HSBC London</div>
+          <div className="text-stone-600 italic mb-1">Spring Intern</div>
+          <div className="text-xs font-mono text-stone-500">Apr 2021</div>
+          <p className="text-sm text-stone-600 mt-2 leading-relaxed">
+            Completed equity valuation training in Excel and participated in an equity pitch competition. Attended executive briefings on institutional banking and global economic trends.
+          </p>
+        </div>
+
+        <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2 pt-4">Technical Skills</h3>
+        <div className="text-sm text-stone-600 space-y-2">
+          <p><span className="font-semibold text-stone-800">Proficient:</span> Python (Pandas, NumPy, Scikit-learn), R (econometrics, data visualisation), Stata, Excel.</p>
+          <p><span className="font-semibold text-stone-800">Intermediate:</span> MATLAB, Dynare, SQL, LaTeX, Git.</p>
+          <p><span className="font-semibold text-stone-800">Data Sources:</span> Bloomberg Terminal (BMC certified), LSEG DataStream.</p>
+          <p><span className="font-semibold text-stone-800">Languages:</span> English (native), Japanese (beginner).</p>
+        </div>
+
+        <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2 pt-8">Honours & Activities</h3>
+        <div className="text-sm text-stone-600 space-y-4">
+          <p><span className="font-semibold text-stone-800">Graduate Teaching, Oxford UNIQ</span> <span className="font-mono text-xs text-stone-500 ml-2">Jul 2026</span><br />Delivering lecture and interactive session on Government Debt Sustainability for Oxford's widening participation outreach programme.</p>
+          <p><span className="font-semibold text-stone-800">World Econometrics Games</span> <span className="font-mono text-xs text-stone-500 ml-2">Apr 2026</span><br />Selected to represent Oxford in Amsterdam; case study on hourly day-ahead electricity price forecasting in the DK1 price zone.</p>
+          <p><span className="font-semibold text-stone-800">Linacre College Scholarship</span> <span className="font-mono text-xs text-stone-500 ml-2">2025–26</span><br />Japanese Fast-Track Language Course.</p>
+          <p><span className="font-semibold text-stone-800">Deaton Prize</span> <span className="font-mono text-xs text-stone-500 ml-2">2023</span><br />Best dissertation in Economics, University of Bristol.</p>
+          <p><span className="font-semibold text-stone-800">Mentor, Zero Gravity</span> <span className="font-mono text-xs text-stone-500 ml-2">2022–23</span><br />Mentored prospective undergraduates; supported successful applications to LSE and Warwick.</p>
+        </div>
+      </div>
+    </FadeIn>
+  </div>
+</Section>
 
       {/* --- CONTACT SECTION --- */}
       <Section id="contact" className="mb-20">
