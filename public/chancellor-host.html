@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>The Chancellor's Game — host</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1B2E; --ink2:#16263d; --ink3:#1E3047; --line:#2b405b;
+  --parch:#F2ECDC; --slate:#90A2BC; --slate2:#5d728f;
+  --teal:#3FB89A; --blue:#6E9BE0; --amber:#E8A33D; --red:#E0584F; --gold:#D9A441;
+  --serif:'Fraunces',Georgia,serif; --ui:'Space Grotesk',system-ui,sans-serif; --mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--ink);color:var(--parch);font-family:var(--ui);
+  -webkit-font-smoothing:antialiased;min-height:100vh;padding:18px 22px 28px}
+.wrap{max-width:1180px;margin:0 auto}
+h1,h2,h3{margin:0;font-weight:500}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.dim{color:var(--slate)}
+.dimmer{color:var(--slate2)}
+
+/* top bar */
+.topbar{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;
+  border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:20px}
+.brand h1{font-family:var(--serif);font-size:30px;letter-spacing:.2px;line-height:1}
+.brand .sub{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--slate);margin-top:5px}
+.meta{display:flex;align-items:center;gap:24px}
+.room{text-align:right}
+.room .lab{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate2)}
+.room .code{font-family:var(--mono);font-size:26px;font-weight:600;letter-spacing:.18em;color:var(--parch)}
+.dots{display:flex;gap:7px;margin-top:7px;justify-content:flex-end}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--ink3);display:inline-block;border:1px solid var(--line)}
+.dots i.on{background:var(--gold);border-color:var(--gold)}
+.dots i.done{background:var(--slate2);border-color:var(--slate2)}
+
+/* session budget clock — the signature */
+.budget{min-width:230px}
+.budget .row{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--slate2);margin-bottom:6px}
+.budget .clock{font-family:var(--mono);font-size:15px;color:var(--gold);letter-spacing:.04em}
+.budget .track{height:7px;background:var(--ink3);border-radius:4px;overflow:hidden}
+.budget .fill{height:100%;width:0%;background:var(--gold);transition:width .8s linear}
+
+/* stage */
+.stage{min-height:60vh}
+.panel{background:var(--ink2);border:1px solid var(--line);border-radius:14px;padding:22px 24px}
+
+/* lobby */
+.lobby{display:grid;grid-template-columns:300px 1fr;gap:22px;align-items:start}
+.join{text-align:center}
+.qr{width:200px;height:200px;margin:6px auto 14px;border:2px solid var(--line);border-radius:12px;
+  display:flex;align-items:center;justify-content:center;background:var(--ink3);position:relative}
+.qr .ph{font-size:12px;color:var(--slate2);max-width:140px;line-height:1.5}
+.url{font-family:var(--mono);font-size:13px;color:var(--slate)}
+.rosterhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.rosterhead h2{font-family:var(--serif);font-size:22px}
+.tally{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.tcard{background:var(--ink3);border-radius:11px;padding:13px 15px;border-left:4px solid var(--c)}
+.tcard .n{font-family:var(--mono);font-size:30px;font-weight:600;line-height:1}
+.tcard .who{font-size:13px;color:var(--slate);margin-top:3px}
+.tcard .who b{color:var(--parch);font-weight:500}
+
+/* shock band */
+.shockband{display:flex;align-items:center;gap:18px;margin-bottom:18px}
+.shocklabel{flex:1}
+.shocklabel .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate2)}
+.shocklabel h2{font-family:var(--serif);font-size:30px;line-height:1.05;margin-top:4px}
+.shocklabel .hits{font-size:14px;color:var(--slate);margin-top:6px}
+.term{font-family:var(--mono);color:var(--gold);font-weight:600;
+  border:1px solid var(--gold);border-radius:6px;padding:0 7px}
+
+/* timer + controls */
+.tcluster{min-width:300px;text-align:right}
+.timer{font-family:var(--mono);font-size:54px;font-weight:600;line-height:1;letter-spacing:.02em}
+.timer.warn{color:var(--red)}
+.prog{font-size:13px;color:var(--slate);margin-top:4px}
+.prog b{color:var(--parch);font-weight:500}
+.ttrack{height:8px;background:var(--ink3);border-radius:5px;overflow:hidden;margin-top:10px}
+.tfill{height:100%;width:100%;background:var(--teal);transition:width 1s linear}
+.tfill.warn{background:var(--red)}
+
+.controls{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+button{font-family:var(--ui);font-size:14px;font-weight:500;color:var(--parch);
+  background:var(--ink3);border:1px solid var(--line);border-radius:9px;padding:11px 18px;cursor:pointer;
+  transition:background .14s,border-color .14s,transform .08s}
+button:hover{background:#243a55;border-color:#3a567a}
+button:active{transform:scale(.98)}
+button.primary{background:var(--gold);color:#2a2000;border-color:var(--gold)}
+button.primary:hover{background:#e7b658}
+button.ghost{background:transparent}
+button:disabled{opacity:.4;cursor:default}
+
+/* option reference */
+.optref{margin-top:20px;border-top:1px solid var(--line);padding-top:16px}
+.optref h3{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--slate2);margin-bottom:12px}
+.optgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.optrow{display:flex;align-items:center;gap:10px;background:var(--ink3);border-radius:9px;padding:10px 13px;
+  border-left:4px solid var(--c)}
+.optrow .rg{font-weight:500;min-width:78px}
+.optrow .opts{font-family:var(--mono);font-size:13px;color:var(--slate)}
+.optrow .opts .a{color:var(--parch)}
+
+/* leaderboard board */
+.board{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.desk{background:var(--ink2);border:1px solid var(--line);border-radius:13px;overflow:hidden}
+.desk .hd{padding:13px 15px;border-bottom:1px solid var(--line);border-top:4px solid var(--c)}
+.desk .hd h3{font-family:var(--serif);font-size:18px;color:var(--c)}
+.desk .hd .sub{font-size:11px;color:var(--slate2);margin-top:2px;letter-spacing:.04em}
+.spark{height:34px;margin-top:8px}
+.rows{padding:6px 8px 10px}
+.lrow{display:grid;grid-template-columns:20px 1fr auto;align-items:center;gap:9px;
+  padding:7px 8px;border-radius:8px}
+.lrow .rk{font-family:var(--mono);font-size:13px;color:var(--slate2);text-align:right}
+.lrow .nm{font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lrow .db{font-family:var(--mono);font-size:14px;font-weight:500}
+.lrow.win{background:rgba(217,164,65,.12)}
+.lrow.win .rk{color:var(--gold)}
+.lrow.crisis .nm{color:var(--red)}
+.lrow.crisis .db{color:var(--red)}
+.cline{display:flex;align-items:center;gap:8px;padding:6px 10px;margin:6px 4px 2px;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--red);
+  border-top:1px dashed rgba(224,88,79,.4)}
+
+/* final / debrief */
+.finalhead{text-align:center;margin-bottom:22px}
+.finalhead h2{font-family:var(--serif);font-size:34px}
+.finalhead p{color:var(--slate);margin:8px 0 0;font-size:15px}
+
+.note{font-size:12px;color:var(--slate2);margin-top:14px;line-height:1.6}
+.demoflag{position:fixed;bottom:12px;right:14px;font-family:var(--mono);font-size:11px;
+  color:var(--slate2);background:var(--ink2);border:1px solid var(--line);border-radius:7px;padding:5px 10px}
+@media(max-width:880px){
+  .lobby{grid-template-columns:1fr}.board{grid-template-columns:repeat(2,1fr)}
+  .optgrid{grid-template-columns:1fr}.shockband{flex-direction:column;align-items:stretch}
+  .tcluster{text-align:left}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <div class="brand">
+      <h1>The Chancellor's Game</h1>
+      <div class="sub">How much government debt is too much?</div>
+    </div>
+    <div class="meta">
+      <div class="budget">
+        <div class="row"><span>session budget</span><span class="clock" id="bclock">00:00 / 22:00</span></div>
+        <div class="track"><div class="fill" id="bfill"></div></div>
+        <div class="note" id="bnote" style="margin-top:7px">protects your debrief — turns red at 18:00</div>
+      </div>
+      <div class="room">
+        <div class="lab">join code</div>
+        <div class="code" id="roomcode">FISC</div>
+        <div class="dots" id="dots"><i></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stage" id="stage"></div>
+</div>
+
+<div class="demoflag" id="demoflag">demo mode · simulated players</div>
+
+<script>
+/* ============================================================
+   THE CHANCELLOR'S GAME — host control + leaderboards
+   Engine ported 1:1 from the calibrated model (see workbook).
+   DEMO=true runs a simulated room so the host view is fully
+   clickable offline. Flip DEMO=false + add FIREBASE config to
+   drive real phones (hooks marked  >>> FIREBASE <<< ).
+   ============================================================ */
+const DEMO = true;
+
+/* ---- dials (must match the calibration workbook) ---- */
+const GHIT=2, IRISE=3, PISHOCK=4, CONF=10, KAPPA=0.4;
+
+/* ---- regimes ---- */
+const REG = {
+  FlexIT:  {name:"FlexIT", tag:"advanced · floats freely", color:"var(--teal)",
+            b:100,d:2,ibase:4,pi:2,g:1.5,bstar:130,bcrisis:180,c:0.0024,f:0,cred:90},
+  Eurozone:{name:"Eurozone", tag:"shares a central bank", color:"var(--blue)",
+            b:120,d:1,ibase:4,pi:2,g:1.0,bstar:112,bcrisis:150,c:0.0056,f:0,cred:70},
+  EM_FX:   {name:"EM · $ debt", tag:"borrows in dollars", color:"var(--amber)",
+            b:80,d:0,ibase:9,pi:8,g:4.0,bstar:60,bcrisis:115,c:0.0067,f:0.7,cred:40},
+  HighInf: {name:"High inflation", tag:"prices already racing", color:"var(--red)",
+            b:60,d:3,ibase:25,pi:30,g:3.0,bstar:50,bcrisis:80,c:0.0089,f:0.3,cred:25},
+};
+const REG_KEYS = Object.keys(REG);
+
+/* ---- per-round shock metadata ---- */
+const SHOCKS = [
+  {n:1, name:"Global recession", hits:"growth", sym:"g",   blurb:"output falls everywhere — g −2"},
+  {n:2, name:"Global rate rise", hits:"borrowing cost", sym:"i", blurb:"the risk-free rate jumps — i +3"},
+  {n:3, name:"Inflation shock",  hits:"prices", sym:"π",  blurb:"a price surge hits all — π +4"},
+  {n:4, name:"Confidence shock", hits:"credibility", sym:"trust", blurb:"markets reprice risk — credibility −10"},
+];
+
+/* ---- decision engine (synced with the player client) ----
+   Rounds 1 & 3 are sliders v in [0,1]; rounds 2 & 4 are binary (A = prudent).
+   deltas: [Δd, i_extra, de, dpi, dg, dcred] ---- */
+const KIND = ["slider","binary","slider","binary"];
+
+/* calibrated slider mappings */
+function r1delta(v){ return [ -2+4*v, 0,0,0, (6*v-3*v*v-1), -6*v*v ]; }
+function r3delta(v){ return [ 0, 5*v+8*(1-v)*(1-v), 22*(1-v), -3*v, -2*v, 10*(v-0.5) ]; }
+
+/* binary options with labels (for the round-reference panel) */
+const R2 = {
+  FlexIT:[["hold",[0,0,0,1,0,0]],["hike",[0,2,0,0,-1,0]]],
+  Eurozone:[["tighten",[-1,0,0,0,0,2]],["wait",[0,0,0,0,0,-3]]],
+  EM_FX:[["defend",[0,3,0,0,-1,3]],["float",[0,0,20,0,0,-10]]],
+  HighInf:[["hold",[0,2,0,0,0,1]],["accommodate",[0,0,0,0,0,-8]]],
+};
+const R4 = [["consolidate",[-4,0,0,0,-1,15]],["hold nerve",[0,0,0,0,0,-5]]];
+
+const SLIDER_UI = { 1:{left:"cut",right:"spend"}, 3:{left:"let it run",right:"raise rates"} };
+
+/* each regime's interior sweet spot on the two slider rounds [R1,R3] (from calibration) */
+const OPT_SLIDER = { FlexIT:[0.40,0.05], Eurozone:[0.45,0.20], EM_FX:[0.15,1.00], HighInf:[0.00,0.75] };
+
+/* pick is a slider value (0..1) on slider rounds, or a binary index on binary rounds */
+function deltaFor(k, round, pick){
+  if(round===1) return r1delta(pick);
+  if(round===3) return r3delta(pick);
+  if(round===2) return R2[k][pick][1];
+  return R4[pick][1];
+}
+
+/* ---- engine: advance one regime-state by one round ---- */
+function clamp(x,a,b){return Math.max(a,Math.min(b,x));}
+function stepState(s, regKey, round, delta){
+  const R = REG[regKey];
+  const [dd,iex,de,dpi,dg,dcred] = delta;
+  const gGlob = round===1 ? -GHIT : 0;
+  const piGlob = round===3 ? PISHOCK : 0;
+  const conf = round===4 ? CONF : 0;
+  const iglob = round>=2 ? IRISE : 0;
+  s.d  += dd;
+  s.pi += piGlob + dpi;
+  s.g  += gGlob + dg;
+  s.cred = clamp(s.cred - conf + dcred, 0, 100);
+  const bstarEff = R.bstar + (s.cred-50)*KAPPA;
+  const i = R.ibase + iglob + iex + R.c*Math.pow(Math.max(0,s.b-bstarEff),2);
+  const primary = s.d;
+  const snow = (i - s.pi - s.g)/100*s.b;
+  const fx = R.f*de/100*s.b;
+  s.b = s.b + primary + snow + fx;
+  if (s.b >= R.bcrisis) s.crisis = true;
+  s.i = i;
+  return s;
+}
+function freshState(regKey){
+  const R=REG[regKey];
+  return {b:R.b,d:R.d,pi:R.pi,g:R.g,cred:R.cred,i:R.ibase,crisis:false,hist:[R.b]};
+}
+
+/* ============================================================
+   GAME STATE
+   ============================================================ */
+const G = {
+  phase:"lobby",        // lobby | deciding | standings | final
+  round:0,
+  players:[],           // {id,name,reg,state,skill, picks:[], submitted:bool}
+  timer:null, tleft:0, tlen:30,
+  started:null, budgetIv:null,
+};
+const ROOM = "FISC";
+
+/* ---- names for the demo roster ---- */
+const NAMES = "Maya Sam Ada Lee Noah Iris Theo Zara Omar Ife Liv Rhys Kai Mei Ana Jude Esme Finn Tariq Nia Bo Hugo Sena Wren Cole Lola Ravi Pax Yara Beau Tess Gio Suki Dane Elle Cy Pia Reza Vega Nico Asha Bram Lux Odi Quin Tao Vale Wynn".split(" ");
+
+/* ---- network layer (demo); FirebaseNet stub below ---- */
+const Net = DEMO ? makeDemoNet() : makeFirebaseNet();
+
+function makeDemoNet(){
+  return {
+    seedRoom(){
+      const n = 45;
+      for(let k=0;k<n;k++){
+        const reg = REG_KEYS[k % REG_KEYS.length];
+        G.players.push({
+          id:"p"+k, name:NAMES[k%NAMES.length], reg,
+          state:freshState(reg), skill:0.25+Math.random()*0.7,
+          picks:[], submitted:false
+        });
+      }
+      shuffle(G.players);
+    },
+    /* simulate phones locking in over the round */
+    runSubmissions(round, onProgress, onDone){
+      G.players.forEach(p=>p.submitted=false);
+      let done=0; const total=G.players.length;
+      const order = shuffle(G.players.slice());
+      order.forEach((p,idx)=>{
+        const at = 400 + Math.random()*(G.tlen*1000*0.78);
+        setTimeout(()=>{
+          if(G.phase!=="deciding"||G.round!==round) return;
+          let pick;
+          if(KIND[round-1]==="slider"){
+            /* aim near the regime's sweet spot; less-skilled players scatter wider */
+            const opt = OPT_SLIDER[p.reg][round===1?0:1];
+            const spread = (1 - p.skill) * 0.42;
+            pick = Math.max(0, Math.min(1, opt + (Math.random()*2-1)*spread));
+          } else {
+            pick = Math.random() < p.skill ? 0 : 1;   // prudent vs reckless
+          }
+          p.picks[round-1]=pick; p.submitted=true; done++;
+          onProgress(done,total);
+        }, at);
+      });
+    },
+    forceRemaining(round){
+      const dflt = KIND[round-1]==="slider" ? 0.5 : 0;   // matches a timed-out phone
+      G.players.forEach(p=>{ if(p.picks[round-1]===undefined){p.picks[round-1]=dflt; p.submitted=true;} });
+    }
+  };
+}
+
+/* >>> FIREBASE <<<  drop-in replacement (activate: DEMO=false + add config)
+function makeFirebaseNet(){
+  // 1. in the page head, add a module that imports the SDK:
+  //      import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  //      import { getDatabase, ref, onValue, set, update } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+  //    (a type="module" tag — written without the literal tag here so it can't end this block)
+  // 2. const app = initializeApp(FIREBASE_CONFIG); const db = getDatabase(app);
+  // 3. host writes round/phase:   set(ref(db,`rooms/${ROOM}/state`), {phase, round, endsAt})
+  //    host listens to roster:     onValue(ref(db,`rooms/${ROOM}/players`), snap => {...})
+  //    host listens to answers:    onValue(ref(db,`rooms/${ROOM}/rounds/${round}`), snap => {...})
+  //    phones write their pick:     set(ref(db,`rooms/${ROOM}/rounds/${round}/${playerId}`), pick)
+  //      where pick is a slider value 0..1 on rounds 1 & 3, or a binary index 0/1 on rounds 2 & 4
+  // Engine + ranking below run identically on the collected picks.
+  return { seedRoom(){}, runSubmissions(){}, forceRemaining(){} };
+}
+*/
+function makeFirebaseNet(){ return { seedRoom(){}, runSubmissions(){}, forceRemaining(){} }; }
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+const stage = document.getElementById('stage');
+const dotsEl = document.getElementById('dots');
+document.getElementById('roomcode').textContent = ROOM;
+document.getElementById('demoflag').style.display = DEMO ? 'block':'none';
+
+function setDots(){
+  dotsEl.innerHTML = SHOCKS.map((_,i)=>{
+    const c = (i+1<G.round)?'done':((i+1===G.round)?'on':'');
+    return `<i class="${c}"></i>`;
+  }).join('');
+}
+
+function render(){
+  setDots();
+  if(G.phase==="lobby") return renderLobby();
+  if(G.phase==="deciding") return renderRound();
+  if(G.phase==="standings") return renderStandings(false);
+  if(G.phase==="final") return renderStandings(true);
+}
+
+function renderLobby(){
+  const counts = {}; REG_KEYS.forEach(k=>counts[k]=0);
+  G.players.forEach(p=>counts[p.reg]++);
+  const tally = REG_KEYS.map(k=>{
+    const R=REG[k];
+    return `<div class="tcard" style="--c:${R.color}">
+      <div class="n mono">${counts[k]}</div>
+      <div class="who"><b>${R.name}</b> · ${R.tag}</div></div>`;
+  }).join('');
+  stage.innerHTML = `
+    <div class="lobby">
+      <div class="panel join">
+        <div class="qr"><div class="ph">QR renders here on deploy — scan to join</div></div>
+        <div class="url">chancellor.game / join</div>
+        <div class="note">players land in a regime as they join, kept balanced four ways.</div>
+      </div>
+      <div class="panel">
+        <div class="rosterhead">
+          <h2>The floor is filling</h2>
+          <div class="mono dim" id="pcount">${G.players.length} in the room</div>
+        </div>
+        <div class="tally">${tally}</div>
+        <div class="controls">
+          ${G.players.length===0 ? `<button class="primary" onclick="demoFill()">Fill the room (demo)</button>`:''}
+          <button class="primary" onclick="startGame()" ${G.players.length<4?'disabled':''}>Start the session</button>
+        </div>
+        <div class="note">each group is scored against its own kind — four parallel leaderboards, four winners.</div>
+      </div>
+    </div>`;
+}
+
+function renderRound(){
+  const sh = SHOCKS[G.round-1];
+  const total = G.players.length;
+  const submitted = G.players.filter(p=>p.submitted).length;
+  const termHtml = sh.sym==="trust" ? `<span class="term">credibility</span>` : `<span class="term">${sh.sym}</span>`;
+  const kind = KIND[G.round-1];
+  const opt = REG_KEYS.map(k=>{
+    const R=REG[k];
+    let opts;
+    if(kind==="slider"){ const ui=SLIDER_UI[G.round]; opts=`<span class="a">${ui.left}</span> ⟷ <span class="a">${ui.right}</span>`; }
+    else { const o = (G.round===2)?R2[k]:R4; opts=`<span class="a">${o[0][0]}</span> / ${o[1][0]}`; }
+    return `<div class="optrow" style="--c:${R.color}">
+      <span class="rg">${R.name}</span>
+      <span class="opts">${opts}</span></div>`;
+  }).join('');
+  stage.innerHTML = `
+    <div class="panel">
+      <div class="shockband">
+        <div class="shocklabel">
+          <div class="eyebrow">round ${sh.n} of 4 · the same shock for every desk</div>
+          <h2>${sh.name}</h2>
+          <div class="hits">hits ${termHtml} — ${sh.blurb}</div>
+        </div>
+        <div class="tcluster">
+          <div class="timer mono" id="timer">${fmt(G.tleft||G.tlen)}</div>
+          <div class="prog"><b id="subN">${submitted}</b> / ${total} locked in</div>
+          <div class="ttrack"><div class="tfill" id="tfill"></div></div>
+        </div>
+      </div>
+      <div class="controls">
+        <button class="primary" id="startBtn" onclick="startTimer()">Start the clock</button>
+        <button class="ghost" onclick="addTime()">+15s</button>
+        <button id="bellBtn" onclick="ringBell()" disabled>Ring the bell ▸ reveal standings</button>
+      </div>
+      <div class="optref">
+        <h3>on each phone this round · ${kind==="slider"?"a dial to set":"one of two calls"}</h3>
+        <div class="optgrid">${opt}</div>
+      </div>
+    </div>`;
+}
+
+function renderStandings(isFinal){
+  const ranked = {};
+  REG_KEYS.forEach(k=>{
+    const ps = G.players.filter(p=>p.reg===k);
+    const solvent = ps.filter(p=>!p.state.crisis).sort((a,b)=>a.state.b-b.state.b);
+    const crisis  = ps.filter(p=>p.state.crisis).sort((a,b)=>a.state.b-b.state.b);
+    ranked[k]={solvent,crisis};
+  });
+  const board = REG_KEYS.map(k=>{
+    const R=REG[k]; const {solvent,crisis}=ranked[k];
+    const spark = sparkline(k);
+    let rk=0;
+    const solHtml = solvent.map(p=>{rk++;return lrow(rk,p,rk===1);}).join('');
+    const criHtml = crisis.length ? `<div class="cline"><span>⚠ in crisis · below the line</span></div>` +
+        crisis.map(p=>{rk++;return lrow(rk,p,false,true);}).join('') : '';
+    return `<div class="desk">
+      <div class="hd" style="--c:${R.color}">
+        <h3>${R.name}</h3><div class="sub">${R.tag}</div>${spark}
+      </div>
+      <div class="rows">${solHtml}${criHtml}</div>
+    </div>`;
+  }).join('');
+  const head = isFinal
+    ? `<div class="finalhead"><h2>Same game, different rules</h2>
+         <p>four economies · one set of shocks · four very different fates</p></div>`
+    : `<div class="finalhead"><h2>Standings after ${SHOCKS[G.round-1].name.toLowerCase()}</h2>
+         <p>each desk ranked against its own kind — survival beats a low number</p></div>`;
+  const controls = isFinal
+    ? `<div class="controls" style="justify-content:center;margin-top:22px">
+         <button class="primary" onclick="toDebrief()">Hand over to debrief ▸</button></div>`
+    : `<div class="controls" style="justify-content:center;margin-top:22px">
+         <button class="primary" onclick="nextRound()">${G.round<4?`Next shock ▸ round ${G.round+1}`:'Final reckoning ▸'}</button></div>`;
+  stage.innerHTML = head + `<div class="board">${board}</div>` + controls;
+}
+
+function lrow(rank,p,win,crisis){
+  return `<div class="lrow ${win?'win':''} ${crisis?'crisis':''}">
+    <span class="rk">${rank}</span>
+    <span class="nm">${p.name}</span>
+    <span class="db mono">${Math.round(p.state.b)}%</span></div>`;
+}
+
+/* per-regime average-debt sparkline across rounds played */
+function sparkline(k){
+  const ps=G.players.filter(p=>p.reg===k);
+  if(!ps.length) return '';
+  const len = ps[0].state.hist.length;
+  const series=[];
+  for(let r=0;r<len;r++){
+    let sum=0; ps.forEach(p=>sum+=p.state.hist[r]); series.push(sum/ps.length);
+  }
+  const R=REG[k];
+  const W=240,H=34, pad=3;
+  const lo=Math.min(...series, R.b)*0.96, hi=Math.max(...series, R.bcrisis*0.7);
+  const x=i=> series.length<2?W/2 : pad + i/(series.length-1)*(W-2*pad);
+  const y=v=> H-pad - (v-lo)/(hi-lo)*(H-2*pad);
+  const pts=series.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  const cy=y(R.bcrisis); const cliff = (cy>0&&cy<H)?`<line x1="0" y1="${cy.toFixed(1)}" x2="${W}" y2="${cy.toFixed(1)}" stroke="var(--red)" stroke-width="1" stroke-dasharray="3 3" opacity="0.5"/>`:'';
+  return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+    ${cliff}<polyline points="${pts}" fill="none" stroke="${R.color}" stroke-width="2"/>
+    <circle cx="${x(series.length-1).toFixed(1)}" cy="${y(series[series.length-1]).toFixed(1)}" r="2.6" fill="${R.color}"/>
+  </svg>`;
+}
+
+/* ============================================================
+   CONTROL FLOW
+   ============================================================ */
+function fmt(s){const m=(s/60)|0,ss=s%60;return `${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;}
+
+window.demoFill=function(){ Net.seedRoom(); render(); };
+
+window.startGame=function(){
+  G.started=Date.now();
+  startBudgetClock();
+  G.round=1; G.phase="deciding"; G.tleft=G.tlen;
+  render();
+};
+
+window.startTimer=function(){
+  if(G.timer) return;
+  G.tleft = G.tleft||G.tlen;
+  document.getElementById('startBtn').disabled=true;
+  document.getElementById('bellBtn').disabled=false;
+  Net.runSubmissions(G.round, (done,total)=>{
+    const sn=document.getElementById('subN'); if(sn) sn.textContent=done;
+  });
+  tick();
+  G.timer=setInterval(tick,1000);
+};
+function tick(){
+  const tEl=document.getElementById('timer'), fEl=document.getElementById('tfill');
+  if(tEl){tEl.textContent=fmt(Math.max(0,G.tleft)); tEl.classList.toggle('warn',G.tleft<=10);}
+  if(fEl){fEl.style.width=Math.max(0,G.tleft/G.tlen*100)+'%'; fEl.classList.toggle('warn',G.tleft<=10);}
+  if(G.tleft<=0){clearInterval(G.timer);G.timer=null; ringBell(); return;}
+  G.tleft--;
+}
+window.addTime=function(){ G.tlen+=15; G.tleft+=15; tick(); };
+
+window.ringBell=function(){
+  if(G.phase!=="deciding") return;
+  if(G.timer){clearInterval(G.timer);G.timer=null;}
+  Net.forceRemaining(G.round);
+  /* compute the round for everyone using their pick */
+  G.players.forEach(p=>{
+    const pick = p.picks[G.round-1] ?? (KIND[G.round-1]==="slider"?0.5:0);
+    const delta = deltaFor(p.reg, G.round, pick);
+    stepState(p.state, p.reg, G.round, delta);
+    p.state.hist.push(p.state.b);
+  });
+  G.phase = (G.round>=4) ? "final" : "standings";
+  G.tlen=30;
+  render();
+};
+
+window.nextRound=function(){
+  G.round++; G.phase="deciding"; G.tleft=G.tlen;
+  G.players.forEach(p=>p.submitted=false);
+  render();
+};
+window.toDebrief=function(){
+  stage.innerHTML = `<div class="finalhead"><h2>Over to you</h2>
+    <p>walk each desk's trajectory — why did the same shocks land so differently?</p></div>
+    <div class="note" style="text-align:center;max-width:560px;margin:0 auto">
+    the debrief lives in the lecturer's hands now: pull up the snowball, the FX revaluation,
+    the greyed-out lever — the consequences the phones deliberately withheld.</div>`;
+};
+
+/* ---- session budget clock (the signature) ---- */
+function startBudgetClock(){
+  const BUD=22*60;
+  G.budgetIv=setInterval(()=>{
+    const el=Math.min(BUD,((Date.now()-G.started)/1000)|0);
+    document.getElementById('bclock').textContent=`${fmt(el)} / 22:00`;
+    const f=document.getElementById('bfill');
+    f.style.width=el/BUD*100+'%';
+    if(el>=18*60){f.style.background='var(--red)';document.getElementById('bclock').style.color='var(--red)';
+      document.getElementById('bnote').textContent='debrief time — start wrapping the rounds';}
+    else if(el>=14*60){f.style.background='var(--amber)';}
+  },1000);
+}
+
+render();
+</script>
+</body>
+</html>

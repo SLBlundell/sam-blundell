@@ -194,7 +194,13 @@ const projects = [
   { label: 'NBA Salary Efficiency', href: '/sam-blundell/datascience_project.html', desc: 'Undergraduate Data Science project' },
 ];
 
-const ProjectsDropdown = () => {
+const uniqPages = [
+  { label: 'Host Console', href: '/sam-blundell/chancellor-host.html', desc: "Run The Chancellor's Game" },
+  { label: 'Player Client', href: '/sam-blundell/chancellor-player.html', desc: 'Student phone view' },
+  { label: 'Debrief Slides', href: '/sam-blundell/chancellor-debrief.html', desc: 'Projected teaching debrief' },
+];
+
+const NavDropdown = ({ label, items }) => {
   const [open, setOpen] = useState(false);
   const timeoutRef = useRef(null);
 
@@ -209,7 +215,7 @@ const ProjectsDropdown = () => {
   return (
     <div className="relative" onMouseEnter={show} onMouseLeave={hide}>
       <button className="flex items-center gap-1 hover:text-stone-900 transition-colors">
-        Projects
+        {label}
         <ChevronDown
           size={12}
           className={`transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
@@ -221,7 +227,7 @@ const ProjectsDropdown = () => {
           open ? 'opacity-100 scale-y-100 translate-y-0' : 'opacity-0 scale-y-95 -translate-y-1 pointer-events-none'
         }`}
       >
-        {projects.map(({ label, href, desc }) => (
+        {items.map(({ label, href, desc }) => (
           <a
             key={href}
             href={href}
@@ -235,6 +241,9 @@ const ProjectsDropdown = () => {
     </div>
   );
 };
+
+const ProjectsDropdown = () => <NavDropdown label="Projects" items={projects} />;
+const UniqDropdown = () => <NavDropdown label="UNIQ" items={uniqPages} />;
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -268,6 +277,7 @@ const NavBar = () => {
           <button onClick={() => scrollTo('cv')} className="hover:text-stone-900 transition-colors">CV</button>
           <button onClick={() => scrollTo('contact')} className="hover:text-stone-900 transition-colors">Contact</button>
           <ProjectsDropdown />
+          <UniqDropdown />
         </div>
       </div>
     </nav>
