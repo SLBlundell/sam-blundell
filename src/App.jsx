@@ -195,7 +195,6 @@ const projects = [
 ];
 
 const uniqPages = [
-  { label: 'Host Console', href: '/sam-blundell/chancellor-host.html', desc: "Run The Chancellor's Game" },
   { label: 'Player Client', href: '/sam-blundell/chancellor-player.html', desc: 'Student phone view' },
   { label: 'Debrief Slides', href: '/sam-blundell/chancellor-debrief.html', desc: 'Projected teaching debrief' },
 ];
