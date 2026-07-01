@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>The Chancellor's Game — debrief</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Space+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1B2E; --ink2:#16263d; --ink3:#1E3047; --line:#2b405b;
+  --parch:#F2ECDC; --slate:#90A2BC; --slate2:#5d728f;
+  --teal:#3FB89A; --blue:#6E9BE0; --amber:#E8A33D; --red:#E0584F; --gold:#D9A441;
+  --serif:'Fraunces',Georgia,serif; --ui:'Space Grotesk',system-ui,sans-serif; --mono:'IBM Plex Mono',monospace;
+  --prim:#6E9BE0; --snow:#E8A33D; --fx:#E0584F;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--ink);color:var(--parch);font-family:var(--ui);-webkit-font-smoothing:antialiased;
+  height:100vh;overflow:hidden;display:flex;flex-direction:column}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+h1,h2,h3{margin:0;font-weight:500}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 34px;border-bottom:1px solid var(--line)}
+.topbar .t{font-family:var(--serif);font-size:19px}
+.topbar .t span{color:var(--slate);font-style:italic;font-size:15px;margin-left:10px}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--slate)}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+
+.stage{flex:1;padding:30px 44px;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+
+.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 34px;border-top:1px solid var(--line)}
+.dots{display:flex;gap:9px}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--ink3);border:1px solid var(--line)}
+.dots i.on{background:var(--gold);border-color:var(--gold)}
+button{font-family:var(--ui);font-size:14px;font-weight:500;color:var(--parch);background:var(--ink3);
+  border:1px solid var(--line);border-radius:9px;padding:10px 20px;cursor:pointer;transition:background .14s,transform .08s}
+button:hover{background:#243a55}button:active{transform:scale(.98)}button:disabled{opacity:.35;cursor:default}
+.hint{font-size:12px;color:var(--slate2)}
+
+/* title step */
+.title h1{font-family:var(--serif);font-size:58px;line-height:1.02;letter-spacing:.3px}
+.title .q{font-family:var(--serif);font-style:italic;font-size:26px;color:var(--gold);margin-top:22px}
+.title .sub{font-size:16px;color:var(--slate);margin-top:24px;max-width:720px;line-height:1.6}
+
+/* reveal step */
+.reveal{display:grid;grid-template-columns:1fr 300px;gap:34px;align-items:center;height:100%}
+.reveal .head{font-family:var(--serif);font-size:30px;line-height:1.1;margin-bottom:8px}
+.reveal .punch{font-size:16px;color:var(--slate);line-height:1.6}
+.reveal .punch b{color:var(--parch);font-weight:500}
+.side .card{background:var(--ink2);border:1px solid var(--line);border-left:4px solid var(--c);
+  border-radius:11px;padding:13px 15px;margin-bottom:11px}
+.side .card .r{font-family:var(--serif);font-size:17px;color:var(--c)}
+.side .card .n{font-family:var(--mono);font-size:14px;margin-top:3px}
+.side .card .n b{color:var(--parch)}
+.side .card .st{font-size:12px;margin-top:3px}
+
+/* round steps */
+.rhead{display:flex;align-items:baseline;gap:16px;margin-bottom:6px}
+.rhead .eyebrow{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate2)}
+.rhead h2{font-family:var(--serif);font-size:34px}
+.rhead .term{font-family:var(--mono);color:var(--gold);border:1px solid var(--gold);border-radius:6px;padding:1px 9px;font-size:20px}
+.rsub{font-size:15px;color:var(--slate);margin-bottom:22px;max-width:900px;line-height:1.5}
+.decomp{display:flex;flex-direction:column;gap:14px}
+.drow{display:grid;grid-template-columns:150px 1fr 210px;align-items:center;gap:20px}
+.drow .rg{font-family:var(--serif);font-size:19px;color:var(--c)}
+.drow .rg .tag{display:block;font-family:var(--ui);font-size:11px;color:var(--slate2)}
+.barwrap{position:relative;height:34px;background:var(--ink2);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex}
+.seg{height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;color:#0E1B2E;font-weight:600;transition:width .5s}
+.seg.prim{background:var(--prim)} .seg.snow{background:var(--snow)} .seg.fx{background:var(--fx)}
+.seg.glow{box-shadow:inset 0 0 0 2px #fff}
+.drow .out{text-align:right;font-family:var(--mono);font-size:14px}
+.drow .out .db{font-size:22px;font-weight:600}
+.drow .out .st{font-size:12px}
+.insight{margin-top:24px;background:var(--ink2);border:1px solid var(--line);border-left:4px solid var(--gold);
+  border-radius:11px;padding:15px 18px;font-size:16px;line-height:1.55;max-width:1000px}
+.insight b{color:var(--gold);font-weight:500}
+
+/* synthesis */
+.syn h2{font-family:var(--serif);font-size:34px;margin-bottom:8px}
+.syngrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:22px 0}
+.syncard{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;border-top:4px solid var(--c)}
+.syncard h3{font-family:var(--serif);font-size:19px;color:var(--c);margin-bottom:6px}
+.syncard p{margin:0;font-size:14px;color:var(--slate);line-height:1.55}
+.synq{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--gold);text-align:center;margin-top:10px}
+
+.crisisTag{color:var(--red)} .safeTag{color:var(--teal)}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="t">The Chancellor's Game <span>the debrief</span></div>
+  <div class="legend" id="legend"></div>
+</div>
+<div class="stage" id="stage"></div>
+<div class="nav">
+  <button id="prev" onclick="go(-1)">← Back</button>
+  <div class="dots" id="dots"></div>
+  <div style="display:flex;align-items:center;gap:16px">
+    <span class="hint">← → to navigate</span>
+    <button id="next" class="" onclick="go(1)">Next →</button>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   THE CHANCELLOR'S GAME — projected debrief
+   Walks all four regimes through the same four shocks and
+   decomposes each round's debt change into primary / snowball /
+   FX — the mechanism the phones deliberately withheld.
+   Demo uses canonical representative play; a Firebase hook can
+   swap in the real class's per-regime averages.
+   ============================================================ */
+const GHIT=2,IRISE=3,PISHOCK=4,CONF=10,KAPPA=0.4;
+const REG={
+ FlexIT :{name:"FlexIT",  tag:"prints its own money", color:"var(--teal)", b:100,d:2,ibase:4, pi:2, g:1.5,bstar:130,bcrisis:180,c:0.0024,f:0},
+ Eurozone:{name:"Eurozone",tag:"shares a central bank", color:"var(--blue)", b:120,d:1,ibase:4, pi:2, g:1.0,bstar:112,bcrisis:150,c:0.0056,f:0},
+ EM_FX  :{name:"Emerging mkt",tag:"owes in dollars",   color:"var(--amber)",b:80, d:0,ibase:9, pi:8, g:4.0,bstar:60, bcrisis:115,c:0.0067,f:0.7},
+ HighInf:{name:"High inflation",tag:"prices racing",   color:"var(--red)",  b:60, d:3,ibase:25,pi:30,g:3.0,bstar:50, bcrisis:80, c:0.0089,f:0.3},
+};
+const REG_KEYS=Object.keys(REG);
+const cssvar=v=>getComputedStyle(document.documentElement).getPropertyValue(v.replace('var(','').replace(')','')).trim();
+
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+function r1delta(v){return[-2+4*v,0,0,0,(6*v-3*v*v-1),-6*v*v];}
+function r3delta(v){return[0,5*v+8*(1-v)*(1-v),22*(1-v),-3*v,-2*v,10*(v-0.5)];}
+const R2={FlexIT:[[0,0,0,1,0,0],[0,2,0,0,-1,0]],Eurozone:[[-1,0,0,0,0,2],[0,0,0,0,0,-3]],
+ EM_FX:[[0,3,0,0,-1,3],[0,0,20,0,0,-10]],HighInf:[[0,2,0,0,0,1],[0,0,0,0,0,-8]]};
+const R4=[[-4,0,0,0,-1,15],[0,0,0,0,0,-5]];
+function deltaFor(k,r,p){if(r===1)return r1delta(p);if(r===3)return r3delta(p);if(r===2)return R2[k][p];return R4[p];}
+
+/* representative play: the fate each regime typically meets when it mishandles its
+   characteristic risk (EM floats its currency and detonates). */
+const PLAY={FlexIT:[0.40,0,0.05,0],Eurozone:[0.45,0,0.20,0],EM_FX:[0.15,1,1.0,0],HighInf:[0.00,0,0.75,0]};
+
+function computeAll(){
+  const out={};
+  for(const k of REG_KEYS){
+    const R=REG[k];const s={b:R.b,d:R.d,pi:R.pi,g:R.g,cred:R.cred??({FlexIT:90,Eurozone:70,EM_FX:40,HighInf:25})[k],crisis:false};
+    const traj=[R.b], dec=[];
+    for(let r=1;r<=4;r++){
+      const [dd,iex,de,dpi,dg,dcred]=deltaFor(k,r,PLAY[k][r-1]);
+      const gG=r===1?-GHIT:0,piG=r===3?PISHOCK:0,cf=r===4?CONF:0,ig=r>=2?IRISE:0;
+      s.d+=dd;s.pi+=piG+dpi;s.g+=gG+dg;s.cred=clamp(s.cred-cf+dcred,0,100);
+      const be=R.bstar+(s.cred-50)*KAPPA;
+      const i=R.ibase+ig+iex+R.c*Math.pow(Math.max(0,s.b-be),2);
+      const primary=s.d, snow=(i-s.pi-s.g)/100*s.b, fx=R.f*de/100*s.b;
+      const crossed = !s.crisis && (s.b+primary+snow+fx>=R.bcrisis);
+      s.b+=primary+snow+fx; if(s.b>=R.bcrisis)s.crisis=true;
+      dec.push({primary,snow,fx,b:s.b,i,g:s.g,crossed});
+      traj.push(s.b);
+    }
+    out[k]={traj,dec,final:s.b,crisis:s.crisis};
+  }
+  return out;
+}
+/* >>> FIREBASE <<<  to debrief the REAL class instead of canonical play:
+   read rooms/ROOM/rounds/{1..4} averaged per regime, feed those picks through
+   deltaFor + the same loop above. The decomposition and charts render unchanged. */
+const D=computeAll();
+
+/* ---------- shocks ---------- */
+const SH=[
+ {name:"Global recession", term:"g", sub:"Growth falls for everyone. The primary balance and a rising snowball do the work — but no one is truly tested yet."},
+ {name:"Global rate rise",  term:"i", sub:"The world's interest rate jumps 3 points. Watch the emerging market: it owes in dollars, so a depreciation mechanically inflates the whole stock — it cannot print dollars."},
+ {name:"Inflation shock",   term:"π", sub:"The same 4-point price surge hits every desk. For a stable economy the snowball stays walkable; for the fragile one, the risk premium spikes and the yield rockets."},
+ {name:"Confidence shock",  term:"risk premium", sub:"Markets reprice the risk premium. Past a country's cliff the snowball runs away — debt grows under its own weight, and consolidation can slow it, not stop it."},
+];
+const INSIGHT=[
+ `Everyone's <b>snowball</b> ticks up as growth falls, but the moves are small. High headline debt is not yet danger — <b>Japan starts at 250%, Argentina at 80%</b>, and it is the smaller number that will break first.`,
+ `Only the emerging market carries an <b>FX bar</b>. A depreciation <b>mechanically inflates its dollar debt by +11 points of GDP in one round</b> — because it cannot print dollars. Economists call it <b>the original sin</b>; no economy that borrows in its own currency ever faces it.`,
+ `Identical inflation shock, opposite fates. The stable economy's yield holds near 14%; the emerging market's <b>rockets to 30%</b> as the risk premium spikes, and its snowball alone adds <b>+20</b>, pushing it over the cliff. This is <b>r &gt; g</b> made visible.`,
+ `Past the cliff the emerging market's snowball hits <b>+33</b> even while it consolidates — debt grows under its own weight, and the runaway is nonlinear. The others absorb the same shock, because they can create their own currency, or because their debt was never close to the edge.`,
+];
+
+/* ---------- steps ---------- */
+const STEPS=[stepTitle, stepReveal, ()=>stepRound(1), ()=>stepRound(2), ()=>stepRound(3), ()=>stepRound(4), stepSynth];
+let cur=0;
+const stage=document.getElementById('stage');
+
+function stepTitle(){
+  return `<div class="title">
+    <h1>Same game,<br>different rules.</h1>
+    <div class="q">Why is Argentina forced to slash public spending, whereas Japan plans on increasing it?</div>
+    <div class="sub">Forty-five of you ran four economies through the very same four shocks. You drew different rulebooks — and that, not the size of the debt, decided who survived. Let's see what your phones didn't show you.</div>
+  </div>`;
+}
+
+function trajChart(){
+  const W=760,H=440,pl=44,pr=120,pt=24,pb=40;
+  const allb=REG_KEYS.flatMap(k=>D[k].traj).concat(REG_KEYS.map(k=>REG[k].bcrisis));
+  const lo=Math.min(...allb)*0.9, hi=Math.max(...allb)*1.03;
+  const x=i=>pl+i/4*(W-pl-pr);
+  const y=v=>(H-pb)-(v-lo)/(hi-lo)*(H-pt-pb);
+  const xlabs=["start","R1","R2","R3","R4"].map((t,i)=>`<text x="${x(i)}" y="${H-14}" text-anchor="middle" font-size="13" fill="var(--slate2)">${t}</text>`).join('');
+  let lines="", cliffs="", ends="";
+  for(const k of REG_KEYS){
+    const R=REG[k],col=R.color,tr=D[k].traj;
+    const pts=tr.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+    lines+=`<polyline points="${pts}" fill="none" stroke="${col}" stroke-width="3"/>`;
+    tr.forEach((v,i)=>{lines+=`<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3.5" fill="${col}"/>`;});
+    // cliff tick at right
+    const cy=y(R.bcrisis);
+    cliffs+=`<line x1="${pl}" y1="${cy.toFixed(1)}" x2="${(W-pr+8).toFixed(1)}" y2="${cy.toFixed(1)}" stroke="${col}" stroke-width="1" stroke-dasharray="3 4" opacity="0.4"/>
+      <text x="${W-pr+14}" y="${(cy+4).toFixed(1)}" font-size="12" fill="${col}" opacity="0.85">cliff ${R.bcrisis}</text>`;
+    // endpoint label
+    const fb=D[k].final, fy=y(fb);
+    ends+=`<text x="${x(4)+8}" y="${(fy+4).toFixed(1)}" font-size="13" fill="${col}" font-weight="600">${R.name} ${Math.round(fb)}%${D[k].crisis?' ✕':''}</text>`;
+    // crisis crossing marker
+    const cr=D[k].dec.findIndex(d=>d.crossed);
+    if(cr>=0){const cx=x(cr+1),ccy=y(D[k].traj[cr+1]);
+      cliffs+=`<circle cx="${cx.toFixed(1)}" cy="${ccy.toFixed(1)}" r="7" fill="none" stroke="var(--red)" stroke-width="2"/>`;}
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">${cliffs}${lines}${ends}${xlabs}</svg>`;
+}
+
+function stepReveal(){
+  const cards=REG_KEYS.map(k=>{
+    const R=REG[k],fb=D[k].final,cr=D[k].crisis,to=Math.round(R.bcrisis-fb);
+    return `<div class="card" style="--c:${R.color}">
+      <div class="r">${R.name}</div>
+      <div class="n">ends <b>${Math.round(fb)}%</b> · cliff ${R.bcrisis}%</div>
+      <div class="st ${cr?'crisisTag':'safeTag'}">${cr?'✕ in crisis':`safe · ${to} pts of room`}</div>
+    </div>`;
+  }).join('');
+  return `<div class="reveal">
+    <div>
+      <div class="head">One set of shocks. Four fates.</div>
+      <div class="punch">The lines start apart and end further apart. Look at the two that nearly touch: <b>the emerging market crosses into crisis at 116%, while FlexIT sails on at 118%</b> — almost the same debt, opposite outcomes, <b>because of the currency, not the ratio</b>. Debt-to-GDP alone told you nothing.</div>
+      ${trajChart()}
+    </div>
+    <div class="side">${cards}</div>
+  </div>`;
+}
+
+function bar(val,cls,glow){
+  // width scaled against a fixed reference so bars are comparable across rounds
+  const REF=36; const w=clamp(Math.abs(val)/REF*100,0,100);
+  if(Math.abs(val)<0.15) return "";
+  return `<div class="seg ${cls} ${glow?'glow':''}" style="width:${w}%">${val>0?'+':''}${val.toFixed(0)}</div>`;
+}
+function stepRound(r){
+  const sh=SH[r-1], idx=r-1;
+  const rows=REG_KEYS.map(k=>{
+    const R=REG[k],d=D[k].dec[idx];
+    const glowFx = (r===2 && k==="EM_FX");
+    const glowSnow = (r===3 && k==="EM_FX");
+    const net=d.primary+d.snow+d.fx;
+    const cross=D[k].dec.slice(0,idx+1).some(x=>x.crossed) || (D[k].dec[idx].b>=R.bcrisis && D[k].crisis);
+    const inCrisis = d.b>=R.bcrisis;
+    return `<div class="drow" style="--c:${R.color}">
+      <div class="rg">${R.name}<span class="tag">${R.tag}</span></div>
+      <div class="barwrap">
+        ${bar(d.primary,'prim',false)}${bar(d.snow,'snow',glowSnow)}${bar(d.fx,'fx',glowFx)}
+      </div>
+      <div class="out">
+        <div class="db" style="color:${inCrisis?'var(--red)':'var(--parch)'}">${Math.round(d.b)}%</div>
+        <div class="st mono" style="color:var(--slate)">Δ ${net>0?'+':''}${net.toFixed(0)} · i ${d.i.toFixed(0)}% · g ${d.g.toFixed(1)}${inCrisis?' <span class="crisisTag">✕ crisis</span>':''}</div>
+      </div>
+    </div>`;
+  }).join('');
+  return `<div>
+    <div class="rhead"><span class="eyebrow">round ${r} of 4</span><h2>${sh.name}</h2>
+      <span class="term">${sh.term}</span></div>
+    <div class="rsub">${sh.sub}</div>
+    <div class="decomp">${rows}</div>
+    <div class="insight">${INSIGHT[idx]}</div>
+  </div>`;
+}
+
+function stepSynth(){
+  return `<div class="syn">
+    <h2>Why Japan, and not Argentina?</h2>
+    <div class="syngrid">
+      <div class="syncard" style="--c:var(--teal)"><h3>The printing press</h3>
+        <p>Own your currency and the central bank can always create it to pay — no forced default; the cost shows up as inflation, not a missed payment. Share a central bank (the eurozone) and that escape hatch is gone.</p></div>
+      <div class="syncard" style="--c:var(--amber)"><h3>The original sin</h3>
+        <p>Owe in dollars and a depreciation mechanically inflates the debt — you cannot print dollars. Japan's debt is in yen it controls; Argentina's is not. That single fact was the FX bar.</p></div>
+      <div class="syncard" style="--c:var(--blue)"><h3>r &gt; g, the snowball</h3>
+        <p>When the real rate on debt outpaces growth, debt grows under its own weight. The same shock sent one yield to 14% and another to 30% — fragility decides how hard the snowball bites.</p></div>
+      <div class="syncard" style="--c:var(--red)"><h3>Where the cliff sits</h3>
+        <p>The danger line isn't a fixed number. Japan carries 250% in calm; Argentina's markets lose faith far lower. High debt isn't the crisis — losing the market's confidence is.</p></div>
+    </div>
+    <div class="synq">The same debt is safe in Tokyo and fatal in Buenos Aires — because of the currency, not the ratio.</div>
+  </div>`;
+}
+
+/* ---------- nav ---------- */
+function renderLegend(){
+  document.getElementById('legend').innerHTML = (cur>=2&&cur<=5)
+    ? `<span><i style="background:var(--prim)"></i>primary balance</span>
+       <span><i style="background:var(--snow)"></i>snowball (r−g)</span>
+       <span><i style="background:var(--fx)"></i>FX revaluation</span>`
+    : "";
+}
+function renderDots(){
+  document.getElementById('dots').innerHTML=STEPS.map((_,i)=>`<i class="${i===cur?'on':''}"></i>`).join('');
+}
+function render(){
+  stage.innerHTML=STEPS[cur]();
+  renderLegend(); renderDots();
+  document.getElementById('prev').disabled = cur===0;
+  document.getElementById('next').disabled = cur===STEPS.length-1;
+}
+function go(d){cur=clamp(cur+d,0,STEPS.length-1);render();}
+window.go=go;
+document.addEventListener('keydown',e=>{
+  if(e.key==="ArrowRight"||e.key===" ")go(1);
+  else if(e.key==="ArrowLeft")go(-1);
+});
+render();
+</script>
+</body>
+</html>
