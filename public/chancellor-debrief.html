@@ -163,15 +163,15 @@ const D=computeAll();
 /* ---------- shocks ---------- */
 const SH=[
  {name:"Global recession", term:"g", sub:"Growth falls for everyone. The primary balance and a rising snowball do the work — but no one is truly tested yet."},
- {name:"Global rate rise",  term:"i", sub:"The world's interest rate jumps 3 points. Watch the emerging market: its debt is priced in dollars, so a sliding currency revalues the whole stock overnight."},
- {name:"Inflation shock",   term:"π", sub:"The same 4-point price surge hits every desk. For a stable economy the snowball stays walkable; for the fragile one, markets flee and the rate rockets."},
- {name:"Confidence shock",  term:"credibility", sub:"Markets reprice risk. Past a country's cliff the snowball runs away under its own weight — consolidation can slow it, not stop it."},
+ {name:"Global rate rise",  term:"i", sub:"The world's interest rate jumps 3 points. Watch the emerging market: it owes in dollars, so a depreciation mechanically inflates the whole stock — it cannot print dollars."},
+ {name:"Inflation shock",   term:"π", sub:"The same 4-point price surge hits every desk. For a stable economy the snowball stays walkable; for the fragile one, the risk premium spikes and the yield rockets."},
+ {name:"Confidence shock",  term:"risk premium", sub:"Markets reprice the risk premium. Past a country's cliff the snowball runs away — debt grows under its own weight, and consolidation can slow it, not stop it."},
 ];
 const INSIGHT=[
  `Everyone's <b>snowball</b> ticks up as growth falls, but the moves are small. High headline debt is not yet danger — <b>Japan starts at 250%, Argentina at 80%</b>, and it is the smaller number that will break first.`,
- `Only the emerging market carries an <b>FX bar</b>. Letting the currency slide 20% revalued its dollar debt by <b>+11 points of GDP in one round</b> — a cost no economy that borrows in its own money ever faces. <b>The currency of your debt is destiny.</b>`,
- `Identical inflation shock, opposite fates. The stable economy's rate holds near 14%; the emerging market's rockets to <b>30%</b> as lenders flee, and its snowball alone adds <b>+20</b>, pushing it over the cliff. This is <b>r &gt; g</b> made visible.`,
- `Past the cliff the emerging market's snowball hits <b>+33</b> even while it consolidates — the runaway is nonlinear. The others absorb the same shock, because they can print, or because their debt was never close to the edge.`,
+ `Only the emerging market carries an <b>FX bar</b>. A depreciation <b>mechanically inflates its dollar debt by +11 points of GDP in one round</b> — because it cannot print dollars. Economists call it <b>the original sin</b>; no economy that borrows in its own currency ever faces it.`,
+ `Identical inflation shock, opposite fates. The stable economy's yield holds near 14%; the emerging market's <b>rockets to 30%</b> as the risk premium spikes, and its snowball alone adds <b>+20</b>, pushing it over the cliff. This is <b>r &gt; g</b> made visible.`,
+ `Past the cliff the emerging market's snowball hits <b>+33</b> even while it consolidates — debt grows under its own weight, and the runaway is nonlinear. The others absorb the same shock, because they can create their own currency, or because their debt was never close to the edge.`,
 ];
 
 /* ---------- steps ---------- */
@@ -182,7 +182,7 @@ const stage=document.getElementById('stage');
 function stepTitle(){
   return `<div class="title">
     <h1>Same game,<br>different rules.</h1>
-    <div class="q">Why is Argentina forced to slash spending, while Japan borrows more?</div>
+    <div class="q">Why is Argentina forced to slash public spending, whereas Japan plans on increasing it?</div>
     <div class="sub">Forty-five of you ran four economies through the very same four shocks. You drew different rulebooks — and that, not the size of the debt, decided who survived. Let's see what your phones didn't show you.</div>
   </div>`;
 }
@@ -227,7 +227,7 @@ function stepReveal(){
   return `<div class="reveal">
     <div>
       <div class="head">One set of shocks. Four fates.</div>
-      <div class="punch">The lines start apart and end further apart. Look at the two that nearly touch: <b>the emerging market crosses into crisis at 116%, while FlexIT sails on at 118%</b> — almost the same debt, opposite outcomes. Debt-to-GDP alone told you nothing. The rulebook told you everything.</div>
+      <div class="punch">The lines start apart and end further apart. Look at the two that nearly touch: <b>the emerging market crosses into crisis at 116%, while FlexIT sails on at 118%</b> — almost the same debt, opposite outcomes, <b>because of the currency, not the ratio</b>. Debt-to-GDP alone told you nothing.</div>
       ${trajChart()}
     </div>
     <div class="side">${cards}</div>
@@ -274,15 +274,15 @@ function stepSynth(){
     <h2>Why Japan, and not Argentina?</h2>
     <div class="syngrid">
       <div class="syncard" style="--c:var(--teal)"><h3>The printing press</h3>
-        <p>Own your currency and you can always pay — the discipline comes through yields and inflation, not default. Share a central bank (the eurozone) and that escape hatch is gone.</p></div>
-      <div class="syncard" style="--c:var(--amber)"><h3>The currency of your debt</h3>
-        <p>Owe in dollars and earn in pesos, and a falling currency revalues your whole debt stock. Japan's debt is in yen it controls; Argentina's is not. That single fact was the FX bar.</p></div>
+        <p>Own your currency and the central bank can always create it to pay — no forced default; the cost shows up as inflation, not a missed payment. Share a central bank (the eurozone) and that escape hatch is gone.</p></div>
+      <div class="syncard" style="--c:var(--amber)"><h3>The original sin</h3>
+        <p>Owe in dollars and a depreciation mechanically inflates the debt — you cannot print dollars. Japan's debt is in yen it controls; Argentina's is not. That single fact was the FX bar.</p></div>
       <div class="syncard" style="--c:var(--blue)"><h3>r &gt; g, the snowball</h3>
-        <p>When the interest rate on debt outpaces growth, debt climbs under its own weight. The same shock sent one rate to 14% and another to 30% — fragility decides how hard the snowball bites.</p></div>
+        <p>When the real rate on debt outpaces growth, debt grows under its own weight. The same shock sent one yield to 14% and another to 30% — fragility decides how hard the snowball bites.</p></div>
       <div class="syncard" style="--c:var(--red)"><h3>Where the cliff sits</h3>
         <p>The danger line isn't a fixed number. Japan carries 250% in calm; Argentina's markets lose faith far lower. High debt isn't the crisis — losing the market's confidence is.</p></div>
     </div>
-    <div class="synq">The same debt is safe in Tokyo and fatal in Buenos Aires. Now you know why.</div>
+    <div class="synq">The same debt is safe in Tokyo and fatal in Buenos Aires — because of the currency, not the ratio.</div>
   </div>`;
 }
 
