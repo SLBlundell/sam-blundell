@@ -195,6 +195,7 @@ const projects = [
 ];
 
 const uniqPages = [
+  { label: 'Slide Deck', href: '/sam-blundell/uniq_slides.pdf', desc: 'Lecture Slides' },
   { label: 'Player Client', href: '/sam-blundell/chancellor-player.html', desc: 'Student phone view' },
   { label: 'Debrief Slides', href: '/sam-blundell/chancellor-debrief.html', desc: 'Projected teaching debrief' },
 ];
