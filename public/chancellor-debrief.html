@@ -13,301 +13,324 @@
   --parch:#F2ECDC; --slate:#90A2BC; --slate2:#5d728f;
   --teal:#3FB89A; --blue:#6E9BE0; --amber:#E8A33D; --red:#E0584F; --gold:#D9A441;
   --serif:'Fraunces',Georgia,serif; --ui:'Space Grotesk',system-ui,sans-serif; --mono:'IBM Plex Mono',monospace;
-  --prim:#6E9BE0; --snow:#E8A33D; --fx:#E0584F;
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 body{background:var(--ink);color:var(--parch);font-family:var(--ui);-webkit-font-smoothing:antialiased;
   height:100vh;overflow:hidden;display:flex;flex-direction:column}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
-h1,h2,h3{margin:0;font-weight:500}
+h1,h2,h3,h4{margin:0;font-weight:500}
 
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:16px 34px;border-bottom:1px solid var(--line)}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:15px 34px;border-bottom:1px solid var(--line)}
 .topbar .t{font-family:var(--serif);font-size:19px}
 .topbar .t span{color:var(--slate);font-style:italic;font-size:15px;margin-left:10px}
-.legend{display:flex;gap:16px;font-size:12px;color:var(--slate)}
-.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
-
-.stage{flex:1;padding:30px 44px;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
-
-.nav{display:flex;align-items:center;justify-content:space-between;padding:14px 34px;border-top:1px solid var(--line)}
-.dots{display:flex;gap:9px}
-.dots i{width:9px;height:9px;border-radius:50%;background:var(--ink3);border:1px solid var(--line)}
-.dots i.on{background:var(--gold);border-color:var(--gold)}
-button{font-family:var(--ui);font-size:14px;font-weight:500;color:var(--parch);background:var(--ink3);
-  border:1px solid var(--line);border-radius:9px;padding:10px 20px;cursor:pointer;transition:background .14s,transform .08s}
-button:hover{background:#243a55}button:active{transform:scale(.98)}button:disabled{opacity:.35;cursor:default}
+.stage{flex:1;padding:26px 44px;display:flex;flex-direction:column;justify-content:center;overflow:hidden}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:13px 34px;border-top:1px solid var(--line)}
+.navdots{display:flex;gap:8px}
+.navdots i{width:8px;height:8px;border-radius:50%;background:var(--ink3);border:1px solid var(--line)}
+.navdots i.on{background:var(--gold);border-color:var(--gold)}
+.nav button{font-family:var(--ui);font-size:14px;font-weight:500;color:var(--parch);background:var(--ink3);
+  border:1px solid var(--line);border-radius:9px;padding:10px 20px;cursor:pointer}
+.nav button:hover{background:#243a55}.nav button:disabled{opacity:.35;cursor:default}
 .hint{font-size:12px;color:var(--slate2)}
+.eyebrow{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate2);margin-bottom:6px}
 
-/* title step */
-.title h1{font-family:var(--serif);font-size:58px;line-height:1.02;letter-spacing:.3px}
-.title .q{font-family:var(--serif);font-style:italic;font-size:26px;color:var(--gold);margin-top:22px}
-.title .sub{font-size:16px;color:var(--slate);margin-top:24px;max-width:720px;line-height:1.6}
+/* title */
+.title h1{font-family:var(--serif);font-size:56px;line-height:1.02}
+.title .q{font-family:var(--serif);font-style:italic;font-size:25px;color:var(--gold);margin-top:20px}
+.title .sub{font-size:16px;color:var(--slate);margin-top:22px;max-width:760px;line-height:1.6}
 
-/* reveal step */
-.reveal{display:grid;grid-template-columns:1fr 300px;gap:34px;align-items:center;height:100%}
-.reveal .head{font-family:var(--serif);font-size:30px;line-height:1.1;margin-bottom:8px}
-.reveal .punch{font-size:16px;color:var(--slate);line-height:1.6}
-.reveal .punch b{color:var(--parch);font-weight:500}
-.side .card{background:var(--ink2);border:1px solid var(--line);border-left:4px solid var(--c);
-  border-radius:11px;padding:13px 15px;margin-bottom:11px}
-.side .card .r{font-family:var(--serif);font-size:17px;color:var(--c)}
-.side .card .n{font-family:var(--mono);font-size:14px;margin-top:3px}
-.side .card .n b{color:var(--parch)}
-.side .card .st{font-size:12px;margin-top:3px}
+/* screenshot slide */
+.shotslide{display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:center;height:100%}
+.setup h2{font-family:var(--serif);font-size:38px;line-height:1.05;margin-bottom:16px}
+.setuptext{font-size:18px;line-height:1.6;color:var(--parch);max-width:560px}
+.hintline{margin-top:22px;font-size:14px;color:var(--slate2)}
 
-/* round steps */
-.rhead{display:flex;align-items:baseline;gap:16px;margin-bottom:6px}
-.rhead .eyebrow{font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:var(--slate2)}
-.rhead h2{font-family:var(--serif);font-size:34px}
-.rhead .term{font-family:var(--mono);color:var(--gold);border:1px solid var(--gold);border-radius:6px;padding:1px 9px;font-size:20px}
-.rsub{font-size:15px;color:var(--slate);margin-bottom:22px;max-width:900px;line-height:1.5}
-.decomp{display:flex;flex-direction:column;gap:14px}
-.drow{display:grid;grid-template-columns:150px 1fr 210px;align-items:center;gap:20px}
-.drow .rg{font-family:var(--serif);font-size:19px;color:var(--c)}
-.drow .rg .tag{display:block;font-family:var(--ui);font-size:11px;color:var(--slate2)}
-.barwrap{position:relative;height:34px;background:var(--ink2);border:1px solid var(--line);border-radius:8px;overflow:hidden;display:flex}
-.seg{height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;color:#0E1B2E;font-weight:600;transition:width .5s}
-.seg.prim{background:var(--prim)} .seg.snow{background:var(--snow)} .seg.fx{background:var(--fx)}
-.seg.glow{box-shadow:inset 0 0 0 2px #fff}
-.drow .out{text-align:right;font-family:var(--mono);font-size:14px}
-.drow .out .db{font-size:22px;font-weight:600}
-.drow .out .st{font-size:12px}
-.insight{margin-top:24px;background:var(--ink2);border:1px solid var(--line);border-left:4px solid var(--gold);
-  border-radius:11px;padding:15px 18px;font-size:16px;line-height:1.55;max-width:1000px}
-.insight b{color:var(--gold);font-weight:500}
+/* phone reproduction */
+.phoneframe{width:340px;margin:0 auto;background:var(--ink);border:9px solid #060f1c;border-radius:32px;
+  overflow:hidden;box-shadow:0 22px 50px rgba(0,0,0,.55)}
+.shot{font-family:var(--ui)}
+.shot .band{padding:13px 15px;display:flex;align-items:center;justify-content:space-between}
+.shot .nm{font-family:var(--serif);font-size:18px;line-height:1;color:var(--ink)}
+.shot .tg{font-size:11px;margin-top:3px;opacity:.85;color:var(--ink)}
+.shot .rdots{display:flex;gap:5px;justify-content:flex-end;margin-bottom:4px}
+.shot .rdots i{width:7px;height:7px;border-radius:50%;background:rgba(0,0,0,.25);display:inline-block}
+.shot .rdots i.on{background:#08131f}.shot .rdots i.done{background:rgba(0,0,0,.5)}
+.shot .rnum{font-size:11px;text-align:right;color:var(--ink)}
+.shot .tline{height:4px;background:var(--ink3)}
+.shot .tline .f{height:100%;background:var(--gold)}
+.shot .sbody{padding:13px 14px 16px;display:flex;flex-direction:column;gap:12px}
+.shot .meter .top{display:flex;justify-content:space-between;font-size:10.5px;color:var(--slate);margin-bottom:5px}
+.shot .meter .top b{color:var(--red)}.shot .meter .top .now{color:var(--parch)}
+.shot .mtrack{position:relative;height:11px;border-radius:6px;overflow:hidden;display:flex}
+.shot .seg{height:100%}
+.shot .mk{position:absolute;top:-3px;width:3px;height:17px;background:var(--parch);border-radius:2px}
+.shot .shock{border-radius:11px;padding:10px 12px;display:flex;gap:9px;align-items:flex-start;
+  background:var(--ink2);border:1px solid var(--line);border-left:4px solid var(--gold)}
+.shot .shock .ic{font-size:16px}.shot .shock .s{font-size:12px;color:var(--parch)}
+.shot .shock b{font-weight:500}
+.shot .mag{margin-top:6px;font-size:12.5px;color:var(--slate)}
+.shot .mag .mv{font-family:var(--mono);font-size:19px;font-weight:600;color:var(--gold);margin-right:5px}
+.shot .eq{background:var(--ink2);border:1px solid var(--line);border-radius:10px;padding:9px;text-align:center;
+  font-family:var(--mono);font-size:12px;color:var(--parch)}
+.shot .eq .pill{padding:1px 5px;border-radius:5px;background:rgba(217,164,65,.18);color:var(--gold)}
+.shot .lever h3{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--slate2);margin-bottom:9px;text-align:center}
+.shot .choices{display:flex;flex-direction:column;gap:8px}
+.shot .opt{background:var(--ink2);border:1px solid var(--line);border-radius:11px;padding:11px;text-align:center}
+.shot .opt .ot{display:block;font-size:15px;font-weight:500;color:var(--parch)}
+.shot .opt .os{display:block;font-size:11.5px;color:var(--slate);margin-top:2px}
+.shot .sliderbox{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:14px}
+.shot .sends{display:flex;justify-content:space-between;font-size:12.5px;font-weight:500;margin-bottom:11px}
+.shot .sends .l{color:var(--teal)}.shot .sends .r{color:var(--amber)}
+.shot input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:5px;
+  background:linear-gradient(90deg,var(--teal),var(--amber));outline:none;pointer-events:none}
+.shot input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:24px;height:24px;border-radius:50%;
+  background:var(--parch);border:3px solid var(--ink)}
+.shot .scale{display:flex;justify-content:space-between;padding:0 2px;margin-top:8px;font-family:var(--mono);font-size:10.5px;color:var(--slate2)}
+.shot .readout{text-align:center;margin-top:11px;font-size:12px;color:var(--slate)}
+.shot .readout .rv{display:block;font-family:var(--mono);font-size:19px;font-weight:600;color:var(--parch)}
+.shot .cta{background:var(--gold);color:#2a2000;font-weight:500;font-size:14px;padding:11px;border-radius:11px;width:100%;margin-top:13px;border:none}
 
-/* synthesis */
-.syn h2{font-family:var(--serif);font-size:34px;margin-bottom:8px}
-.syngrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin:22px 0}
-.syncard{background:var(--ink2);border:1px solid var(--line);border-radius:12px;padding:16px 18px;border-top:4px solid var(--c)}
-.syncard h3{font-family:var(--serif);font-size:19px;color:var(--c);margin-bottom:6px}
-.syncard p{margin:0;font-size:14px;color:var(--slate);line-height:1.55}
-.synq{font-family:var(--serif);font-style:italic;font-size:22px;color:var(--gold);text-align:center;margin-top:10px}
+/* fork slide */
+.forkslide{height:100%;display:flex;flex-direction:column;justify-content:center}
+.forkslide h2{font-family:var(--serif);font-size:32px;margin-bottom:10px}
+.forkwrap{display:grid;grid-template-columns:1.35fr 1fr;gap:36px;align-items:center}
+.explain{display:flex;flex-direction:column;gap:18px}
+.ex h4{font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex:nth-child(1) h4{color:var(--gold)} .ex:nth-child(2) h4{color:var(--teal)}
+.ex p{margin:0;font-size:16px;line-height:1.55;color:var(--parch)}
 
-.crisisTag{color:var(--red)} .safeTag{color:var(--teal)}
+/* synth */
+.syn h2{font-family:var(--serif);font-size:36px;margin-bottom:14px}
+.synlead{font-size:17px;line-height:1.6;color:var(--slate);max-width:900px}
+.synq{font-family:var(--serif);font-style:italic;font-size:24px;color:var(--gold);margin-top:26px;max-width:900px;line-height:1.35}
 </style>
 </head>
 <body>
 <div class="topbar">
   <div class="t">The Chancellor's Game <span>the debrief</span></div>
-  <div class="legend" id="legend"></div>
+  <div class="eyebrow" id="crumb" style="margin:0"></div>
 </div>
 <div class="stage" id="stage"></div>
 <div class="nav">
   <button id="prev" onclick="go(-1)">← Back</button>
-  <div class="dots" id="dots"></div>
+  <div class="navdots" id="dots"></div>
   <div style="display:flex;align-items:center;gap:16px">
     <span class="hint">← → to navigate</span>
-    <button id="next" class="" onclick="go(1)">Next →</button>
+    <button id="next" onclick="go(1)">Next →</button>
   </div>
 </div>
 
 <script>
 /* ============================================================
-   THE CHANCELLOR'S GAME — projected debrief
-   Walks all four regimes through the same four shocks and
-   decomposes each round's debt change into primary / snowball /
-   FX — the mechanism the phones deliberately withheld.
-   Demo uses canonical representative play; a Firebase hook can
-   swap in the real class's per-regime averages.
+   THE CHANCELLOR'S GAME — debrief (per-regime rounds)
+   For each economy we feature the one round that most exposes
+   its rulebook: first the player's actual screen, then the two
+   debt paths that decision produces — and why they diverge.
+   All paths are computed by the same engine the students played.
    ============================================================ */
 const GHIT=2,IRISE=3,PISHOCK=4,CONF=10,KAPPA=0.4;
 const REG={
- FlexIT :{name:"FlexIT",  tag:"prints its own money", color:"var(--teal)", b:100,d:2,ibase:4, pi:2, g:1.5,bstar:130,bcrisis:180,c:0.0024,f:0},
- Eurozone:{name:"Eurozone",tag:"shares a central bank", color:"var(--blue)", b:120,d:1,ibase:4, pi:2, g:1.0,bstar:112,bcrisis:150,c:0.0056,f:0},
- EM_FX  :{name:"Emerging mkt",tag:"owes in dollars",   color:"var(--amber)",b:80, d:0,ibase:9, pi:8, g:4.0,bstar:60, bcrisis:115,c:0.0067,f:0.7},
- HighInf:{name:"High inflation",tag:"prices racing",   color:"var(--red)",  b:60, d:3,ibase:25,pi:30,g:3.0,bstar:50, bcrisis:80, c:0.0089,f:0.3},
+ FlexIT :{name:'FlexIT',tag:'advanced · borrows in its own currency',color:'var(--teal)',b:100,d:2,ibase:4,pi:2,g:1.5,bstar:130,bcrisis:180,warn:165,c:0.0024,f:0,cred:90},
+ Eurozone:{name:'Eurozone',tag:'you share a central bank',color:'var(--blue)',b:120,d:1,ibase:4,pi:2,g:1.0,bstar:112,bcrisis:150,warn:143,c:0.0056,f:0,cred:70},
+ EM_FX :{name:'Emerging market',tag:'borrows in dollars · original sin',color:'var(--amber)',b:80,d:0,ibase:9,pi:8,g:4.0,bstar:60,bcrisis:115,warn:105,c:0.0067,f:0.7,cred:40},
+ HighInf:{name:'High inflation',tag:'prices already racing',color:'var(--red)',b:60,d:3,ibase:25,pi:30,g:3.0,bstar:50,bcrisis:80,warn:76,c:0.0089,f:0.3,cred:25},
 };
-const REG_KEYS=Object.keys(REG);
-const cssvar=v=>getComputedStyle(document.documentElement).getPropertyValue(v.replace('var(','').replace(')','')).trim();
-
 const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 function r1delta(v){return[-2+4*v,0,0,0,(6*v-3*v*v-1),-6*v*v];}
 function r3delta(v){return[0,5*v+8*(1-v)*(1-v),22*(1-v),-3*v,-2*v,10*(v-0.5)];}
 const R2={FlexIT:[[0,0,0,1,0,0],[0,2,0,0,-1,0]],Eurozone:[[-1,0,0,0,0,2],[0,0,0,0,0,-3]],
  EM_FX:[[0,3,0,0,-1,3],[0,0,20,0,0,-10]],HighInf:[[0,2,0,0,0,1],[0,0,0,0,0,-8]]};
 const R4=[[-4,0,0,0,-1,15],[0,0,0,0,0,-5]];
-function deltaFor(k,r,p){if(r===1)return r1delta(p);if(r===3)return r3delta(p);if(r===2)return R2[k][p];return R4[p];}
+function deltaFor(k,r,val,bin){if(r===1)return r1delta(val);if(r===3)return r3delta(val);if(r===2)return R2[k][bin];return R4[bin];}
+function step(s,k,round,delta){const R=REG[k];const[dd,iex,de,dpi,dg,dcred]=delta;
+ const gG=round===1?-GHIT:0,piG=round===3?PISHOCK:0,conf=round===4?CONF:0,ig=round>=2?IRISE:0;
+ s.d+=dd;s.pi+=piG+dpi;s.g+=gG+dg;s.cred=clamp(s.cred-conf+dcred,0,100);
+ const be=R.bstar+(s.cred-50)*KAPPA;const i=R.ibase+ig+iex+R.c*Math.pow(Math.max(0,s.b-be),2);
+ s.b+=s.d+(i-s.pi-s.g)/100*s.b+R.f*de/100*s.b;if(s.b>=R.bcrisis)s.crisis=true;return s;}
 
-/* representative play: the fate each regime typically meets when it mishandles its
-   characteristic risk (EM floats its currency and detonates). */
-const PLAY={FlexIT:[0.40,0,0.05,0],Eurozone:[0.45,0,0.20,0],EM_FX:[0.15,1,1.0,0],HighInf:[0.00,0,0.75,0]};
+const SHOCKMETA={
+ 1:{name:'Global recession',icon:'▼',blurb:'growth falls for everyone. Borrow to soften it, or guard the budget?',magVal:'−2%',magLab:'to growth'},
+ 2:{name:'Global rate rise',icon:'↑',blurb:'borrowing just got dearer for everyone.',magVal:'+3 pts',magLab:'to interest rates'},
+};
 
-function computeAll(){
-  const out={};
-  for(const k of REG_KEYS){
-    const R=REG[k];const s={b:R.b,d:R.d,pi:R.pi,g:R.g,cred:R.cred??({FlexIT:90,Eurozone:70,EM_FX:40,HighInf:25})[k],crisis:false};
-    const traj=[R.b], dec=[];
-    for(let r=1;r<=4;r++){
-      const [dd,iex,de,dpi,dg,dcred]=deltaFor(k,r,PLAY[k][r-1]);
-      const gG=r===1?-GHIT:0,piG=r===3?PISHOCK:0,cf=r===4?CONF:0,ig=r>=2?IRISE:0;
-      s.d+=dd;s.pi+=piG+dpi;s.g+=gG+dg;s.cred=clamp(s.cred-cf+dcred,0,100);
-      const be=R.bstar+(s.cred-50)*KAPPA;
-      const i=R.ibase+ig+iex+R.c*Math.pow(Math.max(0,s.b-be),2);
-      const primary=s.d, snow=(i-s.pi-s.g)/100*s.b, fx=R.f*de/100*s.b;
-      const crossed = !s.crisis && (s.b+primary+snow+fx>=R.bcrisis);
-      s.b+=primary+snow+fx; if(s.b>=R.bcrisis)s.crisis=true;
-      dec.push({primary,snow,fx,b:s.b,i,g:s.g,crossed});
-      traj.push(s.b);
-    }
-    out[k]={traj,dec,final:s.b,crisis:s.crisis};
-  }
-  return out;
+/* one featured round per regime.  base = the other rounds' choices (held fixed);
+   A = prudent option, B = risky option.  override: bin -> index, slider -> value. */
+const FEATURE={
+ FlexIT:{round:2,kind:'bin',base:[0.40,null,0.05,0],
+   A:{t:'Hold',gloss:'keep your rate steady',override:0},
+   B:{t:'Hike',gloss:'raise your interest rate',override:1},
+   setup:"FlexIT borrows in its own currency and lets it float. The world's interest rate has just jumped — hold, and let your currency take the strain, or hike to defend it?",
+   forkTitle:'Let the currency take it',
+   whyDiverge:"Hold lets the exchange rate absorb the shock: the currency slips, a little extra inflation quietly erodes the debt, and growth is untouched. Hike defends a rate the market never forced you to defend, denting growth — so the snowball is bigger and the debt ends about 9 points higher.",
+   whyParticular:"FlexIT borrows in its own currency, so a weaker currency does not raise the debt burden — the exchange rate is a shock-absorber. That is a luxury the dollar borrower simply does not have."},
+ Eurozone:{round:2,kind:'bin',base:[0.45,null,0.20,0],
+   A:{t:'Tighten',gloss:'cut spending — no rate lever',override:0},
+   B:{t:'Wait',gloss:'make no change',override:1},
+   setup:"The eurozone shares a central bank, so it has no interest rate of its own to move. When borrowing costs rise, its only lever is the budget: tighten, or wait?",
+   forkTitle:'No rate to cut',
+   whyDiverge:"With no rate lever, the response to costlier borrowing has to be fiscal. Tightening the primary balance keeps the debt in check. Waiting causes the snowball to drift debt to 148%.",
+   whyParticular:"A eurozone member imports its anchor and cannot adjust — it can move neither its own rate nor its own currency. Fiscal policy is the only tool it has left, and it cannot create euros to escape."},
+ EM_FX:{round:2,kind:'bin',base:[0.15,null,1.0,0],
+   A:{t:'Defend',gloss:'raise rates to hold the currency',override:0},
+   B:{t:'Float',gloss:'let the currency move',override:1},
+   setup:"This emerging market borrows in dollars. Global rates have risen and its currency is under pressure. Defend it with higher rates or let it float?",
+   forkTitle:'The original sin',
+   whyDiverge:"Defend raises rates to hold the currency: costly for growth, but the debt stays put and survives at 109%. Float lets the currency slide and a depreciation mechanically inflates the dollar debt by +11 points in a single round.",
+   whyParticular:"The emerging market owes in dollars it cannot print. For FlexIT a falling currency was harmless; here the very same decision revalues the whole debt stock. Same move, opposite results."},
+ HighInf:{round:1,kind:'sld',base:[null,0,0.75,0],
+   sliderHead:'Set your primary balance',left:'Cut',right:'Spend',scale:['−2%','−1%','0','+1%','+2%'],
+   A:{t:'Cut',override:0},
+   B:{t:'Spend',override:1},
+   setup:"Prices here are already racing. A global recession hits, and the textbook response is to spend and support the economy. But with inflation loose, what is the right move?",
+   forkTitle:"You can't spend your way out",
+   whyDiverge:"Cut holds the debt near 70%. Spend (the standard recession stimulus) pours money into an economy where prices are already racing: the deficit and inflation both climb, and debt soars.",
+   whyParticular:"With no credible anchor, there is no room to stimulate — fresh spending just feeds the inflation already loose, and markets demand a punishing yield. A stable, anchored economy can borrow through a recession; a high-inflation one cannot."},
+};
+
+function fullPath(regKey, override){
+ const c=FEATURE[regKey], R=REG[regKey];
+ const s={b:R.b,d:R.d,pi:R.pi,g:R.g,cred:R.cred,crisis:false}; const tr=[R.b]; let crossRound=-1;
+ for(let r=1;r<=4;r++){
+   let pick = (r===c.round) ? override : c.base[r-1];
+   const isBin=(r===2||r===4);
+   const before=s.b;
+   step(s,regKey,r,isBin?deltaFor(regKey,r,0,pick):deltaFor(regKey,r,pick,0));
+   if(crossRound<0 && before<R.bcrisis && s.b>=R.bcrisis) crossRound=r;
+   tr.push(s.b);
+ }
+ return {tr,final:s.b,crisis:s.crisis,crossRound};
 }
-/* >>> FIREBASE <<<  to debrief the REAL class instead of canonical play:
-   read rooms/ROOM/rounds/{1..4} averaged per regime, feed those picks through
-   deltaFor + the same loop above. The decomposition and charts render unchanged. */
-const D=computeAll();
 
-/* ---------- shocks ---------- */
-const SH=[
- {name:"Global recession", term:"g", sub:"Growth falls for everyone. The primary balance and a rising snowball do the work — but no one is truly tested yet."},
- {name:"Global rate rise",  term:"i", sub:"The world's interest rate jumps 3 points. Watch the emerging market: it owes in dollars, so a depreciation mechanically inflates the whole stock — it cannot print dollars."},
- {name:"Inflation shock",   term:"π", sub:"The same 4-point price surge hits every desk. For a stable economy the snowball stays walkable; for the fragile one, the risk premium spikes and the yield rockets."},
- {name:"Confidence shock",  term:"risk premium", sub:"Markets reprice the risk premium. Past a country's cliff the snowball runs away — debt grows under its own weight, and consolidation can slow it, not stop it."},
-];
-const INSIGHT=[
- `Everyone's <b>snowball</b> ticks up as growth falls, but the moves are small. High headline debt is not yet danger — <b>Japan starts at 250%, Argentina at 80%</b>, and it is the smaller number that will break first.`,
- `Only the emerging market carries an <b>FX bar</b>. A depreciation <b>mechanically inflates its dollar debt by +11 points of GDP in one round</b> — because it cannot print dollars. Economists call it <b>the original sin</b>; no economy that borrows in its own currency ever faces it.`,
- `Identical inflation shock, opposite fates. The stable economy's yield holds near 14%; the emerging market's <b>rockets to 30%</b> as the risk premium spikes, and its snowball alone adds <b>+20</b>, pushing it over the cliff. This is <b>r &gt; g</b> made visible.`,
- `Past the cliff the emerging market's snowball hits <b>+33</b> even while it consolidates — debt grows under its own weight, and the runaway is nonlinear. The others absorb the same shock, because they can create their own currency, or because their debt was never close to the edge.`,
-];
+function eqStrip(round){
+ const sym=round===1?'g':round===2?'i':round===3?'π':null;
+ if(!sym) return `<div class="eq">markets are repricing your <span class="pill">credibility</span></div>`;
+ const t=x=>sym===x?`<span class="pill">${x}</span>`:x;
+ return `<div class="eq">Δdebt = d + (${t('i')} − ${t('π')} − ${t('g')}) × debt</div>`;
+}
+
+function playerShot(regKey){
+ const R=REG[regKey],c=FEATURE[regKey],round=c.round,sm=SHOCKMETA[round];
+ const enter=fullPath(regKey,c.A.override).tr[round-1];
+ const lo=R.b*0.9,hi=R.bcrisis,span=hi-lo,wWarn=(R.warn-lo)/span*100,mk=clamp((enter-lo)/span*100,0,100);
+ const meter=`<div class="meter"><div class="top"><span class="now">debt ${Math.round(enter)}%</span><span><b>crisis ${R.bcrisis}%</b></span></div>
+   <div class="mtrack"><div class="seg" style="width:${wWarn}%;background:rgba(63,184,154,.5)"></div><div class="seg" style="width:${Math.max(0,100-wWarn)}%;background:rgba(224,88,79,.5)"></div><div class="mk" style="left:${mk}%"></div></div></div>`;
+ let lever;
+ if(c.kind==='bin'){
+   lever=`<div class="lever"><h3>Your move</h3><div class="choices">
+     <button class="opt"><span class="ot">${c.A.t}</span><span class="os">${c.A.gloss}</span></button>
+     <button class="opt"><span class="ot">${c.B.t}</span><span class="os">${c.B.gloss}</span></button></div></div>`;
+ }else{
+   lever=`<div class="lever"><h3>${c.sliderHead}</h3><div class="sliderbox">
+     <div class="sends"><span class="l">${c.left}</span><span class="r">${c.right}</span></div>
+     <input type="range" min="0" max="100" value="50"/>
+     <div class="scale">${c.scale.map(t=>`<span>${t}</span>`).join('')}</div>
+     <div class="readout"><span class="rv">balanced budget</span>no change to the deficit</div>
+     <button class="cta">Lock it in</button></div></div>`;
+ }
+ const dots=[0,1,2,3].map(i=>`<i class="${i+1<round?'done':(i+1===round?'on':'')}"></i>`).join('');
+ return `<div class="phoneframe"><div class="shot">
+   <div class="band" style="background:${R.color}"><div><div class="nm">${R.name}</div><div class="tg">${R.tag}</div></div>
+     <div><div class="rdots">${dots}</div><div class="rnum">round ${round} of 4</div></div></div>
+   <div class="tline"><div class="f" style="width:68%"></div></div>
+   <div class="sbody">${meter}
+     <div class="shock"><div class="ic">${sm.icon}</div><div class="s"><b>${sm.name}.</b> ${sm.blurb}<div class="mag"><span class="mv">${sm.magVal}</span>${sm.magLab}</div></div></div>
+     ${eqStrip(round)}${lever}</div></div></div>`;
+}
+
+function forkChart(regKey){
+ const R=REG[regKey],c=FEATURE[regKey];
+ const A=fullPath(regKey,c.A.override), B=fullPath(regKey,c.B.override);
+ const W=680,H=340,pl=38,pr=150,pt=26,pb=38;
+ const all=[...A.tr,...B.tr,R.bcrisis];
+ const lo=Math.min(...all)*0.93, hi=Math.max(...all)*1.03;
+ const x=i=>pl+i/4*(W-pl-pr);
+ const y=v=>(H-pb)-(v-lo)/(hi-lo)*(H-pt-pb);
+ const xlabs=['start','R1','R2','R3','R4'].map((t,i)=>`<text x="${x(i)}" y="${H-12}" text-anchor="middle" font-size="12" fill="var(--slate2)">${t}</text>`).join('');
+ const cy=y(R.bcrisis);
+ const cliff=`<line x1="${pl}" y1="${cy.toFixed(1)}" x2="${W-pr+10}" y2="${cy.toFixed(1)}" stroke="var(--red)" stroke-width="1.2" stroke-dasharray="4 3"/>
+   <text x="${W-pr+14}" y="${(cy+4).toFixed(1)}" font-size="11" fill="var(--red)">cliff ${R.bcrisis}%</text>`;
+ function line(P,col,name){
+   const pts=P.tr.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+   const dots=P.tr.map((v,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3" fill="${col}"/>`).join('');
+   const fy=y(P.final);
+   const lab=`<text x="${x(4)+9}" y="${(fy+4).toFixed(1)}" font-size="13" fill="${col}" font-weight="600">${name} ${Math.round(P.final)}%${P.crisis?' ✕':''}</text>`;
+   let cross='';
+   if(P.crossRound>0){const cx=x(P.crossRound),ccy=y(P.tr[P.crossRound]);cross=`<circle cx="${cx.toFixed(1)}" cy="${ccy.toFixed(1)}" r="7" fill="none" stroke="var(--red)" stroke-width="2"/>`;}
+   return `<polyline points="${pts}" fill="none" stroke="${col}" stroke-width="3"/>${dots}${cross}${lab}`;
+ }
+ return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">
+   ${cliff}${line(A,'var(--teal)',c.A.t)}${line(B,'var(--amber)',c.B.t)}${xlabs}</svg>`;
+}
 
 /* ---------- steps ---------- */
-const STEPS=[stepTitle, stepReveal, ()=>stepRound(1), ()=>stepRound(2), ()=>stepRound(3), ()=>stepRound(4), stepSynth];
+function stepTitle(){
+ return `<div class="title">
+   <h1>Same game,<br>different rules.</h1>
+   <div class="q">Why is Argentina forced to slash public spending, whereas Japan plans on increasing it?</div>
+   <div class="sub">You each ran one economy through the same four shocks. For each regime, here is one round that characterizes its economy.</div>
+ </div>`;
+}
+function stepShot(regKey){
+ const R=REG[regKey],c=FEATURE[regKey],sm=SHOCKMETA[c.round];
+ return `<div class="shotslide">
+   <div class="setup">
+     <div class="eyebrow">${R.name} · round ${c.round}</div>
+     <h2>${sm.name}</h2>
+     <p class="setuptext">${c.setup}</p>
+     <div class="hintline">The screen you saw →</div>
+   </div>
+   ${playerShot(regKey)}
+ </div>`;
+}
+function stepFork(regKey){
+ const R=REG[regKey],c=FEATURE[regKey];
+ return `<div class="forkslide">
+   <div class="eyebrow">${R.name} · the fork</div>
+   <h2>${c.forkTitle}</h2>
+   <div class="forkwrap">
+     ${forkChart(regKey)}
+     <div class="explain">
+       <div class="ex"><h4>Why the paths split</h4><p>${c.whyDiverge}</p></div>
+       <div class="ex"><h4>Why it's particular to this economy</h4><p>${c.whyParticular}</p></div>
+     </div>
+   </div>
+ </div>`;
+}
+function stepSynth(){
+ return `<div class="syn">
+   <h2>Summary</h2>
+   <p class="synlead">The exchange rate cushioned FlexIT and sank the dollar borrower, the eurozone had no rate to cut, and the high-inflation economy couldn't spend through a recession. The same debt-to-GDP ratio is safe in some regimes but fatal in others depending on...</p>
+   <div class="synq">the denomination of its debt (local or foreign), its monetary and exchange rate regime, and how risky investors perceive its debt.</div>
+ </div>`;
+}
+
+const STEPS=[
+ {crumb:'', fn:stepTitle},
+ {crumb:'FlexIT · the decision', fn:()=>stepShot('FlexIT')},
+ {crumb:'FlexIT · the fork', fn:()=>stepFork('FlexIT')},
+ {crumb:'Eurozone · the decision', fn:()=>stepShot('Eurozone')},
+ {crumb:'Eurozone · the fork', fn:()=>stepFork('Eurozone')},
+ {crumb:'Emerging market · the decision', fn:()=>stepShot('EM_FX')},
+ {crumb:'Emerging market · the fork', fn:()=>stepFork('EM_FX')},
+ {crumb:'High inflation · the decision', fn:()=>stepShot('HighInf')},
+ {crumb:'High inflation · the fork', fn:()=>stepFork('HighInf')},
+ {crumb:'', fn:stepSynth},
+];
 let cur=0;
 const stage=document.getElementById('stage');
-
-function stepTitle(){
-  return `<div class="title">
-    <h1>Same game,<br>different rules.</h1>
-    <div class="q">Why is Argentina forced to slash public spending, whereas Japan plans on increasing it?</div>
-    <div class="sub">Forty-five of you ran four economies through the very same four shocks. You drew different rulebooks — and that, not the size of the debt, decided who survived. Let's see what your phones didn't show you.</div>
-  </div>`;
-}
-
-function trajChart(){
-  const W=760,H=440,pl=44,pr=120,pt=24,pb=40;
-  const allb=REG_KEYS.flatMap(k=>D[k].traj).concat(REG_KEYS.map(k=>REG[k].bcrisis));
-  const lo=Math.min(...allb)*0.9, hi=Math.max(...allb)*1.03;
-  const x=i=>pl+i/4*(W-pl-pr);
-  const y=v=>(H-pb)-(v-lo)/(hi-lo)*(H-pt-pb);
-  const xlabs=["start","R1","R2","R3","R4"].map((t,i)=>`<text x="${x(i)}" y="${H-14}" text-anchor="middle" font-size="13" fill="var(--slate2)">${t}</text>`).join('');
-  let lines="", cliffs="", ends="";
-  for(const k of REG_KEYS){
-    const R=REG[k],col=R.color,tr=D[k].traj;
-    const pts=tr.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
-    lines+=`<polyline points="${pts}" fill="none" stroke="${col}" stroke-width="3"/>`;
-    tr.forEach((v,i)=>{lines+=`<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3.5" fill="${col}"/>`;});
-    // cliff tick at right
-    const cy=y(R.bcrisis);
-    cliffs+=`<line x1="${pl}" y1="${cy.toFixed(1)}" x2="${(W-pr+8).toFixed(1)}" y2="${cy.toFixed(1)}" stroke="${col}" stroke-width="1" stroke-dasharray="3 4" opacity="0.4"/>
-      <text x="${W-pr+14}" y="${(cy+4).toFixed(1)}" font-size="12" fill="${col}" opacity="0.85">cliff ${R.bcrisis}</text>`;
-    // endpoint label
-    const fb=D[k].final, fy=y(fb);
-    ends+=`<text x="${x(4)+8}" y="${(fy+4).toFixed(1)}" font-size="13" fill="${col}" font-weight="600">${R.name} ${Math.round(fb)}%${D[k].crisis?' ✕':''}</text>`;
-    // crisis crossing marker
-    const cr=D[k].dec.findIndex(d=>d.crossed);
-    if(cr>=0){const cx=x(cr+1),ccy=y(D[k].traj[cr+1]);
-      cliffs+=`<circle cx="${cx.toFixed(1)}" cy="${ccy.toFixed(1)}" r="7" fill="none" stroke="var(--red)" stroke-width="2"/>`;}
-  }
-  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">${cliffs}${lines}${ends}${xlabs}</svg>`;
-}
-
-function stepReveal(){
-  const cards=REG_KEYS.map(k=>{
-    const R=REG[k],fb=D[k].final,cr=D[k].crisis,to=Math.round(R.bcrisis-fb);
-    return `<div class="card" style="--c:${R.color}">
-      <div class="r">${R.name}</div>
-      <div class="n">ends <b>${Math.round(fb)}%</b> · cliff ${R.bcrisis}%</div>
-      <div class="st ${cr?'crisisTag':'safeTag'}">${cr?'✕ in crisis':`safe · ${to} pts of room`}</div>
-    </div>`;
-  }).join('');
-  return `<div class="reveal">
-    <div>
-      <div class="head">One set of shocks. Four fates.</div>
-      <div class="punch">The lines start apart and end further apart. Look at the two that nearly touch: <b>the emerging market crosses into crisis at 116%, while FlexIT sails on at 118%</b> — almost the same debt, opposite outcomes, <b>because of the currency, not the ratio</b>. Debt-to-GDP alone told you nothing.</div>
-      ${trajChart()}
-    </div>
-    <div class="side">${cards}</div>
-  </div>`;
-}
-
-function bar(val,cls,glow){
-  // width scaled against a fixed reference so bars are comparable across rounds
-  const REF=36; const w=clamp(Math.abs(val)/REF*100,0,100);
-  if(Math.abs(val)<0.15) return "";
-  return `<div class="seg ${cls} ${glow?'glow':''}" style="width:${w}%">${val>0?'+':''}${val.toFixed(0)}</div>`;
-}
-function stepRound(r){
-  const sh=SH[r-1], idx=r-1;
-  const rows=REG_KEYS.map(k=>{
-    const R=REG[k],d=D[k].dec[idx];
-    const glowFx = (r===2 && k==="EM_FX");
-    const glowSnow = (r===3 && k==="EM_FX");
-    const net=d.primary+d.snow+d.fx;
-    const cross=D[k].dec.slice(0,idx+1).some(x=>x.crossed) || (D[k].dec[idx].b>=R.bcrisis && D[k].crisis);
-    const inCrisis = d.b>=R.bcrisis;
-    return `<div class="drow" style="--c:${R.color}">
-      <div class="rg">${R.name}<span class="tag">${R.tag}</span></div>
-      <div class="barwrap">
-        ${bar(d.primary,'prim',false)}${bar(d.snow,'snow',glowSnow)}${bar(d.fx,'fx',glowFx)}
-      </div>
-      <div class="out">
-        <div class="db" style="color:${inCrisis?'var(--red)':'var(--parch)'}">${Math.round(d.b)}%</div>
-        <div class="st mono" style="color:var(--slate)">Δ ${net>0?'+':''}${net.toFixed(0)} · i ${d.i.toFixed(0)}% · g ${d.g.toFixed(1)}${inCrisis?' <span class="crisisTag">✕ crisis</span>':''}</div>
-      </div>
-    </div>`;
-  }).join('');
-  return `<div>
-    <div class="rhead"><span class="eyebrow">round ${r} of 4</span><h2>${sh.name}</h2>
-      <span class="term">${sh.term}</span></div>
-    <div class="rsub">${sh.sub}</div>
-    <div class="decomp">${rows}</div>
-    <div class="insight">${INSIGHT[idx]}</div>
-  </div>`;
-}
-
-function stepSynth(){
-  return `<div class="syn">
-    <h2>Why Japan, and not Argentina?</h2>
-    <div class="syngrid">
-      <div class="syncard" style="--c:var(--teal)"><h3>The printing press</h3>
-        <p>Own your currency and the central bank can always create it to pay — no forced default; the cost shows up as inflation, not a missed payment. Share a central bank (the eurozone) and that escape hatch is gone.</p></div>
-      <div class="syncard" style="--c:var(--amber)"><h3>The original sin</h3>
-        <p>Owe in dollars and a depreciation mechanically inflates the debt — you cannot print dollars. Japan's debt is in yen it controls; Argentina's is not. That single fact was the FX bar.</p></div>
-      <div class="syncard" style="--c:var(--blue)"><h3>r &gt; g, the snowball</h3>
-        <p>When the real rate on debt outpaces growth, debt grows under its own weight. The same shock sent one yield to 14% and another to 30% — fragility decides how hard the snowball bites.</p></div>
-      <div class="syncard" style="--c:var(--red)"><h3>Where the cliff sits</h3>
-        <p>The danger line isn't a fixed number. Japan carries 250% in calm; Argentina's markets lose faith far lower. High debt isn't the crisis — losing the market's confidence is.</p></div>
-    </div>
-    <div class="synq">The same debt is safe in Tokyo and fatal in Buenos Aires — because of the currency, not the ratio.</div>
-  </div>`;
-}
-
-/* ---------- nav ---------- */
-function renderLegend(){
-  document.getElementById('legend').innerHTML = (cur>=2&&cur<=5)
-    ? `<span><i style="background:var(--prim)"></i>primary balance</span>
-       <span><i style="background:var(--snow)"></i>snowball (r−g)</span>
-       <span><i style="background:var(--fx)"></i>FX revaluation</span>`
-    : "";
-}
-function renderDots(){
-  document.getElementById('dots').innerHTML=STEPS.map((_,i)=>`<i class="${i===cur?'on':''}"></i>`).join('');
-}
 function render(){
-  stage.innerHTML=STEPS[cur]();
-  renderLegend(); renderDots();
-  document.getElementById('prev').disabled = cur===0;
-  document.getElementById('next').disabled = cur===STEPS.length-1;
+ stage.innerHTML=STEPS[cur].fn();
+ document.getElementById('crumb').textContent=STEPS[cur].crumb;
+ document.getElementById('dots').innerHTML=STEPS.map((_,i)=>`<i class="${i===cur?'on':''}"></i>`).join('');
+ document.getElementById('prev').disabled=cur===0;
+ document.getElementById('next').disabled=cur===STEPS.length-1;
 }
 function go(d){cur=clamp(cur+d,0,STEPS.length-1);render();}
 window.go=go;
 document.addEventListener('keydown',e=>{
-  if(e.key==="ArrowRight"||e.key===" ")go(1);
-  else if(e.key==="ArrowLeft")go(-1);
+ if(e.key==='ArrowRight'||e.key===' ')go(1);
+ else if(e.key==='ArrowLeft')go(-1);
 });
 render();
 </script>
