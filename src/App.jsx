@@ -4,6 +4,61 @@ import { BookOpen, FileText, Mail, Github, Linkedin, TrendingUp, Anchor, Chevron
 
 import DebtSimulator from './DebtSimulator'; 
 
+
+const CV_EDUCATION = [
+  {
+    dates: "2024 – 2026",
+    institution: "University of Oxford, Linacre College",
+    qualification: "MPhil in Economics",
+    lines: [
+      "Modules: Financial Economics I & II, International Macroeconomics & Finance, Principles of Machine Learning, Core Econometrics, Core Macroeconomics, Core Empirical Research Methods",
+      "Thesis: Merit",
+      "Department Travel Grant, 2025–26",
+    ],
+  },
+  {
+    dates: "2019 – 2023",
+    institution: "University of Bristol",
+    qualification: "BSc Economics with Study Abroad",
+    lines: [
+      "First Class Honours",
+      "Deaton Prize for Best Dissertation in Economics",
+      "Year abroad: The Chinese University of Hong Kong",
+    ],
+  },
+];
+ 
+// Reverse-chronological by end date.
+const CV_POSITIONS = [
+  { dates: "Jun – Jul 2026", role: "Teaching Assistant", org: "UNIQ Summer School and Machine Learning Pioneers Summer School, University of Oxford" },
+  { dates: "Mar – Oct 2025", role: "Research Assistant", org: "Saïd Business School & LSE Centre for Economic Transition Expertise" },
+  { dates: "May – Aug 2022", role: "Research Intern", org: "House of Commons Library (University of Bristol placement)" },
+  { dates: "Apr 2021", role: "Spring Insight Programme", org: "HSBC Global Banking & Markets" },
+];
+ 
+const CV_SKILLS = [
+  { label: "Programming", value: "Python (pandas, NumPy, scikit-learn), R, Stata, MATLAB, Julia, SQL, LaTeX, Git" },
+  { label: "Software", value: "Excel, PowerPoint, Tableau" },
+  { label: "Data", value: "Bloomberg Terminal (BMC certified), LSEG DataStream, S&P Capital IQ" },
+];
+ 
+// One row: dates in a fixed left column on tablet and up, stacked above the entry on phones.
+function CvRow({ dates, children }) {
+  return (
+    <li className="grid gap-1 py-4 sm:grid-cols-[8.5rem_1fr] sm:gap-6">
+      <div className="text-xs font-mono text-stone-500 sm:pt-1">{dates}</div>
+      <div>{children}</div>
+    </li>
+  );
+}
+ 
+function CvHeading({ children }) {
+  return (
+    <h3 className="font-serif text-xl text-stone-900 border-b border-stone-300 pb-2">{children}</h3>
+  );
+}
+
+
 // --- Components ---
 
 const Section = ({ id, children, className = "" }) => (
@@ -333,7 +388,7 @@ const Portfolio = () => {
       <Section id="home" className="min-h-screen flex flex-col justify-center items-center text-center">
         <FadeIn>
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12 max-w-6xl mx-auto">
-            
+
             {/* Profile Image */}
             <div className="shrink-0 relative group">
               <div className="absolute -inset-1 bg-gradient-to-tr from-stone-300 to-stone-100 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000"></div>
@@ -351,7 +406,7 @@ const Portfolio = () => {
               <h1 className="font-serif text-4xl md:text-6xl mb-6 text-stone-900 tracking-tight leading-none">
                 <span className="font-normal">Sam</span> <span className="italic text-stone-700">Blundell.</span>
               </h1>
-              
+
               <div className="max-w-lg border-t border-stone-300 pt-6">
                 <p className="font-sans text-base md:text-lg text-stone-700 leading-relaxed mb-4">
                   I am an Oxford MPhil Economics graduate (Linacre College), supervised by <a href="https://www.sbs.ox.ac.uk/about-us/people/dimitrios-tsomocos" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Dimitrios Tsomocos</a> and <a href="https://fatih.ai/" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Fatih Kansoy</a>. My work centres on emerging-market sovereign credit, where I model how default risk propagates through banks, trade and exchange rates.
@@ -369,7 +424,7 @@ const Portfolio = () => {
                 </div>
               </div>
             </div>
-            
+
           </div>
         </FadeIn>
       </Section>
@@ -385,7 +440,7 @@ const Portfolio = () => {
 
         <div className="space-y-12">
           <FadeIn delay={100}>
-            <PaperCard 
+            <PaperCard
               title="Fragile Economies: A General Equilibrium Model of Partial Default with a Banking Sector"
               year="May 2026"
               status="MPhil Thesis"
@@ -395,7 +450,7 @@ const Portfolio = () => {
           </FadeIn>
 
           <FadeIn delay={200}>
-            <PaperCard 
+            <PaperCard
               title="Debiased/Double Machine Learning for Exchange-Rate Pass-Through Estimation"
               year="March 2026"
               status="ML Research Project"
@@ -405,7 +460,7 @@ const Portfolio = () => {
           </FadeIn>
 
           <FadeIn delay={300}>
-            <PaperCard 
+            <PaperCard
               title="Systematic Bias in IMF Sovereign Debt Sustainability Assessments"
               year="September 2025"
               status="Research Assistance - Saïd Business School and CETEx (LSE)"
@@ -415,7 +470,7 @@ const Portfolio = () => {
           </FadeIn>
 
           <FadeIn delay={400}>
-            <PaperCard 
+            <PaperCard
               title="Herding in Chinese Equity Markets in Response to COVID-19 Containment Policies"
               year="March 2023"
               status="BSc Dissertation (Deaton Prize)"
@@ -426,105 +481,62 @@ const Portfolio = () => {
         </div>
       </Section>
 
-{/* --- EXPERIENCE / CV SECTION --- */}
+{/* --- CV SECTION --- */}
 <Section id="cv">
   <FadeIn>
-    <div className="flex items-center justify-between mb-12">
-      <div className="flex items-center gap-4">
-        <FileText size={24} className="text-stone-400" />
-        <h2 className="font-sans text-xs font-bold uppercase tracking-widest text-stone-500">Curriculum Vitae</h2>
-      </div>
-      <a href="/cv.pdf" download className="flex items-center gap-2 text-xs font-mono text-stone-500 hover:text-stone-800 transition-colors">
-        <Download size={14} /> Download PDF
-      </a>
+    <div className="flex items-center gap-4 mb-12">
+      <FileText size={24} className="text-stone-400" />
+      <h2 className="font-sans text-xs font-bold uppercase tracking-widest text-stone-500">Curriculum Vitae</h2>
     </div>
   </FadeIn>
-
-  <div className="grid md:grid-cols-[1fr_2fr] gap-12">
-    {/* Education Column */}
-    <FadeIn delay={100}>
-      <div>
-        <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2">Education</h3>
-        
-        <div className="mb-8">
-          <div className="font-bold text-stone-800">University of Oxford</div>
-          <div className="text-stone-600 italic mb-1">MPhil in Economics</div>
-          <div className="text-xs font-mono text-stone-500">2024 — 2026</div>
-          <ul className="text-sm text-stone-600 mt-2 list-disc list-inside space-y-1">
-            <li>Linacre College</li>
-            <li>Supervisors: Prof. Dimitrios Tsomocos & Prof. Fatih Kansoy</li>
-            <li>Thesis: Sovereign default with banking sector intermediation — nonlinear amplification of import prices through a costly-state-verification friction</li>
-            <li>ML Project: Debiased Machine Learning for exchange-rate pass-through estimation</li>
-            <li>Coursework: International Macro & Finance, Financial Economics, Empirical Research Methods, Machine Learning</li>
-          </ul>
-        </div>
-
-        <div className="mb-8">
-          <div className="font-bold text-stone-800">University of Bristol</div>
-          <div className="text-stone-600 italic mb-1">BSc Economics with Study Abroad</div>
-          <div className="text-xs font-mono text-stone-500">2019 — 2023</div>
-          <ul className="text-sm text-stone-600 mt-2 list-disc list-inside space-y-1">
-            <li>First Class Honours</li>
-            <li>Deaton Prize for Best Dissertation in Economics</li>
-            <li>Year abroad: Chinese University of Hong Kong</li>
-            <li>Data Science Project: Python pipeline for NBA salary efficiency modelling with Vega-Lite visualisations</li>
-          </ul>
-        </div>
-      </div>
-    </FadeIn>
-
-    {/* Experience Column */}
-    <FadeIn delay={200}>
-      <div>
-        <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2">Experience</h3>
-
-        <div className="mb-8 pl-4 border-l border-stone-300">
-          <div className="font-bold text-stone-800">Saïd Business School & LSE CETEx</div>
-          <div className="text-stone-600 italic mb-1">Research Assistant — Prof. Dimitrios Tsomocos</div>
-          <div className="text-xs font-mono text-stone-500">May — Oct 2025</div>
-          <p className="text-sm text-stone-600 mt-2 leading-relaxed">
-            Constructed a novel database of IMF Debt Sustainability Analyses and macro-financial data covering 191 countries over 20 years. Designed a reproducible Python pipeline using OCR and LLM-assisted verification to extract and validate data from unstructured PDF reports. Catalogued climate risk assessments embedded within IMF DSAs to quantify systematic forecast errors in the Fund's climate projections.
-          </p>
-        </div>
-
-        <div className="mb-8 pl-4 border-l border-stone-300">
-          <div className="font-bold text-stone-800">Parliamentary Office of Science and Technology</div>
-          <div className="text-stone-600 italic mb-1">Research Intern</div>
-          <div className="text-xs font-mono text-stone-500">May — Aug 2022</div>
-          <p className="text-sm text-stone-600 mt-2 leading-relaxed">
-            Researched Chinese development assistance and capital-market policy; synthesised findings into a briefing contributing to Parliamentary debate on British foreign policy. Delivered a presentation on RMB internationalisation and the Belt-and-Road Initiative to department academics and external stakeholders.
-          </p>
-        </div>
-
-        <div className="mb-8 pl-4 border-l border-stone-300">
-          <div className="font-bold text-stone-800">HSBC London</div>
-          <div className="text-stone-600 italic mb-1">Spring Intern</div>
-          <div className="text-xs font-mono text-stone-500">Apr 2021</div>
-          <p className="text-sm text-stone-600 mt-2 leading-relaxed">
-            Completed equity valuation training in Excel and participated in an equity pitch competition. Attended executive briefings on institutional banking and global economic trends.
-          </p>
-        </div>
-
-        <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2 pt-4">Technical Skills</h3>
-        <div className="text-sm text-stone-600 space-y-2">
-          <p><span className="font-semibold text-stone-800">Proficient:</span> Python (Pandas, NumPy, Scikit-learn), R (econometrics, data visualisation), Stata, Excel.</p>
-          <p><span className="font-semibold text-stone-800">Intermediate:</span> MATLAB, Dynare, SQL, LaTeX, Git.</p>
-          <p><span className="font-semibold text-stone-800">Data Sources:</span> Bloomberg Terminal (BMC certified), LSEG DataStream.</p>
-          <p><span className="font-semibold text-stone-800">Languages:</span> English (native), Japanese (beginner).</p>
-        </div>
-
-        <h3 className="font-serif text-xl text-stone-900 mb-6 border-b border-stone-300 pb-2 pt-8">Honours & Activities</h3>
-        <div className="text-sm text-stone-600 space-y-4">
-          <p><span className="font-semibold text-stone-800">Graduate Teaching, Oxford UNIQ</span> <span className="font-mono text-xs text-stone-500 ml-2">Jul 2026</span><br />Delivering lecture and interactive session on Government Debt Sustainability for Oxford's widening participation outreach programme.</p>
-          <p><span className="font-semibold text-stone-800">World Econometrics Games</span> <span className="font-mono text-xs text-stone-500 ml-2">Apr 2026</span><br />Selected to represent Oxford in Amsterdam; case study on hourly day-ahead electricity price forecasting in the DK1 price zone.</p>
-          <p><span className="font-semibold text-stone-800">Linacre College Scholarship</span> <span className="font-mono text-xs text-stone-500 ml-2">2025–26</span><br />Japanese Fast-Track Language Course.</p>
-          <p><span className="font-semibold text-stone-800">Deaton Prize</span> <span className="font-mono text-xs text-stone-500 ml-2">2023</span><br />Best dissertation in Economics, University of Bristol.</p>
-          <p><span className="font-semibold text-stone-800">Mentor, Zero Gravity</span> <span className="font-mono text-xs text-stone-500 ml-2">2022–23</span><br />Mentored prospective undergraduates; supported successful applications to LSE and Warwick.</p>
-        </div>
-      </div>
-    </FadeIn>
-  </div>
+ 
+  {/* One fade for the whole list rather than one per block */}
+  <FadeIn delay={100}>
+    <div className="max-w-3xl space-y-12">
+ 
+      <section aria-labelledby="cv-education">
+        <CvHeading><span id="cv-education">Education</span></CvHeading>
+        <ul className="divide-y divide-stone-200">
+          {CV_EDUCATION.map((e) => (
+            <CvRow key={e.institution} dates={e.dates}>
+              <div className="font-bold text-stone-800">{e.institution}</div>
+              <div className="text-stone-600 italic">{e.qualification}</div>
+              <ul className="mt-2 space-y-1 text-sm text-stone-600">
+                {e.lines.map((line) => <li key={line}>{line}</li>)}
+              </ul>
+            </CvRow>
+          ))}
+        </ul>
+      </section>
+ 
+      <section aria-labelledby="cv-positions">
+        <CvHeading><span id="cv-positions">Positions</span></CvHeading>
+        <ul className="divide-y divide-stone-200">
+          {CV_POSITIONS.map((p) => (
+            <CvRow key={p.role + p.org} dates={p.dates}>
+              <span className="font-bold text-stone-800">{p.role}</span>
+              <span className="text-stone-600">, {p.org}</span>
+            </CvRow>
+          ))}
+        </ul>
+      </section>
+ 
+      <section aria-labelledby="cv-skills">
+        <CvHeading><span id="cv-skills">Technical Skills</span></CvHeading>
+        <ul className="divide-y divide-stone-200">
+          {CV_SKILLS.map((s) => (
+            <CvRow key={s.label} dates={s.label}>
+              <span className="text-sm text-stone-600">{s.value}</span>
+            </CvRow>
+          ))}
+        </ul>
+      </section>
+ 
+    </div>
+  </FadeIn>
 </Section>
+ 
+
 
       {/* --- CONTACT SECTION --- */}
       <Section id="contact" className="mb-20">
