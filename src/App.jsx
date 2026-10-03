@@ -354,7 +354,7 @@ const Portfolio = () => {
               
               <div className="max-w-lg border-t border-stone-300 pt-6">
                 <p className="font-sans text-base md:text-lg text-stone-700 leading-relaxed mb-4">
-                  I am an MPhil in Economics candidate at the <span className="font-semibold text-stone-900">University of Oxford</span> (Linacre College), supervised by <a href="https://www.sbs.ox.ac.uk/about-us/people/dimitrios-tsomocos" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Dimitrios Tsomocos</a> and <a href="https://fatih.ai/" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Fatih Kansoy</a>. My research focuses on quantitative modelling of financial frictions, price transmission mechanisms, and causal inference in complex macroeconomic settings.
+                  I am an MPhil in Economics graduate from the <span className="font-semibold text-stone-900">University of Oxford</span> (Linacre College), supervised by <a href="https://www.sbs.ox.ac.uk/about-us/people/dimitrios-tsomocos" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Dimitrios Tsomocos</a> and <a href="https://fatih.ai/" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Professor Fatih Kansoy</a>. My research focuses on quantitative macroeconomic modelling of markets, in particular sovereign default.
                 </p>
                 <p className="font-sans text-base md:text-lg text-stone-700 leading-relaxed mb-6">
                   I was awarded the <a href="https://www.linkedin.com/posts/university-of-bristol-school-of-economics_a-massive-congratulations-to-our-four-award-winning-activity-7090717689429512193-e9NT" target="_blank" rel="noopener noreferrer" className="underline decoration-stone-400 hover:text-stone-900 hover:decoration-stone-900 transition-all">Deaton Prize</a> for my undergraduate dissertation linking Chinese COVID-19 policy with herding behaviour in equity markets.
@@ -386,10 +386,10 @@ const Portfolio = () => {
         <div className="space-y-12">
           <FadeIn delay={100}>
             <PaperCard 
-              title="A Model of Partial Sovereign Default in General Equilibrium with a Banking Sector: The Case of Sri Lanka"
-              year="2026"
-              status="MPhil Thesis (In Progress)"
-              link="#"
+              title="Fragile Economies: A General Equilibrium Model of Partial Default with a Banking Sector"
+              year="May 2026"
+              status="MPhil Thesis"
+              link="thesis.pdf"
               abstract="My MPhil thesis builds a general equilibrium model of partial sovereign default, in which a banking sector intermediates foreign import financing. I quantify how sovereign haircuts transmit to the real economy through a highly-convex external finance premium channel — eroding bank net worth, raising import prices, and compressing consumption. The model is calibrated to Sri Lanka's 2021–22 default episode using CDS-implied default probabilities."
             />
           </FadeIn>
@@ -397,8 +397,8 @@ const Portfolio = () => {
           <FadeIn delay={200}>
             <PaperCard 
               title="Debiased/Double Machine Learning for Exchange-Rate Pass-Through Estimation"
-              year="2026"
-              status="ML Research Project (In Progress)"
+              year="March 2026"
+              status="ML Research Project"
               link="#"
               abstract="Applying Debiased Machine Learning (DML) to estimate exchange-rate pass-through in a high-dimensional panel setting. Using a partial linear model with cross-fitted nuisance functions, the framework accommodates the nonlinear, state-dependent relationships between macro confounders and prices that linear specifications mishandle — recovering a √N-consistent, asymptotically normal structural parameter estimate. I developed a hierarchy of first-stage learner specifications, utilizing boosted regression-trees and penalized regressions to handle non-linear nuisances consistent with regime-switching literature."
             />
@@ -407,17 +407,17 @@ const Portfolio = () => {
           <FadeIn delay={300}>
             <PaperCard 
               title="Systematic Bias in IMF Sovereign Debt Sustainability Assessments"
-              year="2025"
-              status="Research Assistance - Saïd Business School and LSE CETEx"
-              link="#"
+              year="September 2025"
+              status="Research Assistance - Saïd Business School and CETEx (LSE)"
+              link="https://cetex.org/publications/are-debt-sustainability-frameworks-compatible-with-climate-and-nature-action-findings-from-a-new-dataset-of-the-imfs-debt-sustainability-analyses/"
               abstract="Constructed and maintained a novel database of Debt Sustainability Analysis and macro-financial data covering 191 countries over 25 years, utilising a reproducible OCR and LLM-assisted verification pipeline in Python to extract and validate data from unstructured IMF archival documents."
             />
           </FadeIn>
 
           <FadeIn delay={400}>
             <PaperCard 
-              title="Herding in Chinese Equity Markets"
-              year="2023"
+              title="Herding in Chinese Equity Markets in Response to COVID-19 Containment Policies"
+              year="March 2023"
               status="BSc Dissertation (Deaton Prize)"
               link="diss.pdf"
               abstract="Investigating investor herding behaviour in Chinese A-share markets in response to COVID-19 containment policies, using a cross-sectional return dispersion framework on daily CSI 300 data. The empirical pipeline was built in Python, with Newey-West HAC-corrected regressions and PCA robustness checks estimated in Stata."
